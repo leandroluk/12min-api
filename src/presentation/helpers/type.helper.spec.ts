@@ -1,4 +1,14 @@
-import { isBoolean, isDate, isInteger, isNull, isNullOrEmpty, isNumber, isObject } from './type.helper'
+import {
+  isBoolean,
+  isDate,
+  isEmail,
+  isInteger,
+  isNull,
+  isNullOrEmpty,
+  isNumber,
+  isObject,
+  isString
+} from './type.helper'
 
 describe('type.helper', () => {
   describe('isNull', () => {
@@ -29,6 +39,20 @@ describe('type.helper', () => {
     })
   })
 
+  describe('isString', () => {
+    test('should return true value is a valid string', () => {
+      for (const value of ['', '123', ' ']) {
+        expect(isString(value)).toBeTruthy()
+      }
+    })
+
+    test('should return false if invalid string is provided', () => {
+      for (const value of [undefined, null, 1, true, {}, [], function () { }, (f: any) => f]) {
+        expect(isString(value)).toBeFalsy()
+      }
+    })
+  })
+
   describe('isNumber', () => {
     test('should return true value is a valid number', () => {
       for (const value of [1, -1, 0, 1.1, -1.1]) {
@@ -36,7 +60,7 @@ describe('type.helper', () => {
       }
     })
 
-    test('should return false if value isn\t a number', () => {
+    test('should return false if invalid number is provided', () => {
       for (const value of ['1', true, {}, [], function () { }, (f: any) => f]) {
         expect(isNumber(value)).toBeFalsy()
       }
@@ -50,7 +74,7 @@ describe('type.helper', () => {
       }
     })
 
-    test('should return false if isn\'t a valid integer', () => {
+    test('should return false if invalid integer is provided', () => {
       for (const value of [-1.1, 1.1, true, false, {}, [], function () { }, (f: any) => f]) {
         expect(isInteger(value)).toBeFalsy()
       }
@@ -64,7 +88,7 @@ describe('type.helper', () => {
       }
     })
 
-    test('should return false if isn\'t a valid boolean', () => {
+    test('should return false if invalid boolean is provided', () => {
       for (const value of [1, 1.1, '', {}, [], function () { }, (f: any) => f]) {
         expect(isBoolean(value)).toBeFalsy()
       }
@@ -78,7 +102,7 @@ describe('type.helper', () => {
       }
     })
 
-    test('should return false if isn\'t a valid date', () => {
+    test('should return false if invalid date is provided', () => {
       for (const value of [true, false, null, '', 'asd']) {
         expect(isDate(value)).toBeFalsy()
       }
@@ -92,9 +116,26 @@ describe('type.helper', () => {
       }
     })
 
-    test('should return false isn\'t a valid object', () => {
+    test('should return false invalid object is provided', () => {
       for (const value of ['', 1, true, null, undefined, function () { }, (f: any) => f]) {
         expect(isObject(value)).toBeFalsy()
+      }
+    })
+  })
+
+  describe('isEmail', () => {
+    test('should return true if a valid email is provided', () => {
+      for (const value of ['a@a.com', 'foo@bar.com', 'a@a.com.br']) {
+        expect(isEmail(value)).toBeTruthy()
+      }
+    })
+
+    test('should return false if invalid email is provided', () => {
+      for (const value of [
+        '', 1, true, {}, [], function () { }, (f: any) => f,
+        'a', 'a@', 'a@a', 'a@a.c', 'a a@a.com', 'a@a.123'
+      ]) {
+        expect(isEmail(value)).toBeFalsy()
       }
     })
   })

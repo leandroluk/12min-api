@@ -1,3 +1,4 @@
+import validator from 'validator'
 
 export function isNull(value: any): boolean {
   return [undefined, null].includes(value)
@@ -5,6 +6,10 @@ export function isNull(value: any): boolean {
 
 export function isNullOrEmpty(value: any): boolean {
   return [undefined, null, ''].includes(value)
+}
+
+export function isString(value: any): boolean {
+  return typeof value === 'string'
 }
 
 export function isNumber(value: any): boolean {
@@ -31,5 +36,13 @@ export function isObject(value: any): boolean {
   return (
     !isNull(value) &&
     typeof value === 'object'
+  )
+}
+
+export function isEmail(value: any): boolean {
+  return (
+    !isNullOrEmpty(value) &&
+    isString(value) &&
+    validator.isEmail(value)
   )
 }
