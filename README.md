@@ -41,7 +41,7 @@ All of the commands below can be run using the suffix "`:verbose`" to make them 
 - **"`npm run test:integration`"**: to run only integration tests of the project (integration tests are identified by the extension "`*.test.ts`"
 - **"`npm run test:ci`"**: to run tests and collect code coverage.
 
-## Deploy
+## Deploy:
 
 To deploy the project as a local cluster, you can use the command:
 
@@ -64,3 +64,8 @@ docker build . \
   -t https://gitlab.com/leandroluk-12min/api:develop \
   -e MONGODB_URL="put the url of your external dong mongo server here"
 ```
+
+**Considerations:**
+
+- First of all excuse my english, i don't have fluency in the language and this is something i still have to work on `ᕦ(ò_óˇ)ᕤ`.
+- The project was not thought of in such a way that it could persist many innumerable files locally. For that, it would be necessary to make changes to save them in a bucket like Amazon S3. (but it wasn't asked so I didn't) `¯\_(ツ)_/¯`.
