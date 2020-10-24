@@ -29,6 +29,7 @@
   "homepage": "https://gitlab.com/leandroluk-12min/api#readme",
   "devDependencies": {
     "@types/jest": "^26.0.15",
+    "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "eslint": "^7.12.0",
     "eslint-config-standard-with-typescript": "^19.0.1",
@@ -43,6 +44,7 @@
     "ts-jest": "^26.4.2"
   },
   "dependencies": {
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "validator": "^13.1.17"
   }
 }
