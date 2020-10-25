@@ -4,15 +4,15 @@
   "description": "12min-challenge - Api",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
+    "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:watch": "npm run test -- --watch",
     "test:watch:verbose": "npm run test:verbose -- --watch",
     "test:unit": "npm run  test -- --watch -c jest-unit-config.js",
     "test:unit:verbose": "npm run  test:verbose -- --watch -c jest-unit-config.js",
     "test:integration": "npm run test -- --watch -c jest-integration-config.js",
     "test:integration:verbose": "npm run test:verbose -- --watch -c jest-integration-config.js",
-    "test:staged": "npm run test -- --findRelatedTests",
+    "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm run test -- --coverage",
     "test:ci:verbose": "npm run test:verbose -- --coverage"
   },
