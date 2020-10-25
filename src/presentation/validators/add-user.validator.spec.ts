@@ -1,19 +1,72 @@
-import { IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
+import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
 import faker from 'faker'
+import { IEmailValidator } from '../protocols/email-validator'
+import { INullValidator } from '../protocols/null-validator'
+import { IPasswordValidator } from '../protocols/password-validator'
 import { AddUserValidator } from './add-user.validator'
 
-const makeUser = (): IAddUserValidateModel => {
+const makeAddUserValidateModel = (): IAddUserValidateModel => {
   return {
     email: faker.internet.email(),
     password: faker.internet.password()
   }
 }
 
+const makeNullValidator = (): INullValidator => {
+  class NullValidatorStub implements INullValidator {
+    async isNull(_value: any): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+  }
+  return new NullValidatorStub()
+}
+
+const makeEmailValidator = (): IEmailValidator => {
+  class EmailValidatorStub implements IEmailValidator {
+    async isEmail(_value: any): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+  }
+  return new EmailValidatorStub()
+}
+
+const makePasswordValidator = (): IPasswordValidator => {
+  class PasswordValidatorStub implements IPasswordValidator {
+    async isPassword(_value: any): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+  }
+  return new PasswordValidatorStub()
+}
+
+const makeSut = (): {
+  nullValidator: INullValidator
+  emailValidator: IEmailValidator
+  passwordValidator: IPasswordValidator
+  sut: IAddUserValidate
+} => {
+  const nullValidator = makeNullValidator()
+  const emailValidator = makeEmailValidator()
+  const passwordValidator = makePasswordValidator()
+  const sut = new AddUserValidator(
+    nullValidator,
+    emailValidator,
+    passwordValidator
+  )
+
+  return {
+    nullValidator,
+    emailValidator,
+    passwordValidator,
+    sut
+  }
+}
+
 describe('AddUserValidator', () => {
   describe('validateUser', () => {
     test('should return a missing param error inner object validation error if some required field isn\t provided', async () => {
-      const sut = new AddUserValidator()
-      const user = makeUser()
+      const { sut } = makeSut()
+      const user = makeAddUserValidateModel()
       const requiredFields = ['email', 'password']
 
       for (const field of requiredFields) {
@@ -29,32 +82,21 @@ describe('AddUserValidator', () => {
     })
 
     test('should return a invalid param error inner object validation error if some field is invalid', async () => {
-      const sut = new AddUserValidator()
-      const user = makeUser()
+      const { sut, nullValidator, emailValidator, passwordValidator } = makeSut()
+      const user = makeAddUserValidateModel()
+      let result: any
 
-      const invalidFields = {
-        email: [
-          '', 1, 1.1, true, function () { }, (f: any) => f,
-          'a', 'a@', 'a@a', 'a@a.', 'a@a.c', 'a a@a.com', 'a@.com', 'a@a.com..'
-        ],
-        password: [
-          '', 1, 1.1, true, function () { }, (f: any) => f,
-          '12', '0123456789012345678901234567891'
-        ]
-      }
+      jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
 
-      for (const [field, values] of Object.entries(invalidFields)) {
-        for (const value of values) {
-          const current = { ...user }
+      jest.spyOn(emailValidator, 'isEmail').mockResolvedValueOnce(false)
+      result = await sut.validateAddUser(user)
+      expect(result.message).toMatch(/Object validation/)
+      expect(result.errors.email.message).toMatch(/Invalid param/)
 
-          current[field] = value
-
-          const result = await sut.validateAddUser(current)
-
-          expect(result.message).toMatch(/Object validation/)
-          expect(result.errors[field].message).toMatch(/Invalid param/)
-        }
-      }
+      jest.spyOn(passwordValidator, 'isPassword').mockResolvedValueOnce(false)
+      result = await sut.validateAddUser(user)
+      expect(result.message).toMatch(/Object validation/)
+      expect(result.errors.password.message).toMatch(/Invalid param/)
     })
   })
 })
