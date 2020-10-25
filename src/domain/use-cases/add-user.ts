@@ -6,5 +6,5 @@ export interface IAddUserModel {
 }
 
 export interface IAddUser {
-  insertUser(user: IAddUserModel): Promise<IUserModel>
+  addUser(user: IAddUserModel): Promise<IUserModel>
 }

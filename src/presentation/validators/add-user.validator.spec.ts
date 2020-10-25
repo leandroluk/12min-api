@@ -1,8 +1,8 @@
-import { IValidateUserModel } from '@/domain/use-cases/validate-user'
+import { IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
 import faker from 'faker'
 import { AddUserValidator } from './add-user.validator'
 
-const makeUser = (): IValidateUserModel => {
+const makeUser = (): IAddUserValidateModel => {
   return {
     email: faker.internet.email(),
     password: faker.internet.password()
@@ -21,7 +21,7 @@ describe('AddUserValidator', () => {
 
         delete current[field]
 
-        const result = await sut.validateUser(current)
+        const result = await sut.validateAddUser(current)
 
         expect(result.message).toMatch(/Object validation/)
         expect(result.errors[field].message).toMatch(/Missing param/)
@@ -49,7 +49,7 @@ describe('AddUserValidator', () => {
 
           current[field] = value
 
-          const result = await sut.validateUser(current)
+          const result = await sut.validateAddUser(current)
 
           expect(result.message).toMatch(/Object validation/)
           expect(result.errors[field].message).toMatch(/Invalid param/)

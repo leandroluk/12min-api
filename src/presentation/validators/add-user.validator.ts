@@ -1,11 +1,11 @@
-import { IValidateUser, IValidateUserModel } from '@/domain/use-cases/validate-user'
+import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
+import { InvalidParamError } from '@/errors/invalid-param.error'
+import { MissingParamError } from '@/errors/missing-param.error'
+import { ObjectValidationError } from '@/errors/object-validation.error'
 import { isEmail, isNull, isPassword } from '@/helpers/type.helper'
-import { InvalidParamError } from '@/presentation/errors/invalid-param.error'
-import { MissingParamError } from '@/presentation/errors/missing-param.error'
-import { ObjectValidationError } from '../errors/object-validation.error'
 
-export class AddUserValidator implements IValidateUser {
-  async validateUser(user: IValidateUserModel): Promise<any> {
+export class AddUserValidator implements IAddUserValidate {
+  async validateAddUser(user: IAddUserValidateModel): Promise<any> {
     const errors: any = {}
 
     if (isNull(user.email)) {
