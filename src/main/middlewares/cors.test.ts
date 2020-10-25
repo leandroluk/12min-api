@@ -3,10 +3,14 @@ import request from 'supertest'
 
 describe('cors', () => {
   test('should enable cors', async () => {
-    app.post('/test', (_, res) => res.send())
+    const url = '/test-cors'
+
+    app.post(url, (_, res) => {
+      res.send()
+    })
 
     await request(app)
-      .get('/test')
+      .get(url)
       .expect('access-control-allow-origin', '*')
       .expect('access-control-allow-methods', '*')
       .expect('access-control-allow-headers', '*')
