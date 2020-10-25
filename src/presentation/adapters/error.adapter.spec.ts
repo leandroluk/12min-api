@@ -42,11 +42,4 @@ describe('ErrorAdapter', () => {
 
     expect(result).toEqual(testErrorMock)
   })
-
-  test('should create a generic error comparable using instanceof', () => {
-    const { sut } = makeSut()
-    sut.fromJSON(testErrorMock)
-
-    expect(sut.data.name).toEqual('TestError')
-  })
 })

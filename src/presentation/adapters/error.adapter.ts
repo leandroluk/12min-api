@@ -13,27 +13,4 @@ export class ErrorAdapter {
   toJSON(): any {
     return this.transform(this.data)
   }
-
-  fromJSON(data: any): Error {
-    if (typeof data !== 'object' || !data?.name) {
-      throw new TypeError('cannot transform "data" into valid error type')
-    }
-
-    const wrapper = {
-      [data.name]: class extends Error {
-        constructor(...args: any[]) {
-          super(...args)
-          this.name = data.name
-        }
-      }
-    }
-
-    this.data = new wrapper[data.name]()
-
-    Object
-      .entries(data)
-      .forEach(([key, value]) => this.data[key] = value)
-
-    return this.data as Error
-  }
 }

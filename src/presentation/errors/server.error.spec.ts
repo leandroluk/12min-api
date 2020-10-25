@@ -1,20 +1,12 @@
 import { ServerError } from './server.error'
 
-const makeSut = (opts: any = {}): {
-  sut: ServerError
-} => {
-  const { more = '' } = opts
-
-  const sut = new ServerError(more)
-
-  return {
-    sut
-  }
-}
-
 describe('ServerError', () => {
-  test('should return message with more and space if is passed', () => {
-    const { sut } = makeSut({ more: 'more' })
-    expect(sut.message).toBe('Server error. more')
+  test('should return server error', () => {
+    const sut = new ServerError()
+    expect(sut.message).toMatch(/Server error/)
+  })
+  test('should return server error with more message if passed', () => {
+    const sut = new ServerError('more')
+    expect(sut.message).toMatch(/more/)
   })
 })
