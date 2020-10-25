@@ -24,8 +24,10 @@ export class AddUserValidator implements IAddUserValidate {
       }
     }
 
-    return Object.keys(errors).length
-      ? new ObjectValidationError(errors)
-      : null
+    if (Object.keys(errors).length) {
+      return new ObjectValidationError(errors)
+    }
+
+    return null
   }
 }
