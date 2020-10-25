@@ -1,4 +1,5 @@
 import { IEmailValidator } from '@/presentation/protocols/email-validator'
+import validator from 'validator'
 import { EmailValidatorAdapter } from './email-validator-adapter'
 
 const makeSut = (): {
@@ -33,5 +34,13 @@ describe('EmailValidator', () => {
     for (const value of validTypes) {
       await expect(sut.isEmail(value)).resolves.toBeTruthy()
     }
+  })
+
+  test('should return false if validator throws', async () => {
+    const { sut } = makeSut()
+    const validatorSpy = jest.spyOn(validator, 'isEmail').mockImplementation(() => { throw new Error() })
+    const result = await sut.isEmail('any@email.com')
+    expect(validatorSpy).toBeCalled()
+    expect(result).toBeFalsy()
   })
 })

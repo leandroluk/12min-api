@@ -3,19 +3,16 @@ import validator from 'validator'
 
 export class EmailValidatorAdapter implements IEmailValidator {
   async isEmail(value: any): Promise<boolean> {
-    let valid = (
-      ![undefined, null, ''].includes(value) &&
-      typeof value === 'string'
-    )
-
-    try {
-      if (valid) {
-        valid = validator.isEmail(value)
+    return await new Promise(resolve => {
+      try {
+        resolve(
+          ![undefined, null, ''].includes(value) &&
+          typeof value === 'string' &&
+          validator.isEmail(value)
+        )
+      } catch (error) {
+        resolve(false)
       }
-    } catch (error) {
-      valid = false
-    }
-
-    return await Promise.resolve(valid)
+    })
   }
 }
