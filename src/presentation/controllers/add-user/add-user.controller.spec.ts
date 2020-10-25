@@ -3,16 +3,17 @@ import { IAddUser, IAddUserModel } from '@/domain/use-cases/add-user'
 import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
 import { EmailInUseError } from '@/errors/email-in-use.error'
 import { IController } from '@/presentation/protocols/controller'
-import faker from 'faker'
 import { AddUserController } from './add-user.controller'
 
 const makeAddUser = (): IAddUser => {
   class AddUserRepositoryStub implements IAddUser {
     async addUser(user: IAddUserModel): Promise<IUserModel> {
       return await Promise.resolve({
-        id: faker.random.uuid(),
-        email: faker.internet.email(),
-        password: faker.internet.password()
+        id: 'sample_id',
+        createdAt: new Date(),
+        email: user.email,
+        password: user.password,
+        secret: 'secret'
       })
     }
   }

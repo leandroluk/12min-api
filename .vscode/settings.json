@@ -13,5 +13,7 @@
   },
   // typescript
   "typescript.preferences.quoteStyle": "single",
-  "typescript.format.semicolons": "remove"
+  "typescript.format.semicolons": "remove",
+  // jest
+  "jest.runAllTestsFirst": false
 }

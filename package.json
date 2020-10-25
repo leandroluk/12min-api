@@ -4,17 +4,17 @@
   "description": "12min-challenge - Api",
   "main": "index.js",
   "scripts": {
-    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
-    "test:verbose": "jest --passWithNoTests --runInBand",
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
+    "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:watch": "npm run test -- --watch",
     "test:watch:verbose": "npm run test:verbose -- --watch",
-    "test:unit": "npm run  test -- --watch -c jest-unit.config.js",
-    "test:unit:verbose": "npm run  test:verbose -- --watch -c jest-unit.config.js",
-    "test:integration": "npm run test -- --watch -c jest-integration.config.js",
-    "test:integration:verbose": "npm run test:verbose -- --watch -c jest-integration.config.js",
-    "test:staged": "npm run test -- --findRelatedTests",
+    "test:unit": "npm run  test -- --watch -c jest-unit-config.js",
+    "test:unit:verbose": "npm run  test:verbose -- --watch -c jest-unit-config.js",
+    "test:integration": "npm run test -- --watch -c jest-integration-config.js",
+    "test:integration:verbose": "npm run test:verbose -- --watch -c jest-integration-config.js",
+    "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm run test -- --coverage",
-    "test:ci:verbose": "npm test:verbose -- --coverage"
+    "test:ci:verbose": "npm run test:verbose -- --coverage"
   },
   "repository": {
     "type": "git",
@@ -28,8 +28,11 @@
   },
   "homepage": "https://gitlab.com/leandroluk-12min/api#readme",
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
+    "@types/bcrypt": "^3.0.0",
     "@types/faker": "^5.1.3",
     "@types/jest": "^26.0.15",
+    "@types/mongodb": "^3.5.31",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "eslint": "^7.12.0",
@@ -46,6 +49,8 @@
     "ts-jest": "^26.4.2"
   },
   "dependencies": {
+    "bcrypt": "^5.0.0",
+    "mongodb": "^3.6.2",
     "typescript": "^4.0.3",
     "validator": "^13.1.17"
   }
