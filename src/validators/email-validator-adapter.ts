@@ -1,7 +1,7 @@
 import { IEmailValidator } from '@/presentation/protocols/email-validator'
 import validator from 'validator'
 
-export class EmailValidator implements IEmailValidator {
+export class EmailValidatorAdapter implements IEmailValidator {
   async isEmail(value: any): Promise<boolean> {
     let valid = (
       ![undefined, null, ''].includes(value) &&

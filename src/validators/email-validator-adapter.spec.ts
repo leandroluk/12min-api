@@ -1,12 +1,12 @@
 import { IEmailValidator } from '@/presentation/protocols/email-validator'
-import { EmailValidator } from './email-validator'
+import { EmailValidatorAdapter } from './email-validator-adapter'
 
 const makeSut = (): {
   sut: IEmailValidator
   invalidTypes: any[]
   validTypes: any[]
 } => {
-  const sut = new EmailValidator()
+  const sut = new EmailValidatorAdapter()
   const invalidTypes = [
     '', 1, true, {}, [], function () { }, (f: any) => f,
     'a', 'a@', 'a@a', 'a@a.c', 'a a@a.com', 'a@a.123'

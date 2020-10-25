@@ -1,12 +1,12 @@
 import { INullValidator } from '@/presentation/protocols/null-validator'
-import { NullValidator } from './null-validator'
+import { NullValidatorAdapter } from './null-validator-adapter'
 
 const makeSut = (): {
   sut: INullValidator
   invalidTypes: any[]
   validTypes: any[]
 } => {
-  const sut = new NullValidator()
+  const sut = new NullValidatorAdapter()
   const invalidTypes = ['', 1, true, false, {}, [], function () { }, (f: any) => f]
   const validTypes = [undefined, null]
 

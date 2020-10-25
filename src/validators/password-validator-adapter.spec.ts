@@ -1,12 +1,12 @@
 import { IPasswordValidator } from '@/presentation/protocols/password-validator'
-import { PasswordValidator } from './password-validator'
+import { PasswordValidatorAdapter } from './password-validator-adapter'
 
 const makeSut = (): {
   sut: IPasswordValidator
   invalidTypes: any[]
   validTypes: any[]
 } => {
-  const sut = new PasswordValidator()
+  const sut = new PasswordValidatorAdapter()
   const invalidTypes = [
     '', 1, 1.1, true, {}, [], function () { }, (f: any) => f,
     '12', '0123456789012345678901234567891'
