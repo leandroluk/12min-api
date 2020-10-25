@@ -26,8 +26,8 @@ const makeAddUserModel = (): IAddUserModel => ({
 
 const makeEncrypter = (): IEncrypter => {
   class EncrypterStub implements IEncrypter {
-    async encrypt(value: string): Promise<string> {
-      return await Promise.resolve(value + '_hashed')
+    async encrypt(_value: string): Promise<string> {
+      return await Promise.resolve('hashed')
     }
   }
   return new EncrypterStub()
@@ -64,10 +64,13 @@ describe('DbAddUser', () => {
       const addUserSpy = jest.spyOn(addUserRepository, 'addUser')
       const user = makeAddUserModel()
       await sut.addUser(user)
-      expect(addUserSpy).toHaveBeenCalledWith({
-        ...user,
-        password: user.password + '_hashed'
-      })
+      expect(addUserSpy).toHaveBeenCalledWith({ ...user, password: 'hashed' })
+    })
+
+    test('should throw if IEncrypter throws', () => {
+      const { sut, encrypter } = makeSut()
+      jest.spyOn(encrypter, 'encrypt').mockRejectedValue(new Error())
+      expect(sut.addUser({} as any)).rejects.toThrow()
     })
 
     test('should throw if IAddUserRepository throws', () => {
@@ -81,7 +84,7 @@ describe('DbAddUser', () => {
       const user = makeAddUserModel()
       const result = await sut.addUser(user)
       expect(result.email).toBe(user.email)
-      expect(result.password).toBe(user.password + '_hashed')
+      expect(result.password).toBe('hashed')
     })
   })
 })
