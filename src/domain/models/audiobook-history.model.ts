@@ -1,4 +1,5 @@
 export interface IAudiobookHistoryModel {
   audiobookId: string
-  history: string[]
+  state: string
+  info: string
 }
