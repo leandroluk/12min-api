@@ -37,6 +37,6 @@ export class AddUserValidator implements IAddUserValidate {
       return new ObjectValidationError(errors)
     }
 
-    return null
+    return errors
   }
 }

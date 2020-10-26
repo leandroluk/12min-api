@@ -8,7 +8,7 @@ describe('add-user', () => {
   beforeEach(async () => await MongoHelper.getCollection('users').deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
-  test('should enable cors', async () => {
+  test('should return user on success ', async () => {
     await request(app)
       .post('/api/user')
       .send({

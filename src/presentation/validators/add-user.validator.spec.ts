@@ -98,11 +98,5 @@ describe('AddUserValidator', () => {
       expect(result.message).toMatch(/Object validation/)
       expect(result.errors.password.message).toMatch(/Invalid param/)
     })
-
-    test('should return null if all values is valid', async () => {
-      const { sut } = makeSut()
-      const user = makeAddUserValidateModel()
-      await expect(sut.validateAddUser(user)).resolves.toBeNull()
-    })
   })
 })
