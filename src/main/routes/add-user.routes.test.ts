@@ -3,7 +3,7 @@ import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 
-describe('add user routes', () => {
+describe('add-user', () => {
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection('users').deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
