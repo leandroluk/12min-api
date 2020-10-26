@@ -1,6 +1,6 @@
-import { ErrorAdapter } from '@/presentation/adapters/error.adapter'
-import { ServerError } from '@/presentation/errors/server.error'
-import { HttpStatusCode, IHttpResponse } from '@/presentation/protocols/http'
+import { ErrorAdapter } from '../adapters/error.adapter'
+import { ServerError } from '../errors/server.error'
+import { HttpStatusCode, IHttpResponse } from '../protocols/http'
 
 export const badRequest = (error: Error): IHttpResponse => ({
   statusCode: HttpStatusCode.badRequest,

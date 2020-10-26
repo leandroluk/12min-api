@@ -1,5 +1,5 @@
-import { IEncrypter } from '@/data/protocols/encrypter'
 import bcrypt from 'bcrypt'
+import { IEncrypter } from '../../data/protocols/encrypter'
 import { BcryptAdapter } from './bcrypt-adapter'
 
 const makeStut = (): {

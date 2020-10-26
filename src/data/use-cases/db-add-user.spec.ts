@@ -1,5 +1,4 @@
-import { IUserModel } from '@/domain/models/user.model'
-import { IAddUserModel } from '@/domain/use-cases/add-user'
+import { IAddUserModel } from '../../domain/use-cases/add-user'
 import { IAddUserRepository } from '../protocols/add-user.repository'
 import { IEncrypter } from '../protocols/encrypter'
 import { DbAddUser } from './db-add-user'

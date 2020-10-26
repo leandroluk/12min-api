@@ -1,5 +1,5 @@
-import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
 import faker from 'faker'
+import { IAddUserValidateModel } from '../../domain/use-cases/add-user-validate'
 import { IEmailValidator } from '../protocols/email-validator'
 import { INullValidator } from '../protocols/null-validator'
 import { IPasswordValidator } from '../protocols/password-validator'

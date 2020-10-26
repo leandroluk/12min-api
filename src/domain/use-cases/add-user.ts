@@ -1,4 +1,4 @@
-import { IUserModel } from '@/domain/models/user.model'
+import { IUserModel } from '../models/user.model'
 
 export interface IAddUserModel {
   email: string

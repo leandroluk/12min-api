@@ -1,4 +1,4 @@
-import { IAudiobookModel } from '@/domain/models/audiobook.model'
+import { IAudiobookModel } from '../models/audiobook.model'
 
 export interface IAddAudiobookModel {
   title: string

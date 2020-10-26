@@ -1,10 +1,10 @@
-import { IAddUser, IAddUserModel } from '@/domain/use-cases/add-user'
-import { IAddUserValidate } from '@/domain/use-cases/add-user-validate'
-import { MissingParamError } from '@/errors/missing-param.error'
-import { ObjectValidationError } from '@/errors/object-validation.error'
-import { badRequest, ok } from '@/presentation/helpers/http.helper'
-import { IController } from '@/presentation/protocols/controller'
-import { IHttpRequest, IHttpResponse } from '@/presentation/protocols/http'
+import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user'
+import { IAddUserValidate } from '../../../domain/use-cases/add-user-validate'
+import { MissingParamError } from '../../../errors/missing-param.error'
+import { ObjectValidationError } from '../../../errors/object-validation.error'
+import { badRequest, ok } from '../../helpers/http.helper'
+import { IController } from '../../protocols/controller'
+import { IHttpRequest, IHttpResponse } from '../../protocols/http'
 
 export class AddUserController implements IController {
   constructor(

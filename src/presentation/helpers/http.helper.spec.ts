@@ -1,4 +1,5 @@
-import { badRequest, ok, serverError, unauthorized } from '@/presentation/helpers/http.helper'
+import { badRequest, ok, serverError, unauthorized } from './http.helper'
+
 describe('http helpers', () => {
   describe('badRequest', () => {
     test('should return http response with status 400', () => {

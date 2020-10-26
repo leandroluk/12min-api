@@ -1,8 +1,8 @@
-import { IUserModel } from '@/domain/models/user.model'
-import { IAddUser, IAddUserModel } from '@/domain/use-cases/add-user'
-import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
-import { EmailInUseError } from '@/errors/email-in-use.error'
-import { IController } from '@/presentation/protocols/controller'
+import { IUserModel } from '../../../domain/models/user.model'
+import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user'
+import { IAddUserValidate, IAddUserValidateModel } from '../../../domain/use-cases/add-user-validate'
+import { EmailInUseError } from '../../../errors/email-in-use.error'
+import { IController } from '../../protocols/controller'
 import { AddUserController } from './add-user.controller'
 
 const makeAddUser = (): IAddUser => {
