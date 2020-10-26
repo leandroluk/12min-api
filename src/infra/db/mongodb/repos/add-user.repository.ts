@@ -1,7 +1,7 @@
-import { IAddUserRepository } from '@/data/protocols/add-user.repository'
-import { IEncrypter } from '@/data/protocols/encrypter'
-import { IUserModel } from '@/domain/models/user.model'
-import { IAddUserModel } from '@/domain/use-cases/add-user'
+import { IAddUserRepository } from '../../../../data/protocols/add-user.repository'
+import { IEncrypter } from '../../../../data/protocols/encrypter'
+import { IUserModel } from '../../../../domain/models/user.model'
+import { IAddUserModel } from '../../../../domain/use-cases/add-user'
 import { MongoHelper } from '../helpers/mongo.helper'
 
 export class MongoAddUserRepository implements IAddUserRepository {

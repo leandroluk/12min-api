@@ -1,5 +1,5 @@
-import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
 import faker from 'faker'
+import { IAddUserValidateModel } from '../../domain/use-cases/add-user-validate'
 import { IEmailValidator } from '../protocols/email-validator'
 import { INullValidator } from '../protocols/null-validator'
 import { IPasswordValidator } from '../protocols/password-validator'
@@ -15,7 +15,7 @@ const makeAddUserValidateModel = (): IAddUserValidateModel => {
 const makeNullValidator = (): INullValidator => {
   class NullValidatorStub implements INullValidator {
     async isNull(_value: any): Promise<boolean> {
-      return await Promise.resolve(true)
+      return await Promise.resolve(false)
     }
   }
   return new NullValidatorStub()
@@ -65,9 +65,11 @@ const makeSut = (): {
 describe('AddUserValidator', () => {
   describe('validateUser', () => {
     test('should return a missing param error inner object validation error if some required field isn\t provided', async () => {
-      const { sut } = makeSut()
+      const { sut, nullValidator } = makeSut()
       const user = makeAddUserValidateModel()
       const requiredFields = ['email', 'password']
+
+      jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
 
       for (const field of requiredFields) {
         const current = { ...user }
@@ -82,11 +84,9 @@ describe('AddUserValidator', () => {
     })
 
     test('should return a invalid param error inner object validation error if some field is invalid', async () => {
-      const { sut, nullValidator, emailValidator, passwordValidator } = makeSut()
+      const { sut, emailValidator, passwordValidator } = makeSut()
       const user = makeAddUserValidateModel()
       let result: any
-
-      jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
 
       jest.spyOn(emailValidator, 'isEmail').mockResolvedValueOnce(false)
       result = await sut.validateAddUser(user)

@@ -1,7 +1,7 @@
-import { IAddUserValidate, IAddUserValidateModel } from '@/domain/use-cases/add-user-validate'
-import { InvalidParamError } from '@/errors/invalid-param.error'
-import { MissingParamError } from '@/errors/missing-param.error'
-import { ObjectValidationError } from '@/errors/object-validation.error'
+import { IAddUserValidate, IAddUserValidateModel } from '../../domain/use-cases/add-user-validate'
+import { InvalidParamError } from '../../errors/invalid-param.error'
+import { MissingParamError } from '../../errors/missing-param.error'
+import { ObjectValidationError } from '../../errors/object-validation.error'
 import { IEmailValidator } from '../protocols/email-validator'
 import { INullValidator } from '../protocols/null-validator'
 import { IPasswordValidator } from '../protocols/password-validator'
@@ -37,6 +37,6 @@ export class AddUserValidator implements IAddUserValidate {
       return new ObjectValidationError(errors)
     }
 
-    return null
+    return errors
   }
 }

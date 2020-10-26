@@ -4,6 +4,7 @@
   "description": "12min-challenge - Api",
   "main": "index.js",
   "scripts": {
+    "start": "sucrase-node src/main/server.ts",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
     "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",
     "test:watch": "npm run test -- --watch",
@@ -30,9 +31,11 @@
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
     "@types/bcrypt": "^3.0.0",
+    "@types/express": "^4.17.8",
     "@types/faker": "^5.1.3",
     "@types/jest": "^26.0.15",
     "@types/mongodb": "^3.5.31",
+    "@types/supertest": "^2.0.10",
     "@types/validator": "^13.1.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "eslint": "^7.12.0",
@@ -46,12 +49,16 @@
     "husky": "^4.3.0",
     "jest": "^26.6.1",
     "lint-staged": "^10.4.2",
-    "ts-jest": "^26.4.2"
+    "sucrase": "^3.16.0",
+    "supertest": "^5.0.0",
+    "ts-jest": "^26.4.2",
+    "typescript": "^4.0.3"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "express": "^4.17.1",
+    "fast-glob": "^3.2.4",
     "mongodb": "^3.6.2",
-    "typescript": "^4.0.3",
     "validator": "^13.1.17"
   }
 }

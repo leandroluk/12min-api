@@ -13,6 +13,19 @@
         "<node_internals>/**"
       ],
       "type": "pwa-node"
+    },
+    {
+      "name": "test:integration",
+      "request": "launch",
+      "runtimeArgs": [
+        "run-script",
+        "npm run test -- -c jest-integration-config.js"
+      ],
+      "runtimeExecutable": "npm",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node"
     }
   ],
   "compounds": []
