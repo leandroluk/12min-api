@@ -6,7 +6,7 @@ describe('UnauthorizedError', () => {
     expect(sut.message).toMatch(/Unauthorized/)
   })
 
-  test('should retur more message if is passed', () => {
+  test('should return unauthorized error with more message if is passed', () => {
     const sut = new UnauthorizedError('more')
     expect(sut.message).toMatch(/more/)
   })
