@@ -11,5 +11,5 @@ export interface IBearerTokenModel {
 }
 
 export interface IAuthenticateUser {
-  authenticateUser(user: IAuthenticateUser): Promise<IBearerTokenModel>
+  authenticateUser(user: IAuthenticateUserModel): Promise<IBearerTokenModel>
 }
