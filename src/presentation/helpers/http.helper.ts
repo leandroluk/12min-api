@@ -25,3 +25,9 @@ export const ok = <H = any, B = any>(body: B, header: H = {} as any): IHttpRespo
   header,
   body
 })
+
+export const notFound = (error?: Error): IHttpResponse => ({
+  statusCode: HttpStatusCode.notFound,
+  header: {},
+  body: error ? new ErrorAdapter(error).toJSON() : null
+})

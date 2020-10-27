@@ -1,4 +1,4 @@
-import { badRequest, ok, serverError, unauthorized } from './http.helper'
+import { badRequest, notFound, ok, serverError, unauthorized } from './http.helper'
 
 describe('http helpers', () => {
   describe('badRequest', () => {
@@ -26,6 +26,18 @@ describe('http helpers', () => {
     test('should return http response with status 200', () => {
       const sut = ok({})
       expect(sut.statusCode).toBe(200)
+    })
+  })
+
+  describe('notFound', () => {
+    test('should return http response with status 404', () => {
+      const sut = notFound()
+      expect(sut.statusCode).toBe(404)
+    })
+
+    test('should return with error parsed if is passed', () => {
+      const sut = notFound(new Error('test'))
+      expect(sut.body.message).toMatch(/test/)
     })
   })
 })
