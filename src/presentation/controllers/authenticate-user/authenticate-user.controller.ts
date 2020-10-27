@@ -39,15 +39,12 @@ export class AuthenticateUserController implements IController {
         return notFound(new NotFoundError(`there is no user using email ${httpRequest.body.email}`))
       }
 
-      const hashedPassword = await this.encrypter.encrypt(httpRequest.body.password)
-
-      if (user.password !== hashedPassword) {
-        return unauthorized(new UnauthorizedError('invalid password'))
+      if (await this.encrypter.compare(httpRequest.body.password, user.password)) {
+        const token = await this.jwtToken.generate(user.id)
+        return ok(token)
       }
 
-      const token = await this.jwtToken.generate(user.id)
-
-      return ok(token)
+      return unauthorized(new UnauthorizedError('invalid password'))
     } catch (error) {
       return serverError()
     }

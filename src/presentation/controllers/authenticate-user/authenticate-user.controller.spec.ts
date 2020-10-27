@@ -42,6 +42,10 @@ const makeNullValidator = (): INullValidator => {
 
 const makeEncrypter = (): IEncrypter => {
   class EncrypterStub implements IEncrypter {
+    async compare(_value: string, _hashed: string): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+
     async encrypt(value: string): Promise<string> {
       return await Promise.resolve('hashed')
     }
@@ -160,8 +164,9 @@ describe('AuthenticateUserController', () => {
     })
 
     test('should return 401 if password is incorrect', async () => {
-      const { sut, nullValidator } = makeSut()
+      const { sut, nullValidator, encrypter } = makeSut()
       jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
+      jest.spyOn(encrypter, 'compare').mockResolvedValue(false)
       const httpRequest = { body: { email: 'any@email.com', password: 'password' } }
       const httpResponse = await sut.handle(httpRequest)
       expect(httpResponse.statusCode).toBe(401)
