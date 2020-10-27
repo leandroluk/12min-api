@@ -120,11 +120,10 @@ describe('AuthenticateUserController', () => {
     })
 
     test('should IJwtToken.generate is called with correct values', async () => {
-      const { sut, nullValidator, authenticateUserValidator, jwtToken, getUserByEmailRepository: getUserRepository, encrypter } = makeSut()
+      const { sut, nullValidator, authenticateUserValidator, jwtToken, getUserByEmailRepository: getUserRepository } = makeSut()
 
       jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
       jest.spyOn(authenticateUserValidator, 'validateAuthenticateUser').mockResolvedValue({})
-      jest.spyOn(encrypter, 'encrypt').mockResolvedValue('password')
       jest.spyOn(getUserRepository, 'getUserByEmail').mockResolvedValue({
         id: 'id',
         email: 'email',
@@ -174,13 +173,21 @@ describe('AuthenticateUserController', () => {
     })
 
     test('should return 200 with bearer token if success', async () => {
-      const { sut, nullValidator, encrypter } = makeSut()
+      const { sut, nullValidator } = makeSut()
       jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
-      jest.spyOn(encrypter, 'encrypt').mockResolvedValue('password')
       const httpRequest = { body: { email: 'any@email.com', password: 'password' } }
       const httpResponse = await sut.handle(httpRequest)
       expect(httpResponse.statusCode).toBe(200)
       expect(httpResponse.body.accessToken).toBeTruthy()
+    })
+
+    test('should return 500 if getUserRepository throws', async () => {
+      const { sut, nullValidator, getUserByEmailRepository } = makeSut()
+      jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
+      jest.spyOn(getUserByEmailRepository, 'getUserByEmail').mockRejectedValue(new Error())
+      const httpRequest = { body: { email: 'any@email.com', password: 'password' } }
+      const httpResponse = await sut.handle(httpRequest)
+      expect(httpResponse.statusCode).toBe(500)
     })
   })
 })
