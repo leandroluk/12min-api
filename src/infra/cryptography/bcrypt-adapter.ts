@@ -10,4 +10,8 @@ export class BcryptAdapter implements IEncrypter {
     const hash = await bcrypt.hash(value, this.salt)
     return await Promise.resolve(hash)
   }
+
+  async compare(value: string, hashed: string): Promise<boolean> {
+    return await bcrypt.compare(value, hashed)
+  }
 }
