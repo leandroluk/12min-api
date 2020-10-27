@@ -22,7 +22,6 @@ export class AddUserController implements IController {
     }
 
     const errors = await this.addUserValidator.validateAddUser(httpRequest.body)
-
     if (Object.keys(errors).length) {
       return badRequest(new ObjectValidationError(errors))
     }

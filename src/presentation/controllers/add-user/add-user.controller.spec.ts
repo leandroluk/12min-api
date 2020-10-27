@@ -13,8 +13,7 @@ const makeAddUser = (): IAddUser => {
         id: 'sample_id',
         createdAt: new Date(),
         email: user.email,
-        password: user.password,
-        secret: 'secret'
+        password: user.password
       })
     }
   }
