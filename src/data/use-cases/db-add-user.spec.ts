@@ -1,3 +1,4 @@
+import { IUserModel } from '../../domain/models/user.model'
 import { IAddUserModel } from '../../domain/use-cases/add-user'
 import { IAddUserRepository } from '../protocols/add-user.repository'
 import { IEncrypter } from '../protocols/encrypter'
@@ -10,8 +11,7 @@ const makeAddUserRepository = (): IAddUserRepository => {
         id: 'sample_id',
         createdAt: new Date(),
         email: user.email,
-        password: user.password,
-        secret: 'secret'
+        password: user.password
       })
     }
   }
