@@ -20,8 +20,6 @@ const makeSut = (): {
 }
 
 describe('AddUserRepository', () => {
-  test('should true', () => { })
-
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection('users').deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
