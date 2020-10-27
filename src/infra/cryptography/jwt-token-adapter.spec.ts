@@ -16,8 +16,11 @@ const makeStut = (expiresIn: number = 1000 * 60 * 60 /* 1 hour */): {
 }
 
 jest.mock('jsonwebtoken', () => ({
-  sign(_data: any, _secret: string, options: any): string {
+  sign(_data: any, _secret: string, _options: any): string {
     return 'token'
+  },
+  verify(_data: any, _secret: any, cb: (err: Error, value: any) => void): void {
+    return cb(null, true)
   }
 }))
 
@@ -41,7 +44,13 @@ describe('JwtTokenAdapter', () => {
 
   test('should throw if jwt throws', async () => {
     const { sut } = makeStut()
-    jest.spyOn(jwt, 'sign').mockImplementation((...args: any[]) => { throw new Error() })
+    jest.spyOn(jwt, 'sign').mockImplementation(() => { throw new Error() })
     await expect(sut.generate('any_value')).rejects.toThrow()
+  })
+
+  test('should return thue if jwt return true', async () => {
+    const { sut } = makeStut()
+    const result = await sut.verify('any_value')
+    expect(result).toBeTruthy()
   })
 })
