@@ -2,6 +2,7 @@ import faker from 'faker'
 import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
+import env from '../config/env'
 
 describe('add-user', () => {
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
@@ -10,7 +11,7 @@ describe('add-user', () => {
 
   test('should return user on success ', async () => {
     await request(app)
-      .post('/api/user')
+      .post(env.route.base + env.route.addUser)
       .send({
         email: faker.internet.email(),
         password: faker.internet.password(5)

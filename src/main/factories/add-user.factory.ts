@@ -6,11 +6,12 @@ import { AddUserValidator } from '../../presentation/validators/add-user.validat
 import { EmailValidatorAdapter } from '../../validators/email-validator-adapter'
 import { NullValidatorAdapter } from '../../validators/null-validator-adapter'
 import { PasswordValidatorAdapter } from '../../validators/password-validator-adapter'
+import env from '../config/env'
 
 export const makeAddUserController = (): AddUserController => {
-  const encrypterSalt = 12
+  const encrypterSalt = env.cryptography.salt
   const encrypter = new BcryptAdapter(encrypterSalt)
-  const addUserRepository = new MongoAddUserRepository(encrypter)
+  const addUserRepository = new MongoAddUserRepository()
   const dbAddUser = new DbAddUser(addUserRepository, encrypter)
   const nullValidator = new NullValidatorAdapter()
   const emailValidator = new EmailValidatorAdapter()
