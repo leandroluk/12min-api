@@ -1,5 +1,5 @@
-import { IEmailValidator } from '@/presentation/protocols/email-validator'
 import validator from 'validator'
+import { IEmailValidator } from '../presentation/protocols/email-validator'
 
 export class EmailValidatorAdapter implements IEmailValidator {
   async isEmail(value: any): Promise<boolean> {

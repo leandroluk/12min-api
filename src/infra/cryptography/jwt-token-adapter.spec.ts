@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import { IJwtToken } from '../../data/protocols/jwt-token'
-import { JwtTokenAdapter } from './jwt-token-adapter.'
+import { JwtTokenAdapter } from './jwt-token-adapter'
 
 
 const makeStut = (expiresIn: number = 1000 * 60 * 60 /* 1 hour */): {
