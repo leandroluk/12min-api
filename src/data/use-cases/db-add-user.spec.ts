@@ -25,6 +25,10 @@ const makeAddUserModel = (): IAddUserModel => ({
 
 const makeEncrypter = (): IEncrypter => {
   class EncrypterStub implements IEncrypter {
+    async compare(_value: string, _hashed: string): Promise<boolean> {
+      return await Promise.resolve(true)
+    }
+
     async encrypt(_value: string): Promise<string> {
       return await Promise.resolve('hashed')
     }

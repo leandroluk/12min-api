@@ -1,5 +1,5 @@
-import { IEmailValidator } from '@/presentation/protocols/email-validator'
 import validator from 'validator'
+import { IEmailValidator } from '../presentation/protocols/email-validator'
 import { EmailValidatorAdapter } from './email-validator-adapter'
 
 const makeSut = (): {

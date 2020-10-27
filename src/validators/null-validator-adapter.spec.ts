@@ -1,4 +1,4 @@
-import { INullValidator } from '@/presentation/protocols/null-validator'
+import { INullValidator } from '../presentation/protocols/null-validator'
 import { NullValidatorAdapter } from './null-validator-adapter'
 
 const makeSut = (): {

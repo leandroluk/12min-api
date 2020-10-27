@@ -1,4 +1,4 @@
-import { IPasswordValidator } from '@/presentation/protocols/password-validator'
+import { IPasswordValidator } from '../presentation/protocols/password-validator'
 import { PasswordValidatorAdapter } from './password-validator-adapter'
 
 const makeSut = (): {
