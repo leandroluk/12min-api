@@ -53,10 +53,10 @@
     "sucrase": "^3.16.0",
     "supertest": "^5.0.0",
     "ts-jest": "^26.4.2",
+    "@types/multer": "^1.4.4",
     "typescript": "^4.0.3"
   },
   "dependencies": {
-    "@types/multer": "^1.4.4",
     "bcrypt": "^5.0.0",
     "express": "^4.17.1",
     "fast-glob": "^3.2.4",
