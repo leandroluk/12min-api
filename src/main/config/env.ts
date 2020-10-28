@@ -1,7 +1,7 @@
 export default {
   app: {
     basePath: process.env.PWD,
-    tempDir: '/.tmp',
+    tempDir: '.tmp',
     port: process.env.APP_PORT || 3000
   },
   mongo: {
