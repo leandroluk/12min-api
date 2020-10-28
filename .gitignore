@@ -3,3 +3,4 @@ package-lock.json
 coverage
 globalConfig.json
 .tmp
+.DS_Store
