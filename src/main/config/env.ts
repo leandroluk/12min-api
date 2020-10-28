@@ -1,5 +1,7 @@
 export default {
   app: {
+    basePath: process.env.PWD,
+    tempDir: '/.tmp',
     port: process.env.APP_PORT || 3000
   },
   mongo: {
@@ -15,6 +17,7 @@ export default {
   route: {
     base: '/api',
     addUser: process.env.ROUTE_ADD_USER || '/user',
-    authenticateUser: process.env.ROUTE_AUTHENTICATE_USER || '/auth'
+    authenticateUser: process.env.ROUTE_AUTHENTICATE_USER || '/auth',
+    addAudiobook: process.env.ROUTE_ADD_AUDIOBOOK || '/audiobook'
   }
 }
