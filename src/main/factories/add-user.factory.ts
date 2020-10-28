@@ -1,6 +1,7 @@
 import { DbAddUser } from '../../data/use-cases/db-add-user'
 import { BcryptAdapter } from '../../infra/cryptography/bcrypt-adapter'
 import { MongoAddUserRepository } from '../../infra/db/mongodb/repos/add-user.repository'
+import { MongoGetUserRepository } from '../../infra/db/mongodb/repos/get-user.repository'
 import { AddUserController } from '../../presentation/controllers/add-user/add-user.controller'
 import { AddUserValidator } from '../../presentation/validators/add-user.validator'
 import { EmailValidatorAdapter } from '../../validators/email-validator-adapter'
@@ -12,7 +13,8 @@ export const makeAddUserController = (): AddUserController => {
   const encrypterSalt = env.cryptography.salt
   const encrypter = new BcryptAdapter(encrypterSalt)
   const addUserRepository = new MongoAddUserRepository()
-  const dbAddUser = new DbAddUser(addUserRepository, encrypter)
+  const getUserRepository = new MongoGetUserRepository()
+  const dbAddUser = new DbAddUser(addUserRepository, getUserRepository, encrypter)
   const nullValidator = new NullValidatorAdapter()
   const emailValidator = new EmailValidatorAdapter()
   const passwordValidator = new PasswordValidatorAdapter()
