@@ -63,7 +63,7 @@ describe('ConvertAudioFileValidator', () => {
       const { sut, nullValidator, convertAudioFileModel } = makeSut()
       const isNullSpy = jest.spyOn(nullValidator, 'isNull')
       await sut.validateConvertAudioFile(convertAudioFileModel)
-      expect(isNullSpy).toHaveBeenCalledTimes(3)
+      expect(isNullSpy).toHaveBeenCalled()
     })
 
     test('should IFileExtensionValidator to be called', async () => {
