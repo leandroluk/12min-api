@@ -1,11 +1,12 @@
-import { IAuthenticateUserValidate, IAuthenticateUserValidateModel } from '../../domain/use-cases/authenticate-user-validate'
-import { InvalidParamError } from '../../errors/invalid-param.error'
-import { MissingParamError } from '../../errors/missing-param.error'
-import { IEmailValidator } from '../protocols/email-validator'
-import { INullValidator } from '../protocols/null-validator'
-import { IPasswordValidator } from '../protocols/password-validator'
+import { IAddUserModel } from '../../../domain/use-cases/add-user'
+import { IAddUserValidate } from '../../../domain/use-cases/add-user-validate'
+import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
+import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
+import { IEmailValidator } from '../../protocols/email-validator'
+import { INullValidator } from '../../protocols/null-validator'
+import { IPasswordValidator } from '../../protocols/password-validator'
 
-export class AuthenticateUserValidator implements IAuthenticateUserValidate {
+export class AddUserValidator implements IAddUserValidate {
   constructor(
     readonly nullValidator: INullValidator,
     readonly emailValidator: IEmailValidator,
@@ -13,7 +14,7 @@ export class AuthenticateUserValidator implements IAuthenticateUserValidate {
   ) {
   }
 
-  async validateAuthenticateUser(user: IAuthenticateUserValidateModel): Promise<any> {
+  async validateAddUser(user: IAddUserModel): Promise<any> {
     const errors: any = {}
 
     if (await this.nullValidator.isNull(user.email)) {
