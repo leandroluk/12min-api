@@ -1,8 +1,5 @@
-export interface IAddUserValidateModel {
-  email: string
-  password: string
-}
+import { IAddUserModel } from './add-user'
 
 export interface IAddUserValidate {
-  validateAddUser(user: IAddUserValidateModel): Promise<any>
+  validateAddUser(user: IAddUserModel): Promise<any>
 }

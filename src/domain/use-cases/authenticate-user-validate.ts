@@ -1,8 +1,5 @@
-export interface IAuthenticateUserValidateModel {
-  email: string
-  password: string
-}
+import { IAuthenticateUserModel } from './authenticate-user'
 
 export interface IAuthenticateUserValidate {
-  validateAuthenticateUser(user: IAuthenticateUserValidateModel): Promise<any>
+  validateAuthenticateUser(user: IAuthenticateUserModel): Promise<any>
 }
