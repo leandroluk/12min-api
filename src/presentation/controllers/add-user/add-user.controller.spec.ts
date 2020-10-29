@@ -7,7 +7,7 @@ import { IEmptyValidator } from '../../protocols/empty-validator'
 import { AddUserController } from './add-user.controller'
 
 const makeAddUser = (): IAddUser => {
-  class AddUserRepositoryStub implements IAddUser {
+  class IAddUserStub implements IAddUser {
     async addUser(user: IAddUserModel): Promise<IUserModel> {
       return await Promise.resolve({
         id: 'sample_id',
@@ -17,16 +17,16 @@ const makeAddUser = (): IAddUser => {
       })
     }
   }
-  return new AddUserRepositoryStub()
+  return new IAddUserStub()
 }
 
-const makeAddUserValidator = (): IAddUserValidate => {
-  class ValidateUserStub implements IAddUserValidate {
+const makeAddUserValidate = (): IAddUserValidate => {
+  class AddUserValidateStub implements IAddUserValidate {
     async validateAddUser(user: IAddUserModel): Promise<any> {
       return await Promise.resolve({})
     }
   }
-  return new ValidateUserStub()
+  return new AddUserValidateStub()
 }
 
 const makeEmptyValidator = (): IEmptyValidator => {
@@ -45,7 +45,7 @@ const makeSut = (): {
   sut: IController
 } => {
   const addUserReposiory = makeAddUser()
-  const addUserValidator = makeAddUserValidator()
+  const addUserValidator = makeAddUserValidate()
   const emptyValidator = makeEmptyValidator()
   const sut = new AddUserController(addUserReposiory, emptyValidator, addUserValidator)
 
