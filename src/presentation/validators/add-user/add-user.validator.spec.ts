@@ -1,11 +1,12 @@
 import faker from 'faker'
-import { IAddUserValidateModel } from '../../domain/use-cases/add-user-validate'
-import { IEmailValidator } from '../protocols/email-validator'
-import { INullValidator } from '../protocols/null-validator'
-import { IPasswordValidator } from '../protocols/password-validator'
+import { IAddUserModel } from '../../../domain/use-cases/add-user'
+import { IAddUserValidate } from '../../../domain/use-cases/add-user-validate'
+import { IEmailValidator } from '../../protocols/email-validator'
+import { INullValidator } from '../../protocols/null-validator'
+import { IPasswordValidator } from '../../protocols/password-validator'
 import { AddUserValidator } from './add-user.validator'
 
-const makeAddUserValidateModel = (): IAddUserValidateModel => {
+const makeAddUserValidateModel = (): IAddUserModel => {
   return {
     email: faker.internet.email(),
     password: faker.internet.password()
@@ -64,7 +65,7 @@ const makeSut = (): {
 
 describe('AddUserValidator', () => {
   describe('validateUser', () => {
-    test('should return a missing param error inner object validation error if some required field isn\t provided', async () => {
+    test('should return a missing param error if some required field isn\t provided', async () => {
       const { sut, nullValidator } = makeSut()
       const user = makeAddUserValidateModel()
       const requiredFields = ['email', 'password']
@@ -73,13 +74,10 @@ describe('AddUserValidator', () => {
 
       for (const field of requiredFields) {
         const current = { ...user }
-
         delete current[field]
-
         const result = await sut.validateAddUser(current)
 
-        expect(result.message).toMatch(/Object validation/)
-        expect(result.errors[field].message).toMatch(/Missing param/)
+        expect(result[field].message).toMatch(/Missing param/)
       }
     })
 
@@ -90,13 +88,11 @@ describe('AddUserValidator', () => {
 
       jest.spyOn(emailValidator, 'isEmail').mockResolvedValueOnce(false)
       result = await sut.validateAddUser(user)
-      expect(result.message).toMatch(/Object validation/)
-      expect(result.errors.email.message).toMatch(/Invalid param/)
+      expect(result.email.message).toMatch(/Invalid param/)
 
       jest.spyOn(passwordValidator, 'isPassword').mockResolvedValueOnce(false)
       result = await sut.validateAddUser(user)
-      expect(result.message).toMatch(/Object validation/)
-      expect(result.errors.password.message).toMatch(/Invalid param/)
+      expect(result.password.message).toMatch(/Invalid param/)
     })
   })
 })

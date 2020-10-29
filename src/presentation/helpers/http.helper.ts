@@ -14,14 +14,20 @@ export const unauthorized = (error: Error): IHttpResponse => ({
   body: new ErrorAdapter(error).toJSON()
 })
 
-export const serverError = (): IHttpResponse => ({
+export const serverError = (more?: string): IHttpResponse => ({
   statusCode: HttpStatusCode.serverError,
   header: {},
-  body: new ErrorAdapter(new ServerError()).toJSON()
+  body: new ErrorAdapter(new ServerError(more)).toJSON()
 })
 
 export const ok = <H = any, B = any>(body: B, header: H = {} as any): IHttpResponse<H, B> => ({
   statusCode: HttpStatusCode.ok,
   header,
   body
+})
+
+export const notFound = (error?: Error): IHttpResponse => ({
+  statusCode: HttpStatusCode.notFound,
+  header: {},
+  body: error ? new ErrorAdapter(error).toJSON() : null
 })

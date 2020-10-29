@@ -11,6 +11,7 @@
     "@typescript-eslint/method-signature-style": "off",
     "@typescript-eslint/no-floating-promises": "off",
     "@typescript-eslint/no-dynamic-delete": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
     "no-multiple-empty-lines": "off",
     "no-return-assign": "off"
   }

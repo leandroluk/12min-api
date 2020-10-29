@@ -4,5 +4,4 @@ export interface IUserModel {
   updatedAt?: Date
   email: string
   password: string
-  secret: string
 }

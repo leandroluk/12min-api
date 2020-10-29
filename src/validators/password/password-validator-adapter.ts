@@ -1,4 +1,4 @@
-import { IPasswordValidator } from '@/presentation/protocols/password-validator'
+import { IPasswordValidator } from '../../presentation/protocols/password-validator'
 
 export class PasswordValidatorAdapter implements IPasswordValidator {
   async isPassword(value: any): Promise<boolean> {

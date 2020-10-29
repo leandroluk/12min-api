@@ -2,6 +2,7 @@ export enum HttpStatusCode {
   ok = 200,
   badRequest = 400,
   unauthorized = 401,
+  notFound = 404,
   serverError = 500
 }
 
@@ -11,7 +12,8 @@ export interface IHttpResponse<THeader = any, TBody = any> {
   body: TBody
 }
 
-export interface IHttpRequest<THeader = any, TBody = any> {
+export interface IHttpRequest<THeader = any, TBody = any, TFile = any> {
   header?: THeader
   body?: TBody
+  file?: TFile
 }

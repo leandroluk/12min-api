@@ -1,12 +1,12 @@
-import { IAddUserValidate, IAddUserValidateModel } from '../../domain/use-cases/add-user-validate'
-import { InvalidParamError } from '../../errors/invalid-param.error'
-import { MissingParamError } from '../../errors/missing-param.error'
-import { ObjectValidationError } from '../../errors/object-validation.error'
-import { IEmailValidator } from '../protocols/email-validator'
-import { INullValidator } from '../protocols/null-validator'
-import { IPasswordValidator } from '../protocols/password-validator'
+import { IAuthenticateUserModel } from '../../../domain/use-cases/authenticate-user'
+import { IAuthenticateUserValidate } from '../../../domain/use-cases/authenticate-user-validate'
+import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
+import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
+import { IEmailValidator } from '../../protocols/email-validator'
+import { INullValidator } from '../../protocols/null-validator'
+import { IPasswordValidator } from '../../protocols/password-validator'
 
-export class AddUserValidator implements IAddUserValidate {
+export class AuthenticateUserValidator implements IAuthenticateUserValidate {
   constructor(
     readonly nullValidator: INullValidator,
     readonly emailValidator: IEmailValidator,
@@ -14,7 +14,7 @@ export class AddUserValidator implements IAddUserValidate {
   ) {
   }
 
-  async validateAddUser(user: IAddUserValidateModel): Promise<any> {
+  async validateAuthenticateUser(user: IAuthenticateUserModel): Promise<any> {
     const errors: any = {}
 
     if (await this.nullValidator.isNull(user.email)) {
@@ -31,10 +31,6 @@ export class AddUserValidator implements IAddUserValidate {
       if (!await this.passwordValidator.isPassword(user.password)) {
         errors.password = new InvalidParamError('password', 'must be between 3 and 30 characters')
       }
-    }
-
-    if (Object.keys(errors).length) {
-      return new ObjectValidationError(errors)
     }
 
     return errors

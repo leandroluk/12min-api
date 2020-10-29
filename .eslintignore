@@ -2,3 +2,5 @@ node_modules
 dist
 coverage
 globalConfig.json
+.tmp
+.DS_Store
