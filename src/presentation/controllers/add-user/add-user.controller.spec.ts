@@ -3,11 +3,11 @@ import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user'
 import { IAddUserValidate } from '../../../domain/use-cases/add-user-validate'
 import { EmailInUseError } from '../../../errors/email-in-use/email-in-use.error'
 import { IController } from '../../protocols/controller'
-import { INullValidator } from '../../protocols/null-validator'
+import { IEmptyValidator } from '../../protocols/empty-validator'
 import { AddUserController } from './add-user.controller'
 
 const makeAddUser = (): IAddUser => {
-  class AddUserRepositoryStub implements IAddUser {
+  class IAddUserStub implements IAddUser {
     async addUser(user: IAddUserModel): Promise<IUserModel> {
       return await Promise.resolve({
         id: 'sample_id',
@@ -17,42 +17,42 @@ const makeAddUser = (): IAddUser => {
       })
     }
   }
-  return new AddUserRepositoryStub()
+  return new IAddUserStub()
 }
 
-const makeAddUserValidator = (): IAddUserValidate => {
-  class ValidateUserStub implements IAddUserValidate {
+const makeAddUserValidate = (): IAddUserValidate => {
+  class AddUserValidateStub implements IAddUserValidate {
     async validateAddUser(user: IAddUserModel): Promise<any> {
       return await Promise.resolve({})
     }
   }
-  return new ValidateUserStub()
+  return new AddUserValidateStub()
 }
 
-const makeNullValidator = (): INullValidator => {
-  class NullValidatorStub implements INullValidator {
-    async isNull(_value: any): Promise<boolean> {
+const makeEmptyValidator = (): IEmptyValidator => {
+  class EmptyValidatorStub implements IEmptyValidator {
+    async isEmpty(_value: any): Promise<boolean> {
       return await Promise.resolve(false)
     }
   }
-  return new NullValidatorStub()
+  return new EmptyValidatorStub()
 }
 
 const makeSut = (): {
   addUserReposiory: IAddUser
   addUserValidator: IAddUserValidate
-  nullValidator: INullValidator
+  emptyValidator: IEmptyValidator
   sut: IController
 } => {
   const addUserReposiory = makeAddUser()
-  const addUserValidator = makeAddUserValidator()
-  const nullValidator = makeNullValidator()
-  const sut = new AddUserController(addUserReposiory, nullValidator, addUserValidator)
+  const addUserValidator = makeAddUserValidate()
+  const emptyValidator = makeEmptyValidator()
+  const sut = new AddUserController(addUserReposiory, emptyValidator, addUserValidator)
 
   return {
     addUserReposiory,
     addUserValidator,
-    nullValidator,
+    emptyValidator,
     sut
   }
 }
@@ -60,13 +60,13 @@ const makeSut = (): {
 describe('AddUserController', () => {
   describe('handle', () => {
     test('should return 400 with missing param error if no have any body with user', async () => {
-      const { sut, nullValidator } = makeSut()
+      const { sut, emptyValidator } = makeSut()
 
-      jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
+      jest.spyOn(emptyValidator, 'isEmpty').mockResolvedValue(true)
 
       const httpResponse = await sut.handle({ header: {} })
       expect(httpResponse.statusCode).toBe(400)
-      expect(httpResponse.body?.message).toMatch(/Missing param.*body/)
+      expect(httpResponse.body?.message).toMatch(/Missing param.*body.*?/)
     })
 
     test('should IValidateUser.validateUser is called', async () => {

@@ -4,18 +4,18 @@ import { MissingParamError } from '../../../errors/missing-param/missing-param.e
 import { ObjectValidationError } from '../../../errors/object-validation/object-validation.error'
 import { badRequest, ok } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
+import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
-import { INullValidator } from '../../protocols/null-validator'
 
 export class AddUserController implements IController {
   constructor(
     readonly addUserRepository: IAddUser,
-    readonly nullValidator: INullValidator,
+    readonly emptyValidator: IEmptyValidator,
     readonly addUserValidator: IAddUserValidate
   ) { }
 
   async handle(httpRequest: IHttpRequest<any, IAddUserModel>): Promise<IHttpResponse<any, any>> {
-    if (await this.nullValidator.isNull(httpRequest.body)) {
+    if (await this.emptyValidator.isEmpty(httpRequest.body)) {
       return badRequest(new MissingParamError('body'))
     }
 

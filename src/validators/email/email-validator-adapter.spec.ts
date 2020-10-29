@@ -1,7 +1,7 @@
 import validator from 'validator'
 import { EmailValidatorAdapter } from './email-validator-adapter'
 
-describe('EmailValidator', () => {
+describe('EmailValidatorAdapter', () => {
   test('should return false if invalid email is provided', async () => {
     const sut = new EmailValidatorAdapter()
     const invalid = [

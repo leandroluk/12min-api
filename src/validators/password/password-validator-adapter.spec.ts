@@ -1,6 +1,6 @@
 import { PasswordValidatorAdapter } from './password-validator-adapter'
 
-describe('PasswordValidator', () => {
+describe('PasswordValidatorAdapter', () => {
   test('should return true if invalid password is passed', async () => {
     const sut = new PasswordValidatorAdapter()
     const invalid = [

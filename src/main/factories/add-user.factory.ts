@@ -5,6 +5,7 @@ import { MongoGetUserRepository } from '../../infra/db/mongodb/repos/get-user.re
 import { AddUserController } from '../../presentation/controllers/add-user/add-user.controller'
 import { AddUserValidator } from '../../presentation/validators/add-user/add-user.validator'
 import { EmailValidatorAdapter } from '../../validators/email/email-validator-adapter'
+import { EmptyValidatorAdapter } from '../../validators/empty/empty-validator-adapter'
 import { NullValidatorAdapter } from '../../validators/null/null-validator-adapter'
 import { PasswordValidatorAdapter } from '../../validators/password/password-validator-adapter'
 import env from '../config/env'
@@ -16,9 +17,10 @@ export const makeAddUserController = (): AddUserController => {
   const getUserRepository = new MongoGetUserRepository()
   const dbAddUser = new DbAddUser(addUserRepository, getUserRepository, encrypter)
   const nullValidator = new NullValidatorAdapter()
+  const enptyValidator = new EmptyValidatorAdapter()
   const emailValidator = new EmailValidatorAdapter()
   const passwordValidator = new PasswordValidatorAdapter()
   const addUserValidator = new AddUserValidator(nullValidator, emailValidator, passwordValidator)
 
-  return new AddUserController(dbAddUser, nullValidator, addUserValidator)
+  return new AddUserController(dbAddUser, enptyValidator, addUserValidator)
 }
