@@ -64,7 +64,7 @@ const makeSut = (): {
 
 describe('AddUserValidator', () => {
   describe('validateUser', () => {
-    test('should return a missing param error if some required field isn\t provided', async () => {
+    test('should return a object with missing param error if some required field isn\t provided', async () => {
       const { sut, nullValidator, addUserModel } = makeSut()
       jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
       const result = await sut.validateAddUser(addUserModel)
@@ -72,7 +72,7 @@ describe('AddUserValidator', () => {
       expect(result.password.message).toMatch(/Missing param.*password.*?/)
     })
 
-    test('should return a invalid param error inner object validation error if some field is invalid', async () => {
+    test('should return a object with invalid param error if some field is invalid', async () => {
       const { sut, emailValidator, passwordValidator, addUserModel } = makeSut()
       jest.spyOn(emailValidator, 'isEmail').mockResolvedValueOnce(false)
       jest.spyOn(passwordValidator, 'isPassword').mockResolvedValueOnce(false)
