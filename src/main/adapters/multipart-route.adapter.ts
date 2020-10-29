@@ -47,12 +47,18 @@ export default (controller: IController, dest: string, fieldName: string = 'uplo
         }
 
         try {
-          let { headers: header, body, file } = req
+          const { headers: header, body: multerBody, file: multerFile } = req
 
-          body = body?.data
+          let body = multerBody?.data
 
           if (typeof body === 'string') {
             body = JSON.parse(body)
+          }
+
+          const file = {
+            mimeType: multerFile.mimetype,
+            originalFile: multerFile.originalname,
+            path: multerFile.path
           }
 
           const httpRequest: IHttpRequest = { header, body, file }
