@@ -1,7 +1,7 @@
 import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user'
 import { IAddUserValidate } from '../../../domain/use-cases/add-user-validate'
-import { MissingParamError } from '../../../errors/missing-param.error'
-import { ObjectValidationError } from '../../../errors/object-validation.error'
+import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
+import { ObjectValidationError } from '../../../errors/object-validation/object-validation.error'
 import { badRequest, ok } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
@@ -14,9 +14,7 @@ export class AddUserController implements IController {
     readonly addUserValidator: IAddUserValidate
   ) { }
 
-  async handle(
-    httpRequest: IHttpRequest<any, IAddUserModel>
-  ): Promise<IHttpResponse<any, any>> {
+  async handle(httpRequest: IHttpRequest<any, IAddUserModel>): Promise<IHttpResponse<any, any>> {
     if (await this.nullValidator.isNull(httpRequest.body)) {
       return badRequest(new MissingParamError('body'))
     }

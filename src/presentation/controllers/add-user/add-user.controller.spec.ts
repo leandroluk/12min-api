@@ -1,7 +1,7 @@
 import { IUserModel } from '../../../domain/models/user.model'
 import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user'
-import { IAddUserValidate, IAddUserValidateModel } from '../../../domain/use-cases/add-user-validate'
-import { EmailInUseError } from '../../../errors/email-in-use.error'
+import { IAddUserValidate } from '../../../domain/use-cases/add-user-validate'
+import { EmailInUseError } from '../../../errors/email-in-use/email-in-use.error'
 import { IController } from '../../protocols/controller'
 import { INullValidator } from '../../protocols/null-validator'
 import { AddUserController } from './add-user.controller'
@@ -22,7 +22,7 @@ const makeAddUser = (): IAddUser => {
 
 const makeAddUserValidator = (): IAddUserValidate => {
   class ValidateUserStub implements IAddUserValidate {
-    async validateAddUser(user: IAddUserValidateModel): Promise<any> {
+    async validateAddUser(user: IAddUserModel): Promise<any> {
       return await Promise.resolve({})
     }
   }

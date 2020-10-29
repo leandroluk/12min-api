@@ -1,8 +1,8 @@
 import { IEncrypter } from '../../../data/protocols/encrypter'
 import { IJwtToken } from '../../../data/protocols/jwt-token'
 import { IUserModel } from '../../../domain/models/user.model'
-import { IBearerTokenModel } from '../../../domain/use-cases/authenticate-user'
-import { IAuthenticateUserValidate, IAuthenticateUserValidateModel } from '../../../domain/use-cases/authenticate-user-validate'
+import { IAuthenticateUserModel, IBearerTokenModel } from '../../../domain/use-cases/authenticate-user'
+import { IAuthenticateUserValidate } from '../../../domain/use-cases/authenticate-user-validate'
 import { IGetUserByEmail } from '../../../domain/use-cases/get-user-by-email'
 import { IController } from '../../protocols/controller'
 import { INullValidator } from '../../protocols/null-validator'
@@ -24,7 +24,7 @@ const makeGetUser = (): IGetUserByEmail => {
 
 const makeAuthenticateUserValidator = (): IAuthenticateUserValidate => {
   class AuthenticateUserValidateStub implements IAuthenticateUserValidate {
-    async validateAuthenticateUser(user: IAuthenticateUserValidateModel): Promise<any> {
+    async validateAuthenticateUser(user: IAuthenticateUserModel): Promise<any> {
       return await Promise.resolve({})
     }
   }
