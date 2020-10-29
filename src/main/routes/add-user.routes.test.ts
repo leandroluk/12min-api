@@ -25,7 +25,7 @@ describe('add-user', () => {
     await request(app)
       .post(url)
       .expect(400)
-      .expect(/Missing param/)
+      .expect(/Missing param.*body.*?/)
   })
 
   test('should return 400 if missing required param', async () => {
@@ -34,12 +34,12 @@ describe('add-user', () => {
         .post(url)
         .send({ password: 'password' })
         .expect(400)
-        .expect(/Missing param/),
+        .expect(/Missing param.*email.*?/),
       request(app)
         .post(url)
         .send({ email: 'sample@email.com' })
         .expect(400)
-        .expect(/Missing param/)
+        .expect(/Missing param.*password.*?/)
     ])
   })
 

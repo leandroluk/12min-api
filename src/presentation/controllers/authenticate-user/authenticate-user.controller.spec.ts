@@ -108,7 +108,7 @@ describe('AuthenticateUserController', () => {
       const { sut } = makeSut()
       const httpResponse = await sut.handle({ header: {} })
       expect(httpResponse.statusCode).toBe(400)
-      expect(httpResponse.body?.message).toMatch(/Missing param.*body/)
+      expect(httpResponse.body?.message).toMatch(/Missing param.*body.*?/)
     })
 
     test('should IAuthenticateUserValidate.validateAuthenticateUser is called', async () => {

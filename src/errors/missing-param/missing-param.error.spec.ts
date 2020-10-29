@@ -3,7 +3,7 @@ import { MissingParamError } from './missing-param.error'
 describe('MissingParamError', () => {
   test('should return correct missing param error message', () => {
     const sut = new MissingParamError('param')
-    expect(sut.message).toMatch(/Missing param/)
+    expect(sut.message).toMatch(/Missing param .*param/)
   })
 
   test('should return missing param error message with more info after it', () => {
