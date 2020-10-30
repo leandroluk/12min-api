@@ -7,7 +7,9 @@ export default {
   mongo: {
     url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge',
     collections: {
-      users: process.env.MONGO_COLLECTIONS_USERS || 'users'
+      users: process.env.MONGO_COLLECTIONS_USERS || 'users',
+      logConvertAudioFiles: process.env.MONGO_COLLECTIONS_LOG_CONVERT_AUDIO_FILES || 'logConvertAudioFiles',
+      audiobooks: process.env.MONGO_COLLECTIONS_AUDIOBOOKS || 'audiobooks'
     }
   },
   cryptography: {

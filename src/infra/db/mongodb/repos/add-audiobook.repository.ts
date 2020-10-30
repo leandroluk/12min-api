@@ -1,12 +1,13 @@
 import { IAddAudiobookRepository } from '../../../../data/protocols/add-audiobook.repository'
 import { IAudiobookModel } from '../../../../domain/models/audiobook.model'
 import { IAddAudiobookModel } from '../../../../domain/use-cases/add-audiobook'
+import env from '../../../../main/config/env'
 import { MongoHelper } from '../helpers/mongo.helper'
 
 
 export class MongoAddAudiobookRepository implements IAddAudiobookRepository {
   async addAudiobook(audiobookData: IAddAudiobookModel): Promise<IAudiobookModel> {
-    const audiobookCollection = MongoHelper.getCollection('audiobooks')
+    const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
     const data = {
       ...audiobookData,
       createdAt: new Date()
