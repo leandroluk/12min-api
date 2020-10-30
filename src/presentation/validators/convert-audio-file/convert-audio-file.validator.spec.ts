@@ -1,4 +1,3 @@
-import { IConvertAudioFileModel } from '../../../domain/use-cases/convert-audio-file'
 import { IFileExistsValidator } from '../../protocols/file-exists-validator'
 import { IFileExtensionValidator } from '../../protocols/file-extension-validator'
 import { INullValidator } from '../../protocols/null-validator'
@@ -32,24 +31,20 @@ const makeFileExistsValidator = (): IFileExistsValidator => {
 }
 
 const makeSut = (): {
-  convertAudioFileModel: IConvertAudioFileModel
+  convertAudioFile: string
   nullValidator: INullValidator
   fileExtensionValidator: IFileExtensionValidator
   fileExistsValidator: IFileExistsValidator
   sut: ConvertAudioFileValidator
 } => {
-  const convertAudioFileModel = {
-    originalFile: 'originalFile.ext',
-    mimeType: 'mime/type',
-    path: '/path/to/uploaded/file'
-  }
+  const convertAudioFile = '/path/to/uploaded/file.mp3'
   const nullValidator = makeNullValidator()
   const fileExtensionValidator = makeFileExtensionValidator()
   const fileExistsValidator = makeFileExistsValidator()
   const sut = new ConvertAudioFileValidator(nullValidator, fileExtensionValidator, fileExistsValidator)
 
   return {
-    convertAudioFileModel,
+    convertAudioFile,
     nullValidator,
     fileExtensionValidator,
     fileExistsValidator,
@@ -59,50 +54,51 @@ const makeSut = (): {
 
 describe('ConvertAudioFileValidator', () => {
   describe('validateConvertAudioFile', () => {
-    test('should INullValidator to be called for each field', async () => {
-      const { sut, nullValidator, convertAudioFileModel } = makeSut()
+    test('should INullValidator to be called', async () => {
+      const { sut, nullValidator, convertAudioFile: audioFile } = makeSut()
       const isNullSpy = jest.spyOn(nullValidator, 'isNull')
-      await sut.validateConvertAudioFile(convertAudioFileModel)
+      await sut.validateConvertAudioFile(audioFile)
       expect(isNullSpy).toHaveBeenCalled()
     })
 
     test('should IFileExtensionValidator to be called', async () => {
-      const { sut, fileExtensionValidator, convertAudioFileModel } = makeSut()
+      const { sut, fileExtensionValidator, convertAudioFile } = makeSut()
       const isFileExtensionSpy = jest.spyOn(fileExtensionValidator, 'isFileExtension')
-      await sut.validateConvertAudioFile(convertAudioFileModel)
-      expect(isFileExtensionSpy).toBeCalledWith(convertAudioFileModel.originalFile)
+      await sut.validateConvertAudioFile(convertAudioFile)
+      expect(isFileExtensionSpy).toBeCalledWith(convertAudioFile)
     })
 
     test('should IFileExistsValidator to be called', async () => {
-      const { sut, fileExistsValidator, convertAudioFileModel } = makeSut()
+      const { sut, fileExistsValidator, convertAudioFile } = makeSut()
       const fileExistsSpy = jest.spyOn(fileExistsValidator, 'fileExists')
-      await sut.validateConvertAudioFile(convertAudioFileModel)
-      expect(fileExistsSpy).toBeCalledWith(convertAudioFileModel.path)
+      await sut.validateConvertAudioFile(convertAudioFile)
+      expect(fileExistsSpy).toBeCalledWith(convertAudioFile)
     })
 
-    test('should return object with missing param error if some required field no exists', async () => {
-      const { sut, nullValidator, convertAudioFileModel } = makeSut()
+    test('should return missing param error if audioFile is no provided', async () => {
+      const { sut, nullValidator, convertAudioFile } = makeSut()
       jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
-      const result = await sut.validateConvertAudioFile(convertAudioFileModel)
-      expect(result.mimeType.message).toMatch(/Missing param.*mimeType.*?/)
-      expect(result.originalFile.message).toMatch(/Missing param.*originalFile.*?/)
-      expect(result.path.message).toMatch(/Missing param.*path.*?/)
+      const result = await sut.validateConvertAudioFile(convertAudioFile)
+      expect(result.message).toMatch(/Missing param.*convertAudioFile.*?/)
     })
 
-    test('should return object with invalid param error if some field is invalid', async () => {
-      const { sut, fileExtensionValidator, fileExistsValidator, convertAudioFileModel } = makeSut()
-      jest.spyOn(fileExtensionValidator, 'isFileExtension').mockResolvedValue(false)
-      jest.spyOn(fileExistsValidator, 'fileExists').mockResolvedValue(false)
-      const result = await sut.validateConvertAudioFile({ ...convertAudioFileModel, mimeType: 1 } as any)
-      expect(result.mimeType.message).toMatch(/Invalid param.*mimeType.*?/)
-      expect(result.originalFile.message).toMatch(/Invalid param.*originalFile.*?/)
-      expect(result.path.message).toMatch(/Invalid param.*path.*?/)
+    test('should return invalid param error if audioFile is invalid', async () => {
+      const { sut, fileExtensionValidator, fileExistsValidator, convertAudioFile } = makeSut()
+      let result
+
+      jest.spyOn(fileExtensionValidator, 'isFileExtension').mockResolvedValueOnce(false)
+      result = await sut.validateConvertAudioFile(convertAudioFile)
+      expect(result.message).toMatch(/Invalid param.*convertAudioFile.*?/)
+
+      jest.spyOn(fileExistsValidator, 'fileExists').mockResolvedValueOnce(false)
+      result = await sut.validateConvertAudioFile(convertAudioFile)
+      expect(result.message).toMatch(/Invalid param.*convertAudioFile.*?/)
     })
 
-    test('should return empty object if all fields is valid', async () => {
-      const { sut, convertAudioFileModel } = makeSut()
-      const result = await sut.validateConvertAudioFile(convertAudioFileModel)
-      expect(Object.keys(result).length).toBe(0)
+    test('should return null if audioFile is valid', async () => {
+      const { sut, convertAudioFile } = makeSut()
+      const result = await sut.validateConvertAudioFile(convertAudioFile)
+      expect(result).toBeNull()
     })
   })
 })

@@ -3,7 +3,6 @@ import { IAudiobookModel } from '../models/audiobook.model'
 export interface IAddAudiobookModel {
   title: string
   description: string
-  filePath: string
   tags: string[]
 }
 
