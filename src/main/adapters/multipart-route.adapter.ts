@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import fs from 'fs'
 import multer from 'multer'
+import path from 'path'
 import { v4 } from 'uuid'
 import { serverError } from '../../presentation/helpers/http.helper'
 import { IController } from '../../presentation/protocols/controller'
@@ -26,7 +27,8 @@ export default (controller: IController, dest: string, fieldName: string = 'uplo
       file: Express.Multer.File,
       callback: (error: Error | null, filename: string) => void
     ) => {
-      const tempFileName = `${v4()}_${Date.now()}` // to cleanup expired files
+      const ext = path.extname(file.originalname).toLowerCase()
+      const tempFileName = `${v4()}_${Date.now()}${ext}` // to cleanup expired files
       callback(null, tempFileName)
     }
   })
@@ -55,11 +57,7 @@ export default (controller: IController, dest: string, fieldName: string = 'uplo
             body = JSON.parse(body)
           }
 
-          const file = {
-            mimeType: multerFile.mimetype,
-            originalFile: multerFile.originalname,
-            path: multerFile.path
-          }
+          const file = multerFile.path
 
           const httpRequest: IHttpRequest = { header, body, file }
 

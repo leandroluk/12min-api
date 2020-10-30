@@ -1,4 +1,3 @@
-import { IConvertAudioFileModel } from '../../../domain/use-cases/convert-audio-file'
 import { IConvertAudioFileValidate } from '../../../domain/use-cases/convert-audio-file-validate'
 import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
@@ -13,33 +12,19 @@ export class ConvertAudioFileValidator implements IConvertAudioFileValidate {
     readonly fileExistsValidator: IFileExistsValidator
   ) { }
 
-  async validateConvertAudioFile(convertAudioFile: IConvertAudioFileModel): Promise<any> {
-    const errors: any = {}
-
-    if (await this.nullValidator.isNull(convertAudioFile.mimeType)) {
-      errors.mimeType = new MissingParamError('mimeType')
-    } else {
-      if (typeof convertAudioFile.mimeType !== 'string') {
-        errors.mimeType = new InvalidParamError('mimeType', 'must be a string')
-      }
+  async validateConvertAudioFile(convertAudioFile: string): Promise<Error> {
+    if (await this.nullValidator.isNull(convertAudioFile)) {
+      return new MissingParamError('convertAudioFile')
     }
-
-    if (await this.nullValidator.isNull(convertAudioFile.originalFile)) {
-      errors.originalFile = new MissingParamError('originalFile')
-    } else {
-      if (!await this.fileExtensionValidator.isFileExtension(convertAudioFile.originalFile)) {
-        errors.originalFile = new InvalidParamError('originalFile', 'must be a MP3 or WAV file')
-      }
+    if (typeof convertAudioFile !== 'string') {
+      return new InvalidParamError('convertAudioFile', 'must be a string')
     }
-
-    if (await this.nullValidator.isNull(convertAudioFile.path)) {
-      errors.path = new MissingParamError('path')
-    } else {
-      if (!await this.fileExistsValidator.fileExists(convertAudioFile.path)) {
-        errors.path = new InvalidParamError('path', 'file no exists')
-      }
+    if (!await this.fileExtensionValidator.isFileExtension(convertAudioFile)) {
+      return new InvalidParamError('convertAudioFile', 'must be a MP3 or WAV file')
     }
-
-    return errors
+    if (!await this.fileExistsValidator.fileExists(convertAudioFile)) {
+      return new InvalidParamError('convertAudioFile', 'file no exists')
+    }
+    return null
   }
 }

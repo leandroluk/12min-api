@@ -2,15 +2,11 @@ import { IAddAudiobookModel } from '../../../domain/use-cases/add-audiobook'
 import { IAddAudiobookValidate } from '../../../domain/use-cases/add-audiobook-validate'
 import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
-import { IFileExistsValidator } from '../../protocols/file-exists-validator'
-import { IFileExtensionValidator } from '../../protocols/file-extension-validator'
 import { INullValidator } from '../../protocols/null-validator'
 
 export class AddAudiobookValidator implements IAddAudiobookValidate {
   constructor(
-    readonly nullValidator: INullValidator,
-    readonly fileExtensionValidator: IFileExtensionValidator,
-    readonly fileExistsValidator: IFileExistsValidator
+    readonly nullValidator: INullValidator
   ) { }
 
   async validateAddAudiobook(addAudiobook: IAddAudiobookModel): Promise<any> {
@@ -29,16 +25,6 @@ export class AddAudiobookValidator implements IAddAudiobookValidate {
     } else {
       if (typeof addAudiobook.description !== 'string') {
         errors.description = new InvalidParamError('description', 'must be a string.')
-      }
-    }
-
-    if (await this.nullValidator.isNull(addAudiobook.filePath)) {
-      errors.filePath = new MissingParamError('filePath')
-    } else {
-      if (!await this.fileExtensionValidator.isFileExtension(addAudiobook.filePath)) {
-        errors.filePath = new InvalidParamError('filePath', 'must be a MP3 or WAV.')
-      } else if (!await this.fileExistsValidator.fileExists(addAudiobook.filePath)) {
-        errors.filePath = new InvalidParamError('filePath', 'could not find the file')
       }
     }
 
