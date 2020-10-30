@@ -5,7 +5,10 @@ export default {
     port: process.env.APP_PORT || 3000
   },
   mongo: {
-    url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge'
+    url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge',
+    collections: {
+      users: process.env.MONGO_COLLECTIONS_USERS || 'users'
+    }
   },
   cryptography: {
     salt: parseInt(process.env.CRYPTOGRAPHY_SALT || '12')

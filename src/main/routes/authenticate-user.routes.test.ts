@@ -15,7 +15,7 @@ describe('authenticate-user', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
-    const usersCollection = MongoHelper.getCollection('users')
+    const usersCollection = MongoHelper.getCollection(env.mongo.collections.users)
     await usersCollection.deleteMany({})
     const inserted = await usersCollection.insertOne(user)
     userId = inserted.ops[0]._id.toString()

@@ -8,7 +8,7 @@ const url = env.route.base + env.route.addUser
 
 describe('add-user', () => {
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
-  beforeEach(async () => await MongoHelper.getCollection('users').deleteMany({}))
+  beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
   test('should return user on success ', async () => {
@@ -64,7 +64,7 @@ describe('add-user', () => {
       password: 'already_exists_com'
     }
 
-    await MongoHelper.getCollection('users').insertOne(existingUser)
+    await MongoHelper.getCollection(env.mongo.collections.users).insertOne(existingUser)
 
     await request(app)
       .post(url)
