@@ -3,5 +3,8 @@ export interface IUserModel {
   createdAt: Date
   updatedAt?: Date
   email: string
+}
+
+export interface IUserModelWithPassword extends IUserModel {
   password: string
 }
