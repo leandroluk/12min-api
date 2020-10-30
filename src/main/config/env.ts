@@ -5,7 +5,12 @@ export default {
     port: process.env.APP_PORT || 3000
   },
   mongo: {
-    url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge'
+    url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge',
+    collections: {
+      users: process.env.MONGO_COLLECTIONS_USERS || 'users',
+      logConvertAudioFiles: process.env.MONGO_COLLECTIONS_LOG_CONVERT_AUDIO_FILES || 'logConvertAudioFiles',
+      audiobooks: process.env.MONGO_COLLECTIONS_AUDIOBOOKS || 'audiobooks'
+    }
   },
   cryptography: {
     salt: parseInt(process.env.CRYPTOGRAPHY_SALT || '12')

@@ -2,7 +2,7 @@ import { AudiobookStatus, IAudiobookModel } from '../../../domain/models/audiobo
 import { IAuthenticatedHeaderModel } from '../../../domain/models/authenticated-header.model'
 import { ILogConvertAudioFileModel } from '../../../domain/models/log-convert-audio-file.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
-import { IAddAudiobook, IAddAudiobookModel } from '../../../domain/use-cases/add-audiobook'
+import { IAddAudiobook, IAddAudiobookModel, IAddAudiobookReturn } from '../../../domain/use-cases/add-audiobook'
 import { IAddAudiobookValidate } from '../../../domain/use-cases/add-audiobook-validate'
 import { IConvertAudioFileValidate } from '../../../domain/use-cases/convert-audio-file-validate'
 import { ILogConvertAudioFile } from '../../../domain/use-cases/log-convert-audio-file'
@@ -30,12 +30,14 @@ const makeEmptyValidator = (): IEmptyValidator => {
 
 const makeAddAudiobook = (): IAddAudiobook => {
   class AddAudiobookStub implements IAddAudiobook {
-    async addAudiobook(audiobook: IAddAudiobookModel): Promise<IAudiobookModel> {
+    async addAudiobook(audiobook: IAddAudiobookModel): Promise<IAddAudiobookReturn> {
       return await Promise.resolve({
         id: 'id',
         status: AudiobookStatus.PENDING,
         createdAt: new Date(),
-        ...audiobook
+        title: audiobook.title,
+        description: audiobook.description,
+        tags: audiobook.tags
       })
     }
   }
@@ -127,7 +129,7 @@ describe('AddAudiobookController', () => {
     const { sut, emptyValidator, httpRequest } = makeSut()
     const isEmptySpy = jest.spyOn(emptyValidator, 'isEmpty')
     await sut.handle(httpRequest)
-    expect(isEmptySpy).toBeCalled()
+    expect(isEmptySpy).toHaveBeenCalled()
   })
 
   test('should return 401 if no access token is provided on header', async () => {
@@ -142,7 +144,7 @@ describe('AddAudiobookController', () => {
     const { sut, accessTokenValidator, httpRequest } = makeSut()
     const validateAccessTokenSpy = jest.spyOn(accessTokenValidator, 'validateAccessToken')
     await sut.handle(httpRequest)
-    expect(validateAccessTokenSpy).toBeCalled()
+    expect(validateAccessTokenSpy).toHaveBeenCalled()
   })
 
   test('should return 401 if access token is invalid or expired', async () => {
@@ -195,14 +197,41 @@ describe('AddAudiobookController', () => {
     const { sut, addAudiobookRepository, httpRequest } = makeSut()
     const addAudiobookSpy = jest.spyOn(addAudiobookRepository, 'addAudiobook')
     await sut.handle(httpRequest)
-    expect(addAudiobookSpy).toBeCalledWith(httpRequest.body)
+    expect(addAudiobookSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
-  test('should return 500 if audiobookRepository throws', async () => {
+  test('should return 500 if IAddAudiobook throws', async () => {
     const { sut, addAudiobookRepository, httpRequest } = makeSut()
     jest.spyOn(addAudiobookRepository, 'addAudiobook').mockRejectedValue(new Error())
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(500)
-    expect(result.body.message).toMatch(/Server error.*/)
+    expect(result.body.message).toMatch(/Server error.*?/)
+  })
+
+  test('should call ILogConvertAudioFile', async () => {
+    const { sut, logConvertAudioFileRepository, httpRequest } = makeSut()
+    const logConvertAudioFileSpy = jest.spyOn(logConvertAudioFileRepository, 'logConvertAudioFile')
+    await sut.handle(httpRequest)
+    expect(logConvertAudioFileSpy).toHaveBeenCalled()
+  })
+
+  test('should return 500 if ILogConvertAudioFile throws', async () => {
+    const { sut, logConvertAudioFileRepository, httpRequest } = makeSut()
+    jest.spyOn(logConvertAudioFileRepository, 'logConvertAudioFile').mockRejectedValue(new Error())
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(500)
+    expect(result.body.message).toMatch(/Server error.*?/)
+  })
+
+  test('should return 200 with audiofile data if success', async () => {
+    const { sut, httpRequest } = makeSut()
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(200)
+    expect(result.body.id).toBe('id')
+    expect(result.body.status).toBe('pending')
+    expect(result.body.createdAt).toBeTruthy()
+    expect(result.body.title).toBe('title')
+    expect(result.body.description).toBe('description')
+    expect(result.body.tags[0]).toBe('tags')
   })
 })

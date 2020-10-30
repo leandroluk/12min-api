@@ -1,6 +1,13 @@
-import { IAudiobookModel } from '../models/audiobook.model'
+import { AudiobookStatus } from '../models/audiobook.model'
 import { ILogConvertAudioFileModel } from '../models/log-convert-audio-file.model'
 
+export interface ILogConvertAudioFileInput {
+  audiobookId: string
+  status: AudiobookStatus
+  convertAudioFile?: string
+  message?: string
+}
+
 export interface ILogConvertAudioFile {
-  logConvertAudioFile(audiobook: IAudiobookModel, convertAudioFile: string): Promise<ILogConvertAudioFileModel>
+  logConvertAudioFile(logConvertAudioFile: ILogConvertAudioFileInput): Promise<ILogConvertAudioFileModel>
 }

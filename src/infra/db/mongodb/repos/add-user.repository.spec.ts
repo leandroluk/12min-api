@@ -1,5 +1,6 @@
 import { IAddUserRepository } from '../../../../data/protocols/add-user.repository'
 import { IAddUserModel } from '../../../../domain/use-cases/add-user'
+import env from '../../../../main/config/env'
 import { MongoHelper } from '../helpers/mongo.helper'
 import { MongoAddUserRepository } from './add-user.repository'
 
@@ -21,18 +22,16 @@ const makeSut = (): {
 
 describe('AddUserRepository', () => {
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
-  beforeEach(async () => await MongoHelper.getCollection('users').deleteMany({}))
+  beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
-  test('should return user on success', async () => {
+  test('should return user without password on success', async () => {
     const { sut, userData } = makeSut()
     const user = await sut.addUser(userData)
 
     expect(user).toBeTruthy()
     expect(user.id).toBeTruthy()
     expect(user.createdAt.constructor.name).toBe('Date')
-    expect(user.updatedAt).toBeFalsy()
     expect(user.email).toBe(userData.email)
-    expect(user.password).toBe(userData.password)
   })
 })

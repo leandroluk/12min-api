@@ -2,7 +2,7 @@ import { IUserModel } from '../../domain/models/user.model'
 import { IAddUserModel } from '../../domain/use-cases/add-user'
 import { IAddUserRepository } from '../protocols/add-user.repository'
 import { IEncrypter } from '../protocols/encrypter'
-import { IGetUserRepository } from '../protocols/get-user.repository'
+import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
 import { DbAddUser } from './db-add-user'
 
 const makeAddUserRepository = (): IAddUserRepository => {
@@ -19,8 +19,8 @@ const makeAddUserRepository = (): IAddUserRepository => {
   return new AddUserRepository()
 }
 
-const makeGetUserRepository = (): IGetUserRepository => {
-  class GetUserRepositoryStub implements IGetUserRepository {
+const makeGetUserRepository = (): IGetUserByEmailRepository => {
+  class GetUserRepositoryStub implements IGetUserByEmailRepository {
     async geUserByEmail(email: string): Promise<IUserModel> {
       return await Promise.resolve({
         id: 'id',
@@ -32,11 +32,6 @@ const makeGetUserRepository = (): IGetUserRepository => {
   }
   return new GetUserRepositoryStub()
 }
-
-const makeAddUserModel = (): IAddUserModel => ({
-  email: 'valid_email',
-  password: 'valid_password'
-})
 
 const makeEncrypter = (): IEncrypter => {
   class EncrypterStub implements IEncrypter {
@@ -53,49 +48,52 @@ const makeEncrypter = (): IEncrypter => {
 
 const makeSut = (): {
   addUserRepository: IAddUserRepository
-  getUserRepository: IGetUserRepository
+  getUserRepository: IGetUserByEmailRepository
   encrypter: IEncrypter
   sut: DbAddUser
+  userModel: IAddUserModel
 } => {
   const addUserRepository = makeAddUserRepository()
   const getUserRepository = makeGetUserRepository()
   const encrypter = makeEncrypter()
   const sut = new DbAddUser(addUserRepository, getUserRepository, encrypter)
+  const userModel = {
+    email: 'valid_email',
+    password: 'valid_password'
+  }
 
   return {
     addUserRepository,
     getUserRepository,
     encrypter,
-    sut
+    sut,
+    userModel
   }
 }
 
 describe('DbAddUser', () => {
   describe('addUser', () => {
     test('should call encrypter with correct password', async () => {
-      const { sut, encrypter, getUserRepository } = makeSut()
+      const { sut, encrypter, getUserRepository, userModel } = makeSut()
       jest.spyOn(getUserRepository, 'geUserByEmail').mockResolvedValue(null)
       const encrypterSpy = jest.spyOn(encrypter, 'encrypt')
-      const user = makeAddUserModel()
-      await sut.addUser(user)
-      expect(encrypterSpy).toHaveBeenCalledWith(user.password)
+      await sut.addUser(userModel)
+      expect(encrypterSpy).toHaveBeenCalledWith(userModel.password)
     })
 
     test('should call AddUserRepository with correct values', async () => {
-      const { sut, getUserRepository, addUserRepository } = makeSut()
+      const { sut, getUserRepository, addUserRepository, userModel } = makeSut()
       jest.spyOn(getUserRepository, 'geUserByEmail').mockResolvedValue(null)
       const addUserSpy = jest.spyOn(addUserRepository, 'addUser')
-      const user = makeAddUserModel()
-      await sut.addUser(user)
-      expect(addUserSpy).toHaveBeenCalledWith({ ...user, password: 'hashed' })
+      await sut.addUser(userModel)
+      expect(addUserSpy).toHaveBeenCalledWith({ ...userModel, password: 'hashed' })
     })
 
     test('should call GetUserRepository with correct values', async () => {
-      const { sut, getUserRepository } = makeSut()
+      const { sut, getUserRepository, userModel } = makeSut()
       const getUserSpy = jest.spyOn(getUserRepository, 'geUserByEmail').mockResolvedValue(null)
-      const user = makeAddUserModel()
-      await sut.addUser(user)
-      expect(getUserSpy).toHaveBeenCalledWith(user.email)
+      await sut.addUser(userModel)
+      expect(getUserSpy).toHaveBeenCalledWith(userModel.email)
     })
 
     test('should throw if IEncrypter throws', () => {
@@ -112,11 +110,10 @@ describe('DbAddUser', () => {
     })
 
     test('should return UserModel if user is created', async () => {
-      const { sut, getUserRepository } = makeSut()
+      const { sut, getUserRepository, userModel } = makeSut()
       jest.spyOn(getUserRepository, 'geUserByEmail').mockResolvedValue(null)
-      const user = makeAddUserModel()
-      const result = await sut.addUser(user)
-      expect(result.email).toBe(user.email)
+      const result = await sut.addUser(userModel)
+      expect(result.email).toBe(userModel.email)
       expect(result.password).toBe('hashed')
     })
   })

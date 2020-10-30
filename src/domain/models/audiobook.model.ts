@@ -4,7 +4,6 @@ export enum AudiobookStatus {
 
 export interface IAudiobookModel {
   id: string
-  status: AudiobookStatus
   createdAt: Date
   updatedAt?: Date
   title: string

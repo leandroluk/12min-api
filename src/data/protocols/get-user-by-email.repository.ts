@@ -1,5 +1,5 @@
 import { IUserModel } from '../../domain/models/user.model'
 
-export interface IGetUserRepository {
+export interface IGetUserByEmailRepository {
   geUserByEmail(email: string): Promise<IUserModel>
 }

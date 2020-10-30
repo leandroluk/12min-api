@@ -3,12 +3,12 @@ import { IAddUser, IAddUserModel } from '../../domain/use-cases/add-user'
 import { EmailInUseError } from '../../errors/email-in-use/email-in-use.error'
 import { IAddUserRepository } from '../protocols/add-user.repository'
 import { IEncrypter } from '../protocols/encrypter'
-import { IGetUserRepository } from '../protocols/get-user.repository'
+import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
 
 export class DbAddUser implements IAddUser {
   constructor(
     readonly addUserRepository: IAddUserRepository,
-    readonly getUserRepository: IGetUserRepository,
+    readonly getUserRepository: IGetUserByEmailRepository,
     readonly encrypter: IEncrypter
   ) { }
 

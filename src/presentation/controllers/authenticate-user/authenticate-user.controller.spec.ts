@@ -116,7 +116,7 @@ describe('AuthenticateUserController', () => {
       jest.spyOn(nullValidator, 'isNull').mockResolvedValue(false)
       const authenticateUserValidatorSpy = jest.spyOn(authenticateUserValidator, 'validateAuthenticateUser')
       await sut.handle({ body: { email: 'any@email', password: '12312' } })
-      expect(authenticateUserValidatorSpy).toBeCalled()
+      expect(authenticateUserValidatorSpy).toHaveBeenCalled()
     })
 
     test('should IJwtToken.generate is called with correct values', async () => {
@@ -133,7 +133,7 @@ describe('AuthenticateUserController', () => {
 
       const jwtTokenSpy = jest.spyOn(jwtToken, 'generate')
       await sut.handle({ body: { email: 'any@email', password: '12312' } })
-      expect(jwtTokenSpy).toBeCalledWith('id')
+      expect(jwtTokenSpy).toHaveBeenCalledWith('id')
     })
 
     test('should return 400 if body is invalid', async () => {

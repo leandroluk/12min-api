@@ -65,14 +65,14 @@ describe('ConvertAudioFileValidator', () => {
       const { sut, fileExtensionValidator, convertAudioFile } = makeSut()
       const isFileExtensionSpy = jest.spyOn(fileExtensionValidator, 'isFileExtension')
       await sut.validateConvertAudioFile(convertAudioFile)
-      expect(isFileExtensionSpy).toBeCalledWith(convertAudioFile)
+      expect(isFileExtensionSpy).toHaveBeenCalledWith(convertAudioFile)
     })
 
     test('should IFileExistsValidator to be called', async () => {
       const { sut, fileExistsValidator, convertAudioFile } = makeSut()
       const fileExistsSpy = jest.spyOn(fileExistsValidator, 'fileExists')
       await sut.validateConvertAudioFile(convertAudioFile)
-      expect(fileExistsSpy).toBeCalledWith(convertAudioFile)
+      expect(fileExistsSpy).toHaveBeenCalledWith(convertAudioFile)
     })
 
     test('should return missing param error if audioFile is no provided', async () => {

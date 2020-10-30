@@ -7,7 +7,7 @@ import { ILogConvertAudioFile } from '../../../domain/use-cases/log-convert-audi
 import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
 import { ObjectValidationError } from '../../../errors/object-validation/object-validation.error'
-import { badRequest, serverError, unauthorized } from '../../helpers/http.helper'
+import { badRequest, ok, serverError, unauthorized } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
@@ -55,7 +55,8 @@ export class AddAudiobookController implements IController {
 
     try {
       const audiobook = await this.addAudiobookRepository.addAudiobook(body)
-      this.logConvertAudioFileRepository.logConvertAudioFile(audiobook, file)
+      await this.logConvertAudioFileRepository.logConvertAudioFile(audiobook, file)
+      return ok(audiobook)
     } catch (error) {
       return serverError('fail when add audiobook')
     }
