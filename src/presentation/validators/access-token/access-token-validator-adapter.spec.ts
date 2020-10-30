@@ -51,14 +51,14 @@ describe('AccessTokenValidatorAdapter', () => {
     const { sut, nullValidator } = makeSut()
     const isNullSpy = jest.spyOn(nullValidator, 'isNull')
     await sut.validateAccessToken('token')
-    expect(isNullSpy).toBeCalled()
+    expect(isNullSpy).toHaveBeenCalled()
   })
 
   test('should call IJwtToken.verify', async () => {
     const { sut, jwtToken } = makeSut()
     const verifySpy = jest.spyOn(jwtToken, 'verify')
     await sut.validateAccessToken('token')
-    expect(verifySpy).toBeCalled()
+    expect(verifySpy).toHaveBeenCalled()
   })
 
   test('should return false if null', async () => {

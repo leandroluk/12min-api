@@ -28,7 +28,7 @@ describe('EmailValidatorAdapter', () => {
     const sut = new EmailValidatorAdapter()
     const validatorSpy = jest.spyOn(validator, 'isEmail').mockImplementation(() => { throw new Error() })
     const result = await sut.isEmail('any@email.com')
-    expect(validatorSpy).toBeCalled()
+    expect(validatorSpy).toHaveBeenCalled()
     expect(result).toBeFalsy()
   })
 })

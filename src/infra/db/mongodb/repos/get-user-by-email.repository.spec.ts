@@ -1,5 +1,5 @@
 import { MongoHelper } from '../helpers/mongo.helper'
-import { MongoGetUserRepository } from './get-user.repository'
+import { MongoGetUserByEmailRepository } from './get-user-by-email.repository'
 
 
 describe('GetUserRepository', () => {
@@ -16,7 +16,7 @@ describe('GetUserRepository', () => {
       createdAt: new Date()
     })
 
-    const sut = new MongoGetUserRepository()
+    const sut = new MongoGetUserByEmailRepository()
     const user = await sut.geUserByEmail('email')
 
     expect(user).toBeTruthy()
@@ -27,7 +27,7 @@ describe('GetUserRepository', () => {
   })
 
   test('should return null if not found', async () => {
-    const sut = new MongoGetUserRepository()
+    const sut = new MongoGetUserByEmailRepository()
     const user = await sut.geUserByEmail('email')
     expect(user).toBeNull()
   })

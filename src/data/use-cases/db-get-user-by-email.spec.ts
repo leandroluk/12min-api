@@ -1,9 +1,9 @@
 import { IUserModel } from '../../domain/models/user.model'
-import { IGetUserRepository } from '../protocols/get-user.repository'
+import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
 import { DbGetUserByEmail } from './db-get-user-by-email'
 
-const makeGetUserRepository = (): IGetUserRepository => {
-  class GetUserRepository implements IGetUserRepository {
+const makeGetUserRepository = (): IGetUserByEmailRepository => {
+  class GetUserRepository implements IGetUserByEmailRepository {
     async geUserByEmail(email: string): Promise<IUserModel> {
       return await Promise.resolve({
         id: 'id',
@@ -17,7 +17,7 @@ const makeGetUserRepository = (): IGetUserRepository => {
 }
 
 const makeSut = (): {
-  getUserRepository: IGetUserRepository
+  getUserRepository: IGetUserByEmailRepository
   sut: DbGetUserByEmail
 } => {
   const getUserRepository = makeGetUserRepository()

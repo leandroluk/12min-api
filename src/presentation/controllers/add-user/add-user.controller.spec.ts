@@ -73,7 +73,7 @@ describe('AddUserController', () => {
       const { sut, addUserValidator } = makeSut()
       const validateAddUserSpy = jest.spyOn(addUserValidator, 'validateAddUser')
       await sut.handle({ body: { email: 'any@email', password: '12312' } })
-      expect(validateAddUserSpy).toBeCalled()
+      expect(validateAddUserSpy).toHaveBeenCalled()
     })
 
     test('should return 400 if body is invalid', async () => {
