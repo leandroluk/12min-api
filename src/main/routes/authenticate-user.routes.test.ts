@@ -5,6 +5,7 @@ import app from '../config/app'
 import env from '../config/env'
 
 describe('authenticate-user', () => {
+  const url = env.route.base + env.route.authenticateUser
   const user = {
     email: 'test@email.com',
     password: bcrypt.hashSync('test', env.cryptography.salt),
@@ -25,7 +26,7 @@ describe('authenticate-user', () => {
 
   test('should return user on success ', async () => {
     const response = await request(app)
-      .post(env.route.base + env.route.authenticateUser)
+      .post(url)
       .send({
         email: user.email,
         password: 'test'
