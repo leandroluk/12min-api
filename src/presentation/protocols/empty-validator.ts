@@ -1,3 +1,3 @@
 export interface IEmptyValidator {
-  isEmpty(value: any): Promise<any>
+  isEmpty(value: any): Promise<boolean>
 }
