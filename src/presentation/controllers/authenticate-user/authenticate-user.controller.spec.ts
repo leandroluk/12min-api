@@ -1,6 +1,6 @@
 import { IEncrypter } from '../../../data/protocols/encrypter'
 import { IJwtToken } from '../../../data/protocols/jwt-token'
-import { IUserModel } from '../../../domain/models/user.model'
+import { IUserWithPasswordModel } from '../../../domain/models/user.model'
 import { IAuthenticateUserModel, IBearerTokenModel } from '../../../domain/use-cases/authenticate-user'
 import { IAuthenticateUserValidate } from '../../../domain/use-cases/authenticate-user-validate'
 import { IGetUserByEmail } from '../../../domain/use-cases/get-user-by-email'
@@ -10,7 +10,7 @@ import { AuthenticateUserController } from './authenticate-user.controller'
 
 const makeGetUser = (): IGetUserByEmail => {
   class GetUserRepositoryStub implements IGetUserByEmail {
-    async getUserByEmail(email: string): Promise<IUserModel> {
+    async getUserByEmail(email: string): Promise<IUserWithPasswordModel> {
       return await Promise.resolve({
         id: 'id',
         email,
