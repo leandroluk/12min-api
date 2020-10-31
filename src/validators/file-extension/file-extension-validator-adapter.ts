@@ -5,9 +5,9 @@ export class FileExtensionValidatorAdapter implements IFileExtensionValidator {
   readonly matchers: RegExp[]
 
   constructor(
-    ...matchers: RegExp[]
+    ...matchers: RegExp[] | string[]
   ) {
-    this.matchers = matchers
+    this.matchers = (matchers as any[]).map((matcher: string | RegExp) => new RegExp(matcher, 'i'))
   }
 
   async isFileExtension(filePath: any): Promise<boolean> {
