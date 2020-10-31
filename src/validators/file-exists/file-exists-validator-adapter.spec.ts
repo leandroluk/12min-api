@@ -28,5 +28,12 @@ describe('FileExistsValidatorAdapter', () => {
     const sut = new FileExistsValidatorAdapter()
     await expect(sut.fileExists(__filename)).resolves.toBeTruthy()
   })
+
+  test('should return false if accessSync throws', async () => {
+    const sut = new FileExistsValidatorAdapter()
+    jest.spyOn(fs, 'accessSync').mockImplementationOnce(() => { throw new Error() })
+    const result = await sut.fileExists('/path/to/file.mp3')
+    expect(result).toBeFalsy()
+  })
 })
 
