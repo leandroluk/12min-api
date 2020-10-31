@@ -4,9 +4,10 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
 import env from '../config/env'
 
-const url = env.route.base + env.route.addUser
 
 describe('add-user', () => {
+  const url = env.route.base + env.route.addUser
+
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())

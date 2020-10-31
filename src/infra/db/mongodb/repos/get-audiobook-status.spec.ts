@@ -4,11 +4,11 @@ import { MongoGetAudiobookStatusRepository } from './get-audiobook-status'
 
 describe('GetAudiobookStatusRepository', () => {
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
-  beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.logConvertAudioFiles).deleteMany({}))
+  beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.audiobookStatuses).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
   test('should return audiobook on success', async () => {
-    await MongoHelper.getCollection(env.mongo.collections.logConvertAudioFiles).insertOne({
+    await MongoHelper.getCollection(env.mongo.collections.audiobookStatuses).insertOne({
       createdAt: new Date(),
       status: 'pending',
       audiobookId: 'id',

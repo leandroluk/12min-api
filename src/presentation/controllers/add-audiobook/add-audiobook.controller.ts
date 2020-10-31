@@ -1,12 +1,13 @@
+import { AudiobookStatus } from '../../../domain/models/audiobook.model'
 import { IAuthenticatedHeaderModel } from '../../../domain/models/authenticated-header.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { IAddAudiobook, IAddAudiobookModel } from '../../../domain/use-cases/add-audiobook'
+import { IAddAudiobookStatus } from '../../../domain/use-cases/add-audiobook-status'
 import { IAddAudiobookValidate } from '../../../domain/use-cases/add-audiobook-validate'
-import { IConvertAudioFileValidate } from '../../../domain/use-cases/convert-audio-file-validate'
-import { ILogConvertAudioFile } from '../../../domain/use-cases/log-convert-audio-file'
-import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
+import { IConvertFileValidate } from '../../../domain/use-cases/convert-file-validate'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
 import { ObjectValidationError } from '../../../errors/object-validation/object-validation.error'
+import { UnauthorizedError } from '../../errors/unauthorized.error'
 import { badRequest, ok, serverError, unauthorized } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
 import { IEmptyValidator } from '../../protocols/empty-validator'
@@ -17,20 +18,21 @@ export class AddAudiobookController implements IController {
     readonly emptyValidator: IEmptyValidator,
     readonly accessTokenValidator: IAccessTokenValidate,
     readonly addAudiobookValidate: IAddAudiobookValidate,
-    readonly convertAudioFileValidate: IConvertAudioFileValidate,
+    readonly convertAudiobookValidate: IConvertFileValidate,
     readonly addAudiobookRepository: IAddAudiobook,
-    readonly logConvertAudioFileRepository: ILogConvertAudioFile
+    readonly addAudiobookStatusRepository: IAddAudiobookStatus
   ) { }
 
   async handle(httpRequest: IHttpRequest<IAuthenticatedHeaderModel, IAddAudiobookModel, string>): Promise<IHttpResponse<any, any>> {
-    const { header: { accessToken }, body, file } = httpRequest
+    const { header: { Authorization: accessToken }, body, file } = httpRequest
 
-    if (await this.emptyValidator.isEmpty(accessToken)) {
-      return unauthorized(new MissingParamError('accessToken'))
-    }
+    const [accessTokenEmpty, accessTokenValid] = await Promise.all([
+      this.emptyValidator.isEmpty(accessToken),
+      this.accessTokenValidator.validateAccessToken(accessToken)
+    ])
 
-    if (!await this.accessTokenValidator.validateAccessToken(accessToken)) {
-      return unauthorized(new InvalidParamError('accessToken', 'is invalid or expired.'))
+    if (accessTokenEmpty || !accessTokenValid) {
+      return unauthorized(new UnauthorizedError('accessToken is invalid or expired.'))
     }
 
     if (await this.emptyValidator.isEmpty(body)) {
@@ -47,15 +49,19 @@ export class AddAudiobookController implements IController {
       return badRequest(new ObjectValidationError(addAudiobookErrors))
     }
 
-    const convertAudioFileError = await this.convertAudioFileValidate.validateConvertAudioFile(file)
+    const convertAudiobookErrors = await this.convertAudiobookValidate.validateConvertFile(file)
 
-    if (convertAudioFileError) {
-      return badRequest(convertAudioFileError)
+    if (convertAudiobookErrors) {
+      return badRequest(convertAudiobookErrors)
     }
 
     try {
       const audiobook = await this.addAudiobookRepository.addAudiobook(body)
-      await this.logConvertAudioFileRepository.logConvertAudioFile(audiobook, file)
+      await this.addAudiobookStatusRepository.addAudiobookStatus({
+        audiobookId: audiobook.id,
+        status: AudiobookStatus.PENDING,
+        convertAudioFile: file
+      })
       return ok(audiobook)
     } catch (error) {
       return serverError('fail when add audiobook')

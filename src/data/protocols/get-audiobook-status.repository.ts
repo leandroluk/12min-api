@@ -1,5 +1,5 @@
-import { ILogConvertAudioFileModel } from '../../domain/models/log-convert-audio-file.model'
+import { IAudiobookStatusModel } from '../../domain/models/audiobook-status.model'
 
 export interface IGetAudiobookStatusRepository {
-  getAudiobookStatus(audiobookId: string): Promise<ILogConvertAudioFileModel>
+  getAudiobookStatus(audiobookId: string): Promise<IAudiobookStatusModel>
 }

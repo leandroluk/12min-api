@@ -1,4 +1,4 @@
-import { ILogConvertAudioFileModel } from '../../domain/models/log-convert-audio-file.model'
+import { IAudiobookStatusModel } from '../../domain/models/audiobook-status.model'
 import { IGetAudiobookStatus } from '../../domain/use-cases/get-audiobook-status'
 import { IGetAudiobookStatusRepository } from '../protocols/get-audiobook-status.repository'
 
@@ -7,7 +7,7 @@ export class DbGetAudiobookStatus implements IGetAudiobookStatus {
     readonly getAudiobookStatusRepository: IGetAudiobookStatusRepository
   ) { }
 
-  async getAudiobookStatus(audiobookId: string): Promise<ILogConvertAudioFileModel> {
+  async getAudiobookStatus(audiobookId: string): Promise<IAudiobookStatusModel> {
     return await this.getAudiobookStatusRepository.getAudiobookStatus(audiobookId)
   }
 }

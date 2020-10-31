@@ -1,16 +1,16 @@
 import { IGetAudiobookStatusRepository } from '../../../../data/protocols/get-audiobook-status.repository'
-import { ILogConvertAudioFileModel } from '../../../../domain/models/log-convert-audio-file.model'
+import { IAudiobookStatusModel } from '../../../../domain/models/audiobook-status.model'
 import env from '../../../../main/config/env'
 import { MongoHelper } from '../helpers/mongo.helper'
 
 
 export class MongoGetAudiobookStatusRepository implements IGetAudiobookStatusRepository {
-  async getAudiobookStatus(audiobookId: string): Promise<ILogConvertAudioFileModel> {
-    const logConvertAudioFileCollection = MongoHelper.getCollection(env.mongo.collections.logConvertAudioFiles)
-    const logConvertAudioFile = await logConvertAudioFileCollection.findOne({ audiobookId })
+  async getAudiobookStatus(audiobookId: string): Promise<IAudiobookStatusModel> {
+    const audiobookStatusCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
+    const audiobookStatus = await audiobookStatusCollection.findOne({ audiobookId })
 
-    if (logConvertAudioFile) {
-      return MongoHelper.map<ILogConvertAudioFileModel>(logConvertAudioFile)
+    if (audiobookStatus) {
+      return MongoHelper.map<IAudiobookStatusModel>(audiobookStatus)
     }
 
     return null

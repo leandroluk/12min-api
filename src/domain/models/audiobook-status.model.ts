@@ -1,6 +1,6 @@
 import { AudiobookStatus } from './audiobook.model'
 
-export interface ILogConvertAudioFileModel {
+export interface IAudiobookStatusModel {
   id: string
   createdAt: Date
   status: AudiobookStatus
