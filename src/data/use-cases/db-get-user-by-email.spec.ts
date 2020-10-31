@@ -2,9 +2,9 @@ import { IUserWithPasswordModel } from '../../domain/models/user.model'
 import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
 import { DbGetUserByEmail } from './db-get-user-by-email'
 
-const makeGetUserRepository = (): IGetUserByEmailRepository => {
-  class GetUserRepository implements IGetUserByEmailRepository {
-    async geUserByEmail(email: string): Promise<IUserWithPasswordModel> {
+const makeGetUserByEmailRepository = (): IGetUserByEmailRepository => {
+  class GetUserByEmailRepository implements IGetUserByEmailRepository {
+    async getUserByEmail(email: string): Promise<IUserWithPasswordModel> {
       return await Promise.resolve({
         id: 'id',
         email,
@@ -13,39 +13,39 @@ const makeGetUserRepository = (): IGetUserByEmailRepository => {
       })
     }
   }
-  return new GetUserRepository()
+  return new GetUserByEmailRepository()
 }
 
 const makeSut = (): {
-  getUserRepository: IGetUserByEmailRepository
+  getUserByEmailRepository: IGetUserByEmailRepository
   sut: DbGetUserByEmail
 } => {
-  const getUserRepository = makeGetUserRepository()
-  const sut = new DbGetUserByEmail(getUserRepository)
+  const getUserByEmailRepository = makeGetUserByEmailRepository()
+  const sut = new DbGetUserByEmail(getUserByEmailRepository)
 
   return {
-    getUserRepository,
+    getUserByEmailRepository,
     sut
   }
 }
 
-describe('DbGetUser', () => {
+describe('DbGetUserByEmail', () => {
   describe('getUserByEmail', () => {
-    test('should call GetUserRepository with correct values', async () => {
-      const { sut, getUserRepository } = makeSut()
-      const getUserSpy = jest.spyOn(getUserRepository, 'geUserByEmail')
+    test('should call GetUserByEmailRepository with correct values', async () => {
+      const { sut, getUserByEmailRepository } = makeSut()
+      const getUserByEmailSpy = jest.spyOn(getUserByEmailRepository, 'getUserByEmail')
       await sut.getUserByEmail('email')
-      expect(getUserSpy).toHaveBeenCalledWith('email')
+      expect(getUserByEmailSpy).toHaveBeenCalledWith('email')
     })
 
-    test('should throw if IGetUserRepository throws', () => {
-      const { sut, getUserRepository } = makeSut()
-      jest.spyOn(getUserRepository, 'geUserByEmail').mockRejectedValue(new Error())
+    test('should throw if IGetUserByEmailRepository throws', () => {
+      const { sut, getUserByEmailRepository } = makeSut()
+      jest.spyOn(getUserByEmailRepository, 'getUserByEmail').mockRejectedValue(new Error())
       expect(sut.getUserByEmail('email')).rejects.toThrow()
     })
 
 
-    test('should return UserModel if user is found', async () => {
+    test('should return UserWithPasswordModel if user is found', async () => {
       const { sut } = makeSut()
       const result = await sut.getUserByEmail('email')
 

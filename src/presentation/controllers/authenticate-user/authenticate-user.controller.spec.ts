@@ -4,7 +4,6 @@ import { IUserWithPasswordModel } from '../../../domain/models/user.model'
 import { IAuthenticateUserModel, IBearerTokenModel } from '../../../domain/use-cases/authenticate-user'
 import { IAuthenticateUserValidate } from '../../../domain/use-cases/authenticate-user-validate'
 import { IGetUserByEmail } from '../../../domain/use-cases/get-user-by-email'
-import { IController } from '../../protocols/controller'
 import { INullValidator } from '../../protocols/null-validator'
 import { AuthenticateUserController } from './authenticate-user.controller'
 
@@ -64,8 +63,8 @@ const makeJwtToken = (): IJwtToken => {
       })
     }
 
-    async verify(_accessToken: string): Promise<boolean> {
-      return await Promise.resolve(true)
+    async verify(_accessToken: string): Promise<any> {
+      return await Promise.resolve({ key: 'value' })
     }
   }
   return new JwtTokenStub()
@@ -77,7 +76,7 @@ const makeSut = (): {
   nullValidator: INullValidator
   encrypter: IEncrypter
   jwtToken: IJwtToken
-  sut: IController
+  sut: AuthenticateUserController
 } => {
   const getUserByEmailRepository = makeGetUser()
   const authenticateUserValidator = makeAuthenticateUserValidator()
@@ -144,7 +143,7 @@ describe('AuthenticateUserController', () => {
         email: { message: '123' }
       })
 
-      const httpResponse = await sut.handle({ body: {} })
+      const httpResponse = await sut.handle({ body: {} as any })
       expect(httpResponse.body.message).toMatch(/Object validation/)
     })
 

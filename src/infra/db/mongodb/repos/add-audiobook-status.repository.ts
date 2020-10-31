@@ -8,6 +8,7 @@ import { MongoHelper } from '../helpers/mongo.helper'
 export class MongoAddAudiobookStatusRepository implements IAddAudiobookStatusRepository {
   async addAudiobookStatus(addAudiobookStatusModel: IAddAudiobookStatusModel): Promise<IAudiobookStatusModel> {
     const audiobookStatusCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
+
     const data = {
       createdAt: new Date(),
       ...addAudiobookStatusModel

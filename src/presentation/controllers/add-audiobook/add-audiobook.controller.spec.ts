@@ -104,7 +104,7 @@ const makeSut = (): {
   )
   const httpRequest: IHttpRequest<IAuthenticatedHeaderModel, IAddAudiobookModel, string> = {
     header: {
-      Authorization: 'token'
+      authorization: 'token'
     },
     body: {
       title: 'title',

@@ -15,7 +15,7 @@ export class DbAddUser implements IAddUser {
   async addUser(user: IAddUserModel): Promise<IUserModel> {
     const data = { ...user }
 
-    const existingUser = await this.getUserRepository.geUserByEmail(data.email)
+    const existingUser = await this.getUserRepository.getUserByEmail(data.email)
 
     if (existingUser) {
       throw new EmailInUseError(data.email)

@@ -1,8 +1,10 @@
 import { DbAddAudiobook } from '../../data/use-cases/db-add-audiobook'
 import { DbAddAudiobookStatus } from '../../data/use-cases/db-add-audiobook-status'
+import { DbGetUser } from '../../data/use-cases/db-get-user'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
 import { MongoAddAudiobookStatusRepository } from '../../infra/db/mongodb/repos/add-audiobook-status.repository'
 import { MongoAddAudiobookRepository } from '../../infra/db/mongodb/repos/add-audiobook.repository'
+import { MongoGetUserRepository } from '../../infra/db/mongodb/repos/get-user.repository'
 import { AddAudiobookController } from '../../presentation/controllers/add-audiobook/add-audiobook.controller'
 import { AccessTokenValidatorAdapter } from '../../presentation/validators/access-token/access-token-validator-adapter'
 import { AddAudiobookValidator } from '../../presentation/validators/add-audiobook/add-audiobook-validator'
@@ -19,7 +21,9 @@ export const makeAddAudiobookController = (): AddAudiobookController => {
   const fileExtensionValidator = new FileExtensionValidatorAdapter(...env.converters.fileExtensionMatchers)
   const fileExistsValidator = new FileExistsValidatorAdapter()
   const jwtToken = new JwtTokenAdapter(env.authentication.secret, env.authentication.expiresIn)
-  const accessTokenValidator = new AccessTokenValidatorAdapter(nullValidator, jwtToken)
+  const getUserRepository = new MongoGetUserRepository()
+  const getUser = new DbGetUser(getUserRepository)
+  const accessTokenValidator = new AccessTokenValidatorAdapter(nullValidator, jwtToken, getUser)
   const addAudiobookValidate = new AddAudiobookValidator(nullValidator)
   const convertAudioFileValidate = new ConvertAudioFileValidator(nullValidator, fileExtensionValidator, fileExistsValidator)
   const addAudiobookRepository = new MongoAddAudiobookRepository()

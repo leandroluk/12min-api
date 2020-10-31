@@ -4,10 +4,10 @@ import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.reposi
 
 export class DbGetUserByEmail implements IGetUserByEmail {
   constructor(
-    readonly getUserRepository: IGetUserByEmailRepository
+    readonly getUserByEmailRepository: IGetUserByEmailRepository
   ) { }
 
   async getUserByEmail(email: string): Promise<IUserWithPasswordModel> {
-    return await this.getUserRepository.geUserByEmail(email)
+    return await this.getUserByEmailRepository.getUserByEmail(email)
   }
 }

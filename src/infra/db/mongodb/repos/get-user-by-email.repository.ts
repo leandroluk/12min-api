@@ -4,7 +4,7 @@ import env from '../../../../main/config/env'
 import { MongoHelper } from '../helpers/mongo.helper'
 
 export class MongoGetUserByEmailRepository implements IGetUserByEmailRepository {
-  async geUserByEmail(email: string): Promise<IUserWithPasswordModel> {
+  async getUserByEmail(email: string): Promise<IUserWithPasswordModel> {
     const userCollection = MongoHelper.getCollection(env.mongo.collections.users)
     const user = await userCollection.findOne({ email })
 

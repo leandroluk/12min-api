@@ -23,10 +23,10 @@ export class JwtTokenAdapter implements IJwtToken {
     })
   }
 
-  async verify(accessToken: string): Promise<boolean> {
+  async verify(accessToken: string): Promise<any> {
     return await new Promise(resolve => {
-      jwt.verify(accessToken, this.secret, (err: Error) => {
-        resolve(!err)
+      jwt.verify(accessToken, this.secret, (_err: Error, decoded: any) => {
+        resolve(decoded)
       })
     })
   }

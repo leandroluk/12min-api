@@ -20,7 +20,7 @@ jest.mock('jsonwebtoken', () => ({
     return 'token'
   },
   verify(_data: any, _secret: any, cb: (err: Error, value: any) => void): void {
-    return cb(null, true)
+    return cb(null, { key: 'value' })
   }
 }))
 
@@ -48,9 +48,9 @@ describe('JwtTokenAdapter', () => {
     await expect(sut.generate('any_value')).rejects.toThrow()
   })
 
-  test('should return thue if jwt return true', async () => {
+  test('should return jwt data if jwt return jwt data', async () => {
     const { sut } = makeStut()
     const result = await sut.verify('any_value')
-    expect(result).toBeTruthy()
+    expect(result.key).toBe('value')
   })
 })
