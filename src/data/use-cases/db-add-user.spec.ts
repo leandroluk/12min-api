@@ -1,4 +1,4 @@
-import { IUserModel } from '../../domain/models/user.model'
+import { IUserModel, IUserWithPasswordModel } from '../../domain/models/user.model'
 import { IAddUserModel } from '../../domain/use-cases/add-user'
 import { IAddUserRepository } from '../protocols/add-user.repository'
 import { IEncrypter } from '../protocols/encrypter'
@@ -21,7 +21,7 @@ const makeAddUserRepository = (): IAddUserRepository => {
 
 const makeGetUserRepository = (): IGetUserByEmailRepository => {
   class GetUserRepositoryStub implements IGetUserByEmailRepository {
-    async geUserByEmail(email: string): Promise<IUserModel> {
+    async geUserByEmail(email: string): Promise<IUserWithPasswordModel> {
       return await Promise.resolve({
         id: 'id',
         email,
@@ -114,7 +114,6 @@ describe('DbAddUser', () => {
       jest.spyOn(getUserRepository, 'geUserByEmail').mockResolvedValue(null)
       const result = await sut.addUser(userModel)
       expect(result.email).toBe(userModel.email)
-      expect(result.password).toBe('hashed')
     })
   })
 })

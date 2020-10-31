@@ -1,10 +1,10 @@
-import { IUserModel } from '../../domain/models/user.model'
+import { IUserWithPasswordModel } from '../../domain/models/user.model'
 import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
 import { DbGetUserByEmail } from './db-get-user-by-email'
 
 const makeGetUserRepository = (): IGetUserByEmailRepository => {
   class GetUserRepository implements IGetUserByEmailRepository {
-    async geUserByEmail(email: string): Promise<IUserModel> {
+    async geUserByEmail(email: string): Promise<IUserWithPasswordModel> {
       return await Promise.resolve({
         id: 'id',
         email,
