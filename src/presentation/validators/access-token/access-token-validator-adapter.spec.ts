@@ -50,33 +50,33 @@ describe('AccessTokenValidatorAdapter', () => {
   test('should call INullValidator', async () => {
     const { sut, nullValidator } = makeSut()
     const isNullSpy = jest.spyOn(nullValidator, 'isNull')
-    await sut.validateAccessToken('token')
+    await sut.validateAccessToken('Bearer token')
     expect(isNullSpy).toHaveBeenCalled()
   })
 
   test('should call IJwtToken.verify', async () => {
     const { sut, jwtToken } = makeSut()
     const verifySpy = jest.spyOn(jwtToken, 'verify')
-    await sut.validateAccessToken('token')
+    await sut.validateAccessToken('Bearer token')
     expect(verifySpy).toHaveBeenCalled()
   })
 
   test('should return false if null', async () => {
     const { sut, nullValidator } = makeSut()
     jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
-    const result = await sut.validateAccessToken('token')
+    const result = await sut.validateAccessToken('Bearer token')
     expect(result).toBeFalsy()
   })
 
   test('should return false if access token is invalid or expired', async () => {
     const { sut, jwtToken } = makeSut()
     jest.spyOn(jwtToken, 'verify').mockResolvedValue(false)
-    const result = await sut.validateAccessToken('token')
+    const result = await sut.validateAccessToken('Bearer token')
     expect(result).toBeFalsy()
   })
 
   test('should return true if success', async () => {
     const { sut } = makeSut()
-    await expect(sut.validateAccessToken('token')).resolves.toBeTruthy()
+    await expect(sut.validateAccessToken('Bearer token')).resolves.toBeTruthy()
   })
 })

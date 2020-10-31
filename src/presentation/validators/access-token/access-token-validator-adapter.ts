@@ -9,10 +9,14 @@ export class AccessTokenValidatorAdapter implements IAccessTokenValidate {
   ) { }
 
   async validateAccessToken(accessToken: any): Promise<boolean> {
-    const [isNull, verified] = await Promise.all([
-      this.nullValidator.isNull(accessToken),
-      this.jwtToken.verify(accessToken)
-    ])
-    return !isNull && verified
+    try {
+      const [, token] = accessToken.split(' ')
+      const [isNull, verified] = await Promise.all([
+        this.nullValidator.isNull(token),
+        this.jwtToken.verify(token)
+      ])
+      return !isNull && verified
+    } catch (error) {
+    }
   }
 }
