@@ -30,33 +30,29 @@ describe('add-user', () => {
   })
 
   test('should return 400 if missing required param', async () => {
-    await Promise.all([
-      request(app)
-        .post(url)
-        .send({ password: 'password' })
-        .expect(400)
-        .expect(/Missing param.*email.*?/),
-      request(app)
-        .post(url)
-        .send({ email: 'sample@email.com' })
-        .expect(400)
-        .expect(/Missing param.*password.*?/)
-    ])
+    await request(app)
+      .post(url)
+      .send({ password: 'password' })
+      .expect(400)
+      .expect(/Missing param.*email.*?/)
+    await request(app)
+      .post(url)
+      .send({ email: 'sample@email.com' })
+      .expect(400)
+      .expect(/Missing param.*password.*?/)
   })
 
   test('should return 400 if invalid param', async () => {
-    await Promise.all([
-      request(app)
-        .post(url)
-        .send({ email: 'invalid_email', password: 'password' })
-        .expect(400)
-        .expect(/Invalid param/),
-      request(app)
-        .post(url)
-        .send({ email: 'sample@email.com', password: 'password_must_have_only_30_characters_but_this_has_much_more' })
-        .expect(400)
-        .expect(/Invalid param/)
-    ])
+    await request(app)
+      .post(url)
+      .send({ email: 'invalid_email', password: 'password' })
+      .expect(400)
+      .expect(/Invalid param/)
+    await request(app)
+      .post(url)
+      .send({ email: 'sample@email.com', password: 'password_must_have_only_30_characters_but_this_has_much_more' })
+      .expect(400)
+      .expect(/Invalid param/)
   })
 
   test('should return 400 if email already exists', async () => {
