@@ -66,8 +66,7 @@ export default (controller: IController, dest: string, fieldName: string = 'uplo
               httpResponse = res
               resolve()
             })
-            .catch((err) => { // case throw some unknown error in controller
-              console.log(err)
+            .catch(() => { // case throw some unknown error in controller
               httpResponse = serverError()
               resolve()
             })
