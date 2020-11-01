@@ -4,9 +4,7 @@ import { MongoGetUserRepository } from './get-user.repository'
 
 
 describe('GetUserRepository', () => {
-  beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL)
-  })
+  beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
@@ -31,7 +29,7 @@ describe('GetUserRepository', () => {
 
   test('should return null if not found', async () => {
     const sut = new MongoGetUserRepository()
-    const user = await sut.getUser(new MongoHelper.ObjectID().toHexString())
+    const user = await sut.getUser(MongoHelper.objectId().toHexString())
     expect(user).toBeNull()
   })
 })

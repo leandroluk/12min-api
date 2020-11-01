@@ -10,7 +10,7 @@ const makeSut = (): {
   sut: IAddAudiobookStatusRepository
 } => {
   const addAudiobookStatus: IAddAudiobookStatusModel = {
-    audiobookId: 'id',
+    audiobookId: '5f9e20b430713d4d5d4d39bf',
     status: AudiobookStatus.PENDING,
     convertAudioFile: 'path/to/file.mp3'
   }
@@ -34,7 +34,7 @@ describe('MongoAddAudiobookStatusRepository', () => {
     expect(audiobookStatus.id).toBeTruthy()
     expect(audiobookStatus.createdAt.constructor.name).toBe('Date')
     expect(audiobookStatus.status).toBe(addAudiobookStatus.status)
-    expect(audiobookStatus.audiobookId).toBe(addAudiobookStatus.audiobookId)
+    expect(audiobookStatus.audiobookId).toBe('5f9e20b430713d4d5d4d39bf')
     expect(audiobookStatus.convertAudioFile).toBe(addAudiobookStatus.convertAudioFile)
   })
 })

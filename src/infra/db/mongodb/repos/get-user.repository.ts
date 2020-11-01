@@ -6,7 +6,7 @@ import { MongoHelper } from '../helpers/mongo.helper'
 export class MongoGetUserRepository implements IGetUserRepository {
   async getUser(userId: string): Promise<IUserModel> {
     const userCollection = MongoHelper.getCollection(env.mongo.collections.users)
-    const _id = new MongoHelper.ObjectID(userId)
+    const _id = MongoHelper.objectId(userId)
     const user = await userCollection.findOne({ _id })
 
     if (user) {

@@ -54,7 +54,7 @@ describe('DbAddAudiobook', () => {
       expect(sut.addAudiobook({} as any)).rejects.toThrow()
     })
 
-    test('should return AddAudiobookReturn if audiobook is created', async () => {
+    test('should return AddAudiobookWithLastStatus if audiobook is created', async () => {
       const { sut, addAudiobookModel } = makeSut()
       const result = await sut.addAudiobook(addAudiobookModel)
       expect(result.id).toBe('id')

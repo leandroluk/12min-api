@@ -11,3 +11,7 @@ export interface IAudiobookModel {
   filePath?: string
   tags: string[]
 }
+
+export interface IAudiobookWithLastStatusModel extends IAudiobookModel {
+  status: AudiobookStatus
+}

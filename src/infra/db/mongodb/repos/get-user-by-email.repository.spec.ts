@@ -11,7 +11,7 @@ describe('GetUserByEmailRepository', () => {
   afterAll(async () => await MongoHelper.disconnect())
 
   test('should return user on success', async () => {
-    MongoHelper.getCollection(env.mongo.collections.users).insertOne({
+    await MongoHelper.getCollection(env.mongo.collections.users).insertOne({
       email: 'email',
       password: 'password',
       createdAt: new Date()
