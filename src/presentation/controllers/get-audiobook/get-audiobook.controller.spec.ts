@@ -1,6 +1,7 @@
 import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { IGetAudiobook } from '../../../domain/use-cases/get-audiobook'
+import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest } from '../../protocols/http'
 import { GetAudiobookController } from './get-audiobook.controller'
@@ -126,6 +127,7 @@ describe('GetAudiobookController', () => {
   test('should IGetAudiobook to be called', async () => {
     const { sut, getAudiobook, httpRequest } = makeSut()
     const getAudiobookSpy = jest.spyOn(getAudiobook, 'getAudiobook')
+    jest.spyOn(MongoHelper, 'objectId').mockReturnValueOnce(null)
     await sut.handle(httpRequest)
     expect(getAudiobookSpy).toBeCalled()
   })
@@ -133,6 +135,7 @@ describe('GetAudiobookController', () => {
   test('should return 500 if if IGetAudiobook throws', async () => {
     const { sut, getAudiobook, httpRequest } = makeSut()
     jest.spyOn(getAudiobook, 'getAudiobook').mockRejectedValue(new Error())
+    jest.spyOn(MongoHelper, 'objectId').mockReturnValueOnce(null)
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(500)
     expect(result.body.message).toMatch(/Server error/)
@@ -140,6 +143,7 @@ describe('GetAudiobookController', () => {
 
   test('should return 200 with audiobook model if success', async () => {
     const { sut, httpRequest } = makeSut()
+    jest.spyOn(MongoHelper, 'objectId').mockReturnValueOnce(null)
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(200)
     expect(result.body.id).toBe(httpRequest.params.audiobookId)
@@ -148,5 +152,20 @@ describe('GetAudiobookController', () => {
     expect(result.body.description).toBeTruthy()
     expect(result.body.status).toBeTruthy()
     expect(result.body.tags).toBeTruthy()
+  })
+
+  test('should return 404 if audiobook not found', async () => {
+    const { sut, getAudiobook, httpRequest } = makeSut()
+    jest.spyOn(getAudiobook, 'getAudiobook').mockResolvedValue(undefined)
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(404)
+    expect(result.body.message).toMatch(/No data found.*?/)
+  })
+
+  test('should return 404 if audiobookId is invalid', async () => {
+    const { sut, httpRequest } = makeSut()
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(404)
+    expect(result.body.message).toMatch(/No data found.*?/)
   })
 })

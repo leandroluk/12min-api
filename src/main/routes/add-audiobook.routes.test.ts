@@ -1,5 +1,6 @@
 import faker from 'faker'
 import jwt from 'jsonwebtoken'
+import { ObjectID } from 'mongodb'
 import path from 'path'
 import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
@@ -29,12 +30,12 @@ describe('add-audiobook', () => {
       MongoHelper.getCollection(env.mongo.collections.users).deleteMany({})
     ])
 
-    const userId = (
+    const userId = ((
       await MongoHelper.getCollection(env.mongo.collections.users).insertOne({
         email: faker.internet.email(),
         password: faker.internet.password(5)
       })
-    ).ops[0]._id.toString()
+    ).ops[0]._id as ObjectID).toHexString()
 
     accessToken = 'Bearer ' + jwt.sign({ userId }, env.authentication.secret)
   })

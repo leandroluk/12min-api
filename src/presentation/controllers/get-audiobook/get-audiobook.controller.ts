@@ -2,8 +2,10 @@ import { IAuthenticatedHeaderModel } from '../../../domain/models/authenticated-
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { IGetAudiobook, IGetAudiobookParams } from '../../../domain/use-cases/get-audiobook'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
+import { NoDataFoundError } from '../../../errors/no-data-found/no-data-found.error'
+import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper'
 import { UnauthorizedError } from '../../errors/unauthorized.error'
-import { badRequest, ok, serverError, unauthorized } from '../../helpers/http.helper'
+import { badRequest, notFound, ok, serverError, unauthorized } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
@@ -35,7 +37,18 @@ export class GetAudiobookController implements IController {
     }
 
     try {
+      MongoHelper.objectId(params.audiobookId)
+    } catch (error) {
+      return notFound(new NoDataFoundError(`could not find any audiobook with id '${params.audiobookId}'`))
+    }
+
+    try {
       const audiobook = await this.getAudiobook.getAudiobook(params.audiobookId)
+
+      if (!audiobook) {
+        return notFound(new NoDataFoundError(`could not find any audiobook with id '${params.audiobookId}'`))
+      }
+
       return ok(audiobook)
     } catch (error) {
       return serverError('cannot get audiobook.')

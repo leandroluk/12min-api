@@ -30,6 +30,21 @@ You can see the API documentation at this URL: http://localhost:3000/apidocs
 - Apidocs with swagger.
 - Control of commit's structure based on the [convention](https://www.conventionalcommits.org/en/v1.0.0/).
 - Pre-tasks to prevent faulty test's using [husky](https://typicode.github.io/husky/#/) + [lint-staged](https://github.com/okonet/lint-staged).
+- All constants are mapped to environment variables, allowing them to be changed using containers. The constants are:
+  - `APP_PORT`: application server port (default: '3000')
+  - `APP_TEMP_DIR`: path to save uploaded audiobook's (default: '.tmp')
+  - `MONGO_URL`: uri to access mongodb (default: 'mongodb://localhost:27017/12min-challenge')
+  - `MONGO_COLLECTIONS_USERS`: name of user's collection (default: 'users')
+  - `MONGO_COLLECTIONS_AUDIOBOOKS`: name of audiobook's collection (default: 'audiobooks')
+  - `MONGO_COLLECTIONS_AUDIOBOOK_STATUSES`: name of audiobook statuses collection (default: 'audiobookStatuses')
+  - `CONVERTERS_FILE_EXTENSION_MATCHERS`: list of available extensions to convert (default: '.mp3,.wav')
+  - `CRYPTOGRAPHY_SALT`: salt used for encrypt password (default: '12')
+  - `AUTHENTICATION_SECRET`: secret used on jwt token (default: '12min-challenge')
+  - `AUTHENTICATION_EXPIRES_IN`: default expires time used on jwt token (default: '21600' or 6 hours)
+  - `ROUTES_ADD_USER`: route to add user (default: '/user')
+  - `ROUTES_AUTHENTICATE_USER`: route to authenticate user (default: '/auth')
+  - `ROUTES_ADD_AUDIOBOOK`: route to add audiobook (default: '/audiobook') 
+  - `ROUTES_GET_AUDIOBOOK`: route to get audiobook (default: '/audiobook')
 
 ## Testing:
 
@@ -69,3 +84,4 @@ docker build . \
 
 - First of all excuse my english, i don't have fluency in the language and this is something i still have to work on `ᕦ(ò_óˇ)ᕤ`.
 - The project was not thought of in such a way that it could persist many innumerable files locally. For that, it would be necessary to make changes to save them in a bucket like Amazon S3. (but it wasn't asked so I didn't) `¯\_(ツ)_/¯`.
+- All integration tests are defined in sub-levels because when using jest-mongodb for some reason it crashes the tests causing slowness.
