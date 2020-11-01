@@ -43,13 +43,14 @@ export class AddAudiobookController implements IController {
       return badRequest(new MissingParamError('file'))
     }
 
-    const addAudiobookErrors = await this.addAudiobookValidate.validateAddAudiobook(body)
+    const [addAudiobookErrors, convertAudiobookErrors] = await Promise.all([
+      this.addAudiobookValidate.validateAddAudiobook(body),
+      this.convertAudiobookValidate.validateConvertFile(file)
+    ])
 
     if (Object.keys(addAudiobookErrors).length) {
       return badRequest(new ObjectValidationError(addAudiobookErrors))
     }
-
-    const convertAudiobookErrors = await this.convertAudiobookValidate.validateConvertFile(file)
 
     if (convertAudiobookErrors) {
       return badRequest(convertAudiobookErrors)
@@ -62,7 +63,10 @@ export class AddAudiobookController implements IController {
         status: AudiobookStatus.PENDING,
         convertAudioFile: file
       })
-      return ok(audiobook)
+      return ok({
+        ...audiobook,
+        status: AudiobookStatus.PENDING
+      })
     } catch (error) {
       return serverError('fail when add audiobook')
     }

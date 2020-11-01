@@ -1,5 +1,4 @@
 import faker from 'faker'
-import fs from 'fs'
 import jwt from 'jsonwebtoken'
 import path from 'path'
 import request from 'supertest'
@@ -8,16 +7,17 @@ import app from '../config/app'
 import env from '../config/env'
 import FsHelper from '../helpers/fs.helper'
 
-FsHelper.removeDir(path.join(env.app.basePath, env.app.tempDir))
 
 describe('add-audiobook', () => {
-  const url = env.route.base + env.route.addAudiobook
+  FsHelper.removeDir(path.join(env.app.basePath, env.app.tempDir))
+
+  const url = env.routes.base + env.routes.addAudiobook
+  const upload = path.join(env.app.basePath, 'misc/sample.mp3')
   const data = JSON.stringify({
     title: faker.random.words(2),
     description: faker.random.words(4),
     tags: faker.random.words(Math.floor(Math.random() * 5 + 1)).split(' ')
   })
-  const upload = fs.createReadStream(path.join(env.app.basePath, 'misc/sample.mp3'))
 
   let accessToken: string
 
@@ -37,77 +37,79 @@ describe('add-audiobook', () => {
     ).ops[0]._id.toString()
 
     accessToken = 'Bearer ' + jwt.sign({ userId }, env.authentication.secret)
-    console.log(accessToken)
   })
 
   afterAll(async () => await MongoHelper.disconnect())
 
-  test('should return 401 if no have bearer token', done => {
-    request(app)
-      .post(url)
-      .attach('upload', upload, 'sample.mp3')
-      .field('data', data)
-      .end((err, res) => {
-        expect(res.status).toBe(401)
-        done(err)
+  describe('unauthorized', () => {
+    test('should return 401 if no have bearer token', async () => {
+      await request(app)
+        .post(url)
+        .attach('upload', upload, 'sample.mp3')
+        .field('data', data)
+        .expect(401)
+    })
+  })
+
+  describe('missing body', () => {
+    test('should return 400 if no have body', async () => {
+      const result = await request(app)
+        .post(url)
+        .set('Authorization', accessToken)
+        .attach('upload', upload, 'sample.mp3')
+
+      expect(result.status).toBe(400)
+      expect(result.body.message).toMatch(/Missing param.*body.*?/)
+    })
+  })
+
+  describe('missing field in audiobook', () => {
+    test('should return 400 if any required param is missing', async () => {
+      const result = await request(app)
+        .post(url)
+        .set('Authorization', accessToken)
+        .attach('upload', upload, 'sample.mp3')
+        .field('data', JSON.stringify({ key: 'value' }))
+
+      expect(result.status).toBe(400)
+      expect(result.body.message).toMatch(/Object validation.*?/)
+      expect(result.body.errors.title.message).toMatch(/Missing param.*title.*?/)
+      expect(result.body.errors.description.message).toMatch(/Missing param.*description.*?/)
+      expect(result.body.errors.tags.message).toMatch(/Missing param.*tags.*?/)
+    })
+  })
+
+  describe('invalid param in audiobook', () => {
+    test('should return 400 if has any invalid field', async () => {
+      const result = await request(app)
+        .post(url)
+        .set('Authorization', accessToken)
+        .attach('upload', upload, 'sample.mp3')
+        .field('data', JSON.stringify({ title: 1, description: 1, tags: 1 }))
+
+      expect(result.status).toBe(400)
+      expect(result.body.message).toMatch(/Object validation.*?/)
+      expect(result.body.errors.title.message).toMatch(/Invalid param.*title.*?/)
+      expect(result.body.errors.description.message).toMatch(/Invalid param.*description.*?/)
+      expect(result.body.errors.tags.message).toMatch(/Invalid param.*tags.*?/)
+    })
+  })
+
+  describe('success', () => {
+    test('should return 200 without insert repeated tags', async () => {
+      const dataWithRepeatedTags = JSON.stringify({
+        ...JSON.parse(data),
+        tags: ['tag', 'tag', 'tag']
       })
-  })
 
-  /*
-  test('should return 400 if no have body', done => {
-    request(app)
-      .post(url)
-      .set('Authorization', accessToken)
-      .attach('upload', upload, 'sample.mp3')
-      .end((err, res) => {
-        expect(res.status).toBe(400)
-        expect(res.body).toMatch(/Missing param.*body.*?/)
-        done(err)
-      })
-  })
-
-  test('should return 400 if missing required param', async () => {
-    await Promise.all([
-      request(app)
+      const result = await request(app)
         .post(url)
-        .send({ password: 'password' })
-        .expect(400)
-        .expect(/Missing param.*email.*?/),
-      request(app)
-        .post(url)
-        .send({ email: 'sample@email.com' })
-        .expect(400)
-        .expect(/Missing param.*password.*?/)
-    ])
+        .set('Authorization', accessToken)
+        .attach('upload', upload, 'sample.mp3')
+        .field('data', dataWithRepeatedTags)
+
+      expect(result.status).toBe(200)
+      expect(result.body.tags.length).toBe(1)
+    })
   })
-
-  test('should return 400 if invalid param', async () => {
-    await Promise.all([
-      request(app)
-        .post(url)
-        .send({ email: 'invalid_email', password: 'password' })
-        .expect(400)
-        .expect(/Invalid param/),
-      request(app)
-        .post(url)
-        .send({ email: 'sample@email.com', password: 'password_must_have_only_30_characters_but_this_has_much_more' })
-        .expect(400)
-        .expect(/Invalid param/)
-    ])
-  })
-
-  test('should return 400 if email already exists', async () => {
-    const existingUser = {
-      email: 'already@exists.com',
-      password: 'already_exists_com'
-    }
-
-    await MongoHelper.getCollection(env.mongo.collections.users).insertOne(existingUser)
-
-    await request(app)
-      .post(url)
-      .send(existingUser)
-      .expect(400)
-  })
-  */
 })
