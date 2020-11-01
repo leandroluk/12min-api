@@ -1,5 +1,5 @@
 import { IAudiobookStatusModel } from '../../../domain/models/audiobook-status.model'
-import { AudiobookStatus, IAddAudiobookWithLastStatus } from '../../../domain/models/audiobook.model'
+import { AudiobookStatus, IAddAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
 import { IAuthenticatedHeaderModel } from '../../../domain/models/authenticated-header.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { IAddAudiobook, IAddAudiobookModel } from '../../../domain/use-cases/add-audiobook'
@@ -30,7 +30,7 @@ const makeEmptyValidator = (): IEmptyValidator => {
 
 const makeAddAudiobook = (): IAddAudiobook => {
   class AddAudiobookStub implements IAddAudiobook {
-    async addAudiobook(audiobook: IAddAudiobookModel): Promise<IAddAudiobookWithLastStatus> {
+    async addAudiobook(audiobook: IAddAudiobookModel): Promise<IAddAudiobookWithLastStatusModel> {
       return await Promise.resolve({
         id: 'id',
         status: AudiobookStatus.PENDING,

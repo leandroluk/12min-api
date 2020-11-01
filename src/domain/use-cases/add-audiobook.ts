@@ -1,4 +1,4 @@
-import { IAddAudiobookWithLastStatus } from '../models/audiobook.model'
+import { IAddAudiobookWithLastStatusModel } from '../models/audiobook.model'
 
 export interface IAddAudiobookModel {
   title: string
@@ -7,5 +7,5 @@ export interface IAddAudiobookModel {
 }
 
 export interface IAddAudiobook {
-  addAudiobook(audiobookData: IAddAudiobookModel): Promise<IAddAudiobookWithLastStatus>
+  addAudiobook(audiobookData: IAddAudiobookModel): Promise<IAddAudiobookWithLastStatusModel>
 }

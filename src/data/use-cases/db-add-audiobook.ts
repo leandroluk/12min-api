@@ -1,4 +1,4 @@
-import { AudiobookStatus, IAddAudiobookWithLastStatus } from '../../domain/models/audiobook.model'
+import { AudiobookStatus, IAddAudiobookWithLastStatusModel } from '../../domain/models/audiobook.model'
 import { IAddAudiobook, IAddAudiobookModel } from '../../domain/use-cases/add-audiobook'
 import { IAddAudiobookRepository } from '../protocols/add-audiobook.repository'
 
@@ -7,7 +7,7 @@ export class DbAddAudiobook implements IAddAudiobook {
     readonly addAudiobookRepository: IAddAudiobookRepository
   ) { }
 
-  async addAudiobook(audiobookData: IAddAudiobookModel): Promise<IAddAudiobookWithLastStatus> {
+  async addAudiobook(audiobookData: IAddAudiobookModel): Promise<IAddAudiobookWithLastStatusModel> {
     const data = {
       ...audiobookData,
       tags: [...new Set(audiobookData.tags)]
