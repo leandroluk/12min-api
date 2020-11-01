@@ -26,6 +26,7 @@ export default {
     base: '/api',
     addUser: process.env.ROUTES_ADD_USER || '/user',
     authenticateUser: process.env.ROUTES_AUTHENTICATE_USER || '/auth',
-    addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook'
+    addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook',
+    getAudiobook: (process.env.ROUTES_GET_AUDIOBOOK || '/audiobook') + '/:audiobookId'
   }
 }
