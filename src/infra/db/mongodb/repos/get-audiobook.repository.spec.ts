@@ -12,6 +12,12 @@ describe('GetAudiobookRepository', () => {
   ]))
   afterAll(async () => await MongoHelper.disconnect())
 
+
+  test('should throw invalid param error if audiobookId isn\'t valid', async () => {
+    const sut = new MongoGetAudiobookRepository()
+    await expect(sut.getAudiobook('wrong')).rejects.toThrow(/Invalid param.*?/)
+  })
+
   test('should return audiobook with last status on success', async () => {
     const audiobookId: ObjectID = (
       await MongoHelper.getCollection(env.mongo.collections.audiobooks).insertOne({

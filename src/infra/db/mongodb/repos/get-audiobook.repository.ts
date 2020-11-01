@@ -1,18 +1,26 @@
+import { ObjectID } from 'mongodb'
 import { IGetAudiobookRepository } from '../../../../data/protocols/get-audiobook.repository'
 import { IAudiobookWithLastStatusModel } from '../../../../domain/models/audiobook.model'
+import { InvalidParamError } from '../../../../errors/invalid-param/invalid-param.error'
 import env from '../../../../main/config/env'
 import { MongoHelper } from '../helpers/mongo.helper'
 
 export class MongoGetAudiobookRepository implements IGetAudiobookRepository {
   async getAudiobook(audiobookId: string): Promise<IAudiobookWithLastStatusModel> {
+    let _id: ObjectID
+
+    try {
+      _id = MongoHelper.objectId(audiobookId)
+    } catch (error) {
+      throw new InvalidParamError('audiobookId', 'must be a valid object id')
+    }
+
     const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
 
     const agg = [
       // find specific audiobookId
       {
-        $match: {
-          _id: MongoHelper.objectId(audiobookId)
-        }
+        $match: { _id }
       },
       // join in audiobookStatuses collection
       {

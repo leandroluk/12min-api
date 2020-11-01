@@ -1,6 +1,7 @@
 import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { IGetAudiobook } from '../../../domain/use-cases/get-audiobook'
+import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest } from '../../protocols/http'
@@ -162,8 +163,9 @@ describe('GetAudiobookController', () => {
     expect(result.body.message).toMatch(/No data found.*?/)
   })
 
-  test('should return 404 if audiobookId is invalid', async () => {
-    const { sut, httpRequest } = makeSut()
+  test('should return 404 if getAudiobook throws Invalid param audiobook', async () => {
+    const { sut, getAudiobook, httpRequest } = makeSut()
+    jest.spyOn(getAudiobook, 'getAudiobook').mockRejectedValue(new InvalidParamError('audiobookId'))
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(404)
     expect(result.body.message).toMatch(/No data found.*?/)
