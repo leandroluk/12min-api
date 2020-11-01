@@ -149,4 +149,12 @@ describe('GetAudiobookController', () => {
     expect(result.body.status).toBeTruthy()
     expect(result.body.tags).toBeTruthy()
   })
+
+  test('should return 404 if audiobook not found', async () => {
+    const { sut, getAudiobook, httpRequest } = makeSut()
+    jest.spyOn(getAudiobook, 'getAudiobook').mockResolvedValue(undefined)
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(404)
+    expect(result.body.message).toMatch(/No data found.*?/)
+  })
 })
