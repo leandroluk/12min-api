@@ -2,7 +2,9 @@ import { Collection, MongoClient, ObjectID } from 'mongodb'
 
 export const MongoHelper = {
   client: null as MongoClient,
-  ObjectID,
+  objectId(id?: string) {
+    return new ObjectID(id)
+  },
   async connect(uri: string): Promise<void> {
     this.client = await MongoClient.connect(uri, {
       useNewUrlParser: true,
