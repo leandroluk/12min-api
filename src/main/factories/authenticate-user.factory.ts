@@ -5,6 +5,7 @@ import { MongoGetUserByEmailRepository } from '../../infra/db/mongodb/repos/get-
 import { AuthenticateUserController } from '../../presentation/controllers/authenticate-user/authenticate-user.controller'
 import { AuthenticateUserValidator } from '../../presentation/validators/authenticate-user/authenticate-user.validator'
 import { EmailValidatorAdapter } from '../../validators/email/email-validator-adapter'
+import { EmptyValidatorAdapter } from '../../validators/empty/empty-validator-adapter'
 import { NullValidatorAdapter } from '../../validators/null/null-validator-adapter'
 import { PasswordValidatorAdapter } from '../../validators/password/password-validator-adapter'
 import env from '../config/env'
@@ -13,6 +14,7 @@ export const makeAuthenticateUserController = (): AuthenticateUserController => 
   const getUserRepository = new MongoGetUserByEmailRepository()
   const dbGetUser = new DbGetUserByEmail(getUserRepository)
   const nullValidator = new NullValidatorAdapter()
+  const emptyValidator = new EmptyValidatorAdapter()
   const emailValidator = new EmailValidatorAdapter()
   const passwordValidator = new PasswordValidatorAdapter()
   const authenticateUserValidator = new AuthenticateUserValidator(
@@ -27,6 +29,7 @@ export const makeAuthenticateUserController = (): AuthenticateUserController => 
   return new AuthenticateUserController(
     dbGetUser,
     nullValidator,
+    emptyValidator,
     authenticateUserValidator,
     encrypter,
     jwtToken
