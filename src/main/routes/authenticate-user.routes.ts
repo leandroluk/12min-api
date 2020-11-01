@@ -4,5 +4,8 @@ import env from '../config/env'
 import { makeAuthenticateUserController } from '../factories/authenticate-user.factory'
 
 export default (router: Router): void => {
-  router.post(env.routes.authenticateUser, jsonRouteAdapter(makeAuthenticateUserController()))
+  router.post(
+    env.routes.authenticateUser,
+    jsonRouteAdapter(makeAuthenticateUserController())
+  )
 }

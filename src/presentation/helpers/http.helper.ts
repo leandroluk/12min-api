@@ -20,7 +20,7 @@ export const serverError = (more?: string): IHttpResponse => ({
   body: new ErrorAdapter(new ServerError(more)).toJSON()
 })
 
-export const ok = <H = any, B = any>(body: B, header: H = {} as any): IHttpResponse<H, B> => ({
+export const ok = <H = any, B = any>(body: B = {} as any, header: H = {} as any): IHttpResponse<H, B> => ({
   statusCode: HttpStatusCode.ok,
   header,
   body

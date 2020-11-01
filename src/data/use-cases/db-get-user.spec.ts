@@ -3,7 +3,7 @@ import { IGetUserRepository } from '../protocols/get-user.repository'
 import { DbGetUser } from './db-get-user'
 
 const makeGetUserRepository = (): IGetUserRepository => {
-  class GetUserRepository implements IGetUserRepository {
+  class GetUserRepositoryStub implements IGetUserRepository {
     async getUser(userId: string): Promise<IUserModel> {
       return await Promise.resolve({
         id: userId,
@@ -12,7 +12,7 @@ const makeGetUserRepository = (): IGetUserRepository => {
       })
     }
   }
-  return new GetUserRepository()
+  return new GetUserRepositoryStub()
 }
 
 const makeSut = (): {
@@ -37,10 +37,10 @@ describe('DbGetUser', () => {
       expect(getUserSpy).toHaveBeenCalledWith('userId')
     })
 
-    test('should throw if IGetUserRepository throws', () => {
+    test('should throw if IGetUserRepository throws', async () => {
       const { sut, getUserRepository } = makeSut()
       jest.spyOn(getUserRepository, 'getUser').mockRejectedValue(new Error())
-      expect(sut.getUser('userId')).rejects.toThrow()
+      await expect(sut.getUser('userId')).rejects.toThrow()
     })
 
 

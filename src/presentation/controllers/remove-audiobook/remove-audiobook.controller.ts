@@ -1,6 +1,6 @@
 import { IAuthenticatedHeaderModel } from '../../../domain/models/authenticated-header.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
-import { IGetAudiobook, IGetAudiobookParams } from '../../../domain/use-cases/get-audiobook'
+import { IRemoveAudiobook, IRemoveAudiobookParams } from '../../../domain/use-cases/remove-audiobook'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
 import { NoDataFoundError } from '../../../errors/no-data-found/no-data-found.error'
 import { UnauthorizedError } from '../../errors/unauthorized.error'
@@ -9,17 +9,17 @@ import { IController } from '../../protocols/controller'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
 
-export class GetAudiobookController implements IController {
+export class RemoveAudiobookController implements IController {
   constructor(
     readonly emptyValidator: IEmptyValidator,
     readonly accessTokenValidator: IAccessTokenValidate,
-    readonly getAudiobook: IGetAudiobook
+    readonly removeAudiobook: IRemoveAudiobook
   ) { }
 
   async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
     const {
       header = {} as IAuthenticatedHeaderModel,
-      params = {} as IGetAudiobookParams
+      params = {} as IRemoveAudiobookParams
     } = httpRequest
 
     const [accessTokenEmpty, accessTokenValid] = await Promise.all([
@@ -36,13 +36,13 @@ export class GetAudiobookController implements IController {
     }
 
     try {
-      const audiobook = await this.getAudiobook.getAudiobook(params.audiobookId)
+      const audiobook = await this.removeAudiobook.removeAudiobook(params.audiobookId)
 
       if (!audiobook) {
         return notFound(new NoDataFoundError(`could not find any audiobook with id '${params.audiobookId}'`))
       }
 
-      return ok(audiobook)
+      return ok()
     } catch (error) {
       if (
         error.constructor.name === 'InvalidParamError' &&

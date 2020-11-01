@@ -1,10 +1,9 @@
-import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
-import { IGetAudiobook } from '../../../domain/use-cases/get-audiobook'
+import { IRemoveAudiobook } from '../../../domain/use-cases/remove-audiobook'
 import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest } from '../../protocols/http'
-import { GetAudiobookController } from './get-audiobook.controller'
+import { RemoveAudiobookController } from './remove-audiobook.controller'
 
 const makeEmptyValidator = (): IEmptyValidator => {
   class EmptyValidatorStub implements IEmptyValidator {
@@ -24,36 +23,29 @@ const makeAccessTokenValidator = (): IAccessTokenValidate => {
   return new AccessTokenValidateStub()
 }
 
-const makeGetAudiobook = (): IGetAudiobook => {
-  class GetAudiobookStub implements IGetAudiobook {
-    async getAudiobook(audiobookId: string): Promise<IAudiobookWithLastStatusModel> {
-      return await Promise.resolve({
-        id: audiobookId,
-        createdAt: new Date(),
-        title: 'title',
-        description: 'description',
-        status: AudiobookStatus.PENDING,
-        tags: ['tags']
-      })
+const makeRemoveAudiobook = (): IRemoveAudiobook => {
+  class RemoveAudiobookStub implements IRemoveAudiobook {
+    async removeAudiobook(_audiobookId: string): Promise<boolean> {
+      return await Promise.resolve(true)
     }
   }
-  return new GetAudiobookStub()
+  return new RemoveAudiobookStub()
 }
 
 const makeSut = (): {
   emptyValidator: IEmptyValidator
   accessTokenValidate: IAccessTokenValidate
-  getAudiobook: IGetAudiobook
-  sut: GetAudiobookController
+  removeAudiobook: IRemoveAudiobook
+  sut: RemoveAudiobookController
   httpRequest: IHttpRequest
 } => {
   const emptyValidator = makeEmptyValidator()
   const accessTokenValidate = makeAccessTokenValidator()
-  const getAudiobook = makeGetAudiobook()
-  const sut = new GetAudiobookController(
+  const removeAudiobook = makeRemoveAudiobook()
+  const sut = new RemoveAudiobookController(
     emptyValidator,
     accessTokenValidate,
-    getAudiobook
+    removeAudiobook
   )
   const httpRequest: IHttpRequest = {
     header: { authorization: 'Bearer token' },
@@ -63,13 +55,13 @@ const makeSut = (): {
   return {
     emptyValidator,
     accessTokenValidate,
-    getAudiobook,
+    removeAudiobook,
     sut,
     httpRequest
   }
 }
 
-describe('GetAudiobookController', () => {
+describe('RemoveAudiobookController', () => {
   test('should IEmptyValidator to be called', async () => {
     const { sut, emptyValidator, httpRequest } = makeSut()
     const isEmptySpy = jest.spyOn(emptyValidator, 'isEmpty')
@@ -124,44 +116,38 @@ describe('GetAudiobookController', () => {
     expect(result.body.message).toMatch(/Missing param.*?/)
   })
 
-  test('should IGetAudiobook to be called', async () => {
-    const { sut, getAudiobook, httpRequest } = makeSut()
-    const getAudiobookSpy = jest.spyOn(getAudiobook, 'getAudiobook')
+  test('should IRemoveAudiobook to be called', async () => {
+    const { sut, removeAudiobook, httpRequest } = makeSut()
+    const removeAudiobookSpy = jest.spyOn(removeAudiobook, 'removeAudiobook')
     await sut.handle(httpRequest)
-    expect(getAudiobookSpy).toBeCalled()
+    expect(removeAudiobookSpy).toBeCalled()
   })
 
-  test('should return 500 if IGetAudiobook throws', async () => {
-    const { sut, getAudiobook, httpRequest } = makeSut()
-    jest.spyOn(getAudiobook, 'getAudiobook').mockRejectedValue(new Error())
+  test('should return 500 if IRemoveAudiobook throws', async () => {
+    const { sut, removeAudiobook, httpRequest } = makeSut()
+    jest.spyOn(removeAudiobook, 'removeAudiobook').mockRejectedValue(new Error())
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(500)
     expect(result.body.message).toMatch(/Server error/)
   })
 
-  test('should return 200 with audiobook model if success', async () => {
+  test('should return 200 if audiobook is removed', async () => {
     const { sut, httpRequest } = makeSut()
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(200)
-    expect(result.body.id).toBe(httpRequest.params.audiobookId)
-    expect(result.body.createdAt).toBeTruthy()
-    expect(result.body.title).toBeTruthy()
-    expect(result.body.description).toBeTruthy()
-    expect(result.body.status).toBeTruthy()
-    expect(result.body.tags).toBeTruthy()
   })
 
   test('should return 404 if audiobook not found', async () => {
-    const { sut, getAudiobook, httpRequest } = makeSut()
-    jest.spyOn(getAudiobook, 'getAudiobook').mockResolvedValue(undefined)
+    const { sut, removeAudiobook, httpRequest } = makeSut()
+    jest.spyOn(removeAudiobook, 'removeAudiobook').mockResolvedValue(false)
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(404)
     expect(result.body.message).toMatch(/No data found.*?/)
   })
 
-  test('should return 404 if IGetAudiobook throws Invalid param audiobookId', async () => {
-    const { sut, getAudiobook, httpRequest } = makeSut()
-    jest.spyOn(getAudiobook, 'getAudiobook').mockRejectedValue(new InvalidParamError('audiobookId'))
+  test('should return 404 if IRemoveAudiobook throws Invalid param audiobookId', async () => {
+    const { sut, removeAudiobook, httpRequest } = makeSut()
+    jest.spyOn(removeAudiobook, 'removeAudiobook').mockRejectedValue(new InvalidParamError('audiobookId'))
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(404)
     expect(result.body.message).toMatch(/No data found.*?/)

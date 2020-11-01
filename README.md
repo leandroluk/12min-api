@@ -45,6 +45,8 @@ You can see the API documentation at this URL: http://localhost:3000/apidocs
   - `ROUTES_AUTHENTICATE_USER`: route to authenticate user (default: '/auth')
   - `ROUTES_ADD_AUDIOBOOK`: route to add audiobook (default: '/audiobook') 
   - `ROUTES_GET_AUDIOBOOK`: route to get audiobook (default: '/audiobook')
+  - `ROUTES_REMOVE_AUDIOBOOK`: route to remove audiobook (default: '/audiobook')
+- Pre defined postman collection with basic structure for test's. You need build automation in postman if need.
 
 ## Testing:
 
