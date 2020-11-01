@@ -66,7 +66,7 @@ describe('add-audiobook', () => {
     })
   })
 
-  describe('missing field in audiobook', () => {
+  describe('missing params in audiobook', () => {
     test('should return 400 if any required param is missing', async () => {
       const result = await request(app)
         .post(url)
