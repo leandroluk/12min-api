@@ -49,7 +49,13 @@ export default (controller: IController, dest: string, fieldName: string = 'uplo
         }
 
         try {
-          const { headers: header, body: multerBody, file: multerFile } = req
+          const {
+            headers: header,
+            body: multerBody,
+            file: multerFile,
+            params,
+            query
+          } = req
 
           let body = multerBody?.data
 
@@ -59,7 +65,7 @@ export default (controller: IController, dest: string, fieldName: string = 'uplo
 
           const file = multerFile.path
 
-          const httpRequest: IHttpRequest = { header, body, file }
+          const httpRequest: IHttpRequest = { header, body, file, params, query }
 
           controller.handle(httpRequest)
             .then(res => {

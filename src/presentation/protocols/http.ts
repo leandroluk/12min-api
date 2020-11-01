@@ -12,8 +12,10 @@ export interface IHttpResponse<THeader = any, TBody = any> {
   body: TBody
 }
 
-export interface IHttpRequest<THeader = any, TBody = any, TFile = any> {
-  header?: THeader
-  body?: TBody
-  file?: TFile
+export interface IHttpRequest<Header = any, Body = any, File = any, Params = any, Query = any> {
+  header?: Header
+  body?: Body
+  file?: File
+  params?: Params
+  query?: Query
 }
