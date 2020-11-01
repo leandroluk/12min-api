@@ -24,7 +24,11 @@ export class AddAudiobookController implements IController {
   ) { }
 
   async handle(httpRequest: IHttpRequest<IAuthenticatedHeaderModel, IAddAudiobookModel, string>): Promise<IHttpResponse<any, any>> {
-    const { header, body, file } = httpRequest
+    const {
+      header = {} as any,
+      body = {} as any,
+      file = ''
+    } = httpRequest
 
     const [accessTokenEmpty, accessTokenValid] = await Promise.all([
       this.emptyValidator.isEmpty(header?.authorization),

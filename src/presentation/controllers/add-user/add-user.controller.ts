@@ -15,7 +15,11 @@ export class AddUserController implements IController {
   ) { }
 
   async handle(httpRequest: IHttpRequest<any, IAddUserModel>): Promise<IHttpResponse<any, any>> {
-    if (await this.emptyValidator.isEmpty(httpRequest.body)) {
+    const {
+      body = {} as any
+    } = httpRequest
+
+    if (await this.emptyValidator.isEmpty(body)) {
       return badRequest(new MissingParamError('body'))
     }
 
