@@ -4,9 +4,7 @@ import { MongoGetUserByEmailRepository } from './get-user-by-email.repository'
 
 
 describe('GetUserByEmailRepository', () => {
-  beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL)
-  })
+  beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 

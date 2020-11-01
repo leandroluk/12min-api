@@ -16,33 +16,35 @@ describe('get-audiobook', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
 
+    const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
+    const audiobookStatusCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
+    const userCollection = MongoHelper.getCollection(env.mongo.collections.users)
+
     await Promise.all([
-      MongoHelper.getCollection(env.mongo.collections.audiobooks).deleteMany({}),
-      MongoHelper.getCollection(env.mongo.collections.audiobookStatuses).deleteMany({}),
-      MongoHelper.getCollection(env.mongo.collections.users).deleteMany({})
+      audiobookCollection.deleteMany({}),
+      audiobookStatusCollection.deleteMany({}),
+      userCollection.deleteMany({})
     ])
 
     audiobookId = ((
-      await MongoHelper.getCollection(env.mongo.collections.audiobooks)
-        .insertOne({
-          createdAt: new Date(),
-          title: 'title',
-          description: 'description',
-          filePath: 'path/to/file.mp3',
-          tags: ['tags']
-        })
+      await audiobookCollection.insertOne({
+        createdAt: new Date(),
+        title: 'title',
+        description: 'description',
+        filePath: 'path/to/file.mp3',
+        tags: ['tags']
+      })
     ).ops[0]._id as ObjectID).toHexString()
 
-    await MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
-      .insertOne({
-        createdAt: new Date(),
-        status: AudiobookStatus.PENDING,
-        audiobookId,
-        convertAudioFile: 'path/to/file.mp3'
-      })
+    await audiobookStatusCollection.insertOne({
+      createdAt: new Date(),
+      status: AudiobookStatus.PENDING,
+      audiobookId,
+      convertAudioFile: 'path/to/file.mp3'
+    })
 
     const userId = (
-      await MongoHelper.getCollection(env.mongo.collections.users).insertOne({
+      await userCollection.insertOne({
         email: faker.internet.email(),
         password: faker.internet.password(5)
       })

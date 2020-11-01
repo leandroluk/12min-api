@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt'
+import { ObjectID } from 'mongodb'
 import request from 'supertest'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
 import app from '../config/app'
@@ -17,10 +18,14 @@ describe('authenticate-user', () => {
 
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
+
     const usersCollection = MongoHelper.getCollection(env.mongo.collections.users)
+
     await usersCollection.deleteMany({})
-    const inserted = await usersCollection.insertOne(user)
-    userId = inserted.ops[0]._id.toString()
+
+    userId = ((
+      await usersCollection.insertOne(user)
+    ).ops[0]._id as ObjectID).toHexString()
   })
 
   afterAll(async () => await MongoHelper.disconnect())

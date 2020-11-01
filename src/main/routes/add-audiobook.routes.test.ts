@@ -25,13 +25,15 @@ describe('add-audiobook', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
 
+    const userCollection = MongoHelper.getCollection(env.mongo.collections.users)
+
     await Promise.all([
       MongoHelper.getCollection(env.mongo.collections.audiobooks).deleteMany({}),
-      MongoHelper.getCollection(env.mongo.collections.users).deleteMany({})
+      userCollection.deleteMany({})
     ])
 
     const userId = ((
-      await MongoHelper.getCollection(env.mongo.collections.users).insertOne({
+      await userCollection.insertOne({
         email: faker.internet.email(),
         password: faker.internet.password(5)
       })
