@@ -10,10 +10,18 @@ export class MongoAddAudiobookStatusRepository implements IAddAudiobookStatusRep
     const audiobookStatusCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
 
     const data = {
+      ...addAudiobookStatusModel,
       createdAt: new Date(),
-      ...addAudiobookStatusModel
+      audiobookId: new MongoHelper.ObjectID(addAudiobookStatusModel.audiobookId)
     }
-    const result = await audiobookStatusCollection.insertOne(data)
-    return MongoHelper.map<IAudiobookStatusModel>(result.ops[0])
+
+    const inserted = await audiobookStatusCollection.insertOne(data)
+
+    const { audiobookId, ...rest } = (inserted).ops[0]
+
+    return MongoHelper.map<IAudiobookStatusModel>({
+      ...rest,
+      audiobookId: audiobookId.toHexString()
+    })
   }
 }
