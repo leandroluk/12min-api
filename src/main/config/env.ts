@@ -1,15 +1,15 @@
 export default {
   app: {
     basePath: process.env.PWD,
-    tempDir: '.tmp',
-    port: process.env.APP_PORT || 3000
+    port: process.env.APP_PORT || 3000,
+    tempDir: process.env.APP_TEMP_DIR || '.tmp'
   },
   mongo: {
     url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge',
     collections: {
       users: process.env.MONGO_COLLECTIONS_USERS || 'users',
-      audiobookStatuses: process.env.MONGO_COLLECTIONS_AUDIOBOOK_STATUSES || 'audiobookStatuses',
-      audiobooks: process.env.MONGO_COLLECTIONS_AUDIOBOOKS || 'audiobooks'
+      audiobooks: process.env.MONGO_COLLECTIONS_AUDIOBOOKS || 'audiobooks',
+      audiobookStatuses: process.env.MONGO_COLLECTIONS_AUDIOBOOK_STATUSES || 'audiobookStatuses'
     }
   },
   converters: {
