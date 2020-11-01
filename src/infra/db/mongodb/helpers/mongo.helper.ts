@@ -1,8 +1,8 @@
-import { Collection, MongoClient } from 'mongodb'
+import { Collection, MongoClient, ObjectID } from 'mongodb'
 
 export const MongoHelper = {
   client: null as MongoClient,
-
+  ObjectID,
   async connect(uri: string): Promise<void> {
     this.client = await MongoClient.connect(uri, {
       useNewUrlParser: true,
@@ -20,6 +20,6 @@ export const MongoHelper = {
 
   map<T>(doc: any): T {
     const { _id, ...rest } = doc
-    return { ...rest, id: _id }
+    return { ...rest, id: _id.toString() }
   }
 }

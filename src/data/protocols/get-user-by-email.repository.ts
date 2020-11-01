@@ -1,5 +1,5 @@
-import { IUserModel } from '../../domain/models/user.model'
+import { IUserWithPasswordModel } from '../../domain/models/user.model'
 
 export interface IGetUserByEmailRepository {
-  geUserByEmail(email: string): Promise<IUserModel>
+  getUserByEmail(email: string): Promise<IUserWithPasswordModel>
 }

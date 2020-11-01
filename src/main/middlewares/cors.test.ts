@@ -5,9 +5,7 @@ describe('cors', () => {
   test('should enable cors', async () => {
     const url = '/test-cors'
 
-    app.post(url, (_, res) => {
-      res.send()
-    })
+    app.get(url, (_, res) => res.send())
 
     await request(app)
       .get(url)

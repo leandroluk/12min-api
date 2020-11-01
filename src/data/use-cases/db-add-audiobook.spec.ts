@@ -64,5 +64,17 @@ describe('DbAddAudiobook', () => {
       expect(result.tags[0]).toBe('tags')
       expect(result.status).toBe('pending')
     })
+
+    test('should no add repeated tags wuen create audiobook', async () => {
+      const { sut, addAudiobookModel } = makeSut()
+      const repeatedTags = ['tag', 'tag', 'tag']
+
+      const result = await sut.addAudiobook({
+        ...addAudiobookModel,
+        tags: repeatedTags
+      })
+
+      expect(result.tags.length).toBe(1)
+    })
   })
 })

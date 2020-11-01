@@ -1,3 +1,3 @@
 export interface IAuthenticatedHeaderModel {
-  accessToken: string
+  authorization: string
 }

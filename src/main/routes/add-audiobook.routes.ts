@@ -6,7 +6,7 @@ import { makeAddAudiobookController } from '../factories/add-audiobook.factory'
 
 export default (router: Router): void => {
   router.post(
-    env.route.addAudiobook,
+    env.routes.addAudiobook,
     multipartRouteAdapter(
       makeAddAudiobookController(),
       path.join(env.app.basePath, env.app.tempDir)

@@ -9,6 +9,7 @@ import { NotFoundError } from '../../errors/not-found.error'
 import { UnauthorizedError } from '../../errors/unauthorized.error'
 import { badRequest, notFound, ok, serverError, unauthorized } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
+import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
 import { INullValidator } from '../../protocols/null-validator'
 
@@ -16,13 +17,14 @@ export class AuthenticateUserController implements IController {
   constructor(
     readonly getUserRepository: IGetUserByEmail,
     readonly nullValidator: INullValidator,
+    readonly emptyValidator: IEmptyValidator,
     readonly authenticateUserValidator: IAuthenticateUserValidate,
     readonly encrypter: IEncrypter,
     readonly jwtToken: IJwtToken
   ) { }
 
   async handle(httpRequest: IHttpRequest<any, IAuthenticateUserModel>): Promise<IHttpResponse<any, any>> {
-    if (await this.nullValidator.isNull(httpRequest.body)) {
+    if (await this.emptyValidator.isEmpty(httpRequest.body)) {
       return badRequest(new MissingParamError('body'))
     }
 

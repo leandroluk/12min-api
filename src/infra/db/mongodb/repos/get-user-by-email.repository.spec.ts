@@ -3,7 +3,7 @@ import { MongoHelper } from '../helpers/mongo.helper'
 import { MongoGetUserByEmailRepository } from './get-user-by-email.repository'
 
 
-describe('GetUserRepository', () => {
+describe('GetUserByEmailRepository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
   })
@@ -18,17 +18,18 @@ describe('GetUserRepository', () => {
     })
 
     const sut = new MongoGetUserByEmailRepository()
-    const user = await sut.geUserByEmail('email')
+    const user = await sut.getUserByEmail('email')
 
     expect(user).toBeTruthy()
     expect(user.id).toBeTruthy()
     expect(user.createdAt.constructor.name).toBe('Date')
     expect(user.email).toBe('email')
+    expect(user.password).toBe('password')
   })
 
   test('should return null if not found', async () => {
     const sut = new MongoGetUserByEmailRepository()
-    const user = await sut.geUserByEmail('email')
+    const user = await sut.getUserByEmail('email')
     expect(user).toBeNull()
   })
 })

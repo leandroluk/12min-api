@@ -1,11 +1,11 @@
+import { IAudiobookStatusModel } from '../../domain/models/audiobook-status.model'
 import { AudiobookStatus } from '../../domain/models/audiobook.model'
-import { ILogConvertAudioFileModel } from '../../domain/models/log-convert-audio-file.model'
 import { IGetAudiobookStatusRepository } from '../protocols/get-audiobook-status.repository'
 import { DbGetAudiobookStatus } from './db-get-audiobook-status'
 
 const makeGetAudiobookStatusRepository = (): IGetAudiobookStatusRepository => {
   class GetAudiobookStatusRepositoryStub implements IGetAudiobookStatusRepository {
-    async getAudiobookStatus(audiobookId: string): Promise<ILogConvertAudioFileModel> {
+    async getAudiobookStatus(audiobookId: string): Promise<IAudiobookStatusModel> {
       return await Promise.resolve({
         id: 'id',
         createdAt: new Date(),
@@ -52,7 +52,7 @@ describe('DbGetAudiobookStatus', () => {
       await expect(sut.getAudiobookStatus('id')).resolves.toBeNull()
     })
 
-    test('should return ILogConvertAudioFileModel if success', async () => {
+    test('should return IAudiobookStatusModel if success', async () => {
       const { sut } = makeSut()
       const result = await sut.getAudiobookStatus('id')
       expect(result.id).toBe('id')

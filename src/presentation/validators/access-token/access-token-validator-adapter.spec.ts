@@ -1,5 +1,7 @@
+import jwt from 'jsonwebtoken'
 import { IJwtToken } from '../../../data/protocols/jwt-token'
 import { IBearerTokenModel } from '../../../domain/use-cases/authenticate-user'
+import env from '../../../main/config/env'
 import { INullValidator } from '../../protocols/null-validator'
 import { AccessTokenValidatorAdapter } from './access-token-validator-adapter'
 
@@ -23,8 +25,8 @@ const makeJwtToken = (): IJwtToken => {
       })
     }
 
-    async verify(_accessToken: string): Promise<boolean> {
-      return await Promise.resolve(true)
+    async verify(_accessToken: string): Promise<any> {
+      return await Promise.resolve({ userId: 'userId' })
     }
   }
   return new JwtTokenStub()
@@ -34,49 +36,64 @@ const makeSut = (): {
   nullValidator: INullValidator
   jwtToken: IJwtToken
   sut: AccessTokenValidatorAdapter
+  accessToken: string
 } => {
   const nullValidator = makeNullValidator()
   const jwtToken = makeJwtToken()
   const sut = new AccessTokenValidatorAdapter(nullValidator, jwtToken)
+  const accessToken = jwt.sign({ userId: 'userid' }, env.authentication.secret)
 
   return {
     nullValidator,
     jwtToken,
-    sut
+    sut,
+    accessToken
   }
 }
 
 describe('AccessTokenValidatorAdapter', () => {
-  test('should call INullValidator', async () => {
-    const { sut, nullValidator } = makeSut()
+  test('should call INullValidator.isNull', async () => {
+    const { sut, nullValidator, accessToken } = makeSut()
     const isNullSpy = jest.spyOn(nullValidator, 'isNull')
-    await sut.validateAccessToken('token')
+    await sut.validateAccessToken(accessToken)
     expect(isNullSpy).toHaveBeenCalled()
   })
 
   test('should call IJwtToken.verify', async () => {
-    const { sut, jwtToken } = makeSut()
+    const { sut, jwtToken, accessToken } = makeSut()
     const verifySpy = jest.spyOn(jwtToken, 'verify')
-    await sut.validateAccessToken('token')
+    await sut.validateAccessToken(accessToken)
     expect(verifySpy).toHaveBeenCalled()
   })
 
+  test('should return false if nullValidator throws', async () => {
+    const { sut, nullValidator, accessToken } = makeSut()
+    jest.spyOn(nullValidator, 'isNull').mockRejectedValue(new Error())
+    await expect(sut.validateAccessToken(accessToken)).resolves.toBeFalsy()
+  })
+
+  test('should return false if jwtToken throws', async () => {
+    const { sut, jwtToken, accessToken } = makeSut()
+    jest.spyOn(jwtToken, 'verify').mockRejectedValue(new Error())
+    await expect(sut.validateAccessToken(accessToken)).resolves.toBeFalsy()
+  })
+
   test('should return false if null', async () => {
-    const { sut, nullValidator } = makeSut()
+    const { sut, nullValidator, accessToken } = makeSut()
     jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
-    const result = await sut.validateAccessToken('token')
+    const result = await sut.validateAccessToken(accessToken)
     expect(result).toBeFalsy()
   })
 
   test('should return false if access token is invalid or expired', async () => {
-    const { sut, jwtToken } = makeSut()
+    const { sut, jwtToken, accessToken } = makeSut()
     jest.spyOn(jwtToken, 'verify').mockResolvedValue(false)
-    const result = await sut.validateAccessToken('token')
+    const result = await sut.validateAccessToken(accessToken)
     expect(result).toBeFalsy()
   })
 
-  test('should return true if success', async () => {
-    const { sut } = makeSut()
-    await expect(sut.validateAccessToken('token')).resolves.toBeTruthy()
+  test('should return true if success and in token has userId field', async () => {
+    const { sut, accessToken } = makeSut()
+    await expect(sut.validateAccessToken(accessToken)).resolves.toBeTruthy()
   })
 })

@@ -14,7 +14,7 @@ describe('FileExtensionValidatorAdapter', () => {
   })
 
   test('should return true if is a expected extension', async () => {
-    const sut = new FileExtensionValidatorAdapter(/^ext$/i)
+    const sut = new FileExtensionValidatorAdapter('.ext')
     const valid = [
       'a.ext', '/a.ext', '/a/a.EXT',
       'a.EXT', '/a.EXT', '/a/a.EXT'
