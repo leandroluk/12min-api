@@ -4,9 +4,7 @@ import { MongoGetUserRepository } from './get-user.repository'
 
 
 describe('GetUserRepository', () => {
-  beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL)
-  })
+  beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
