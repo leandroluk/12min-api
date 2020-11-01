@@ -1,0 +1,894 @@
+{
+	"info": {
+		"_postman_id": "07395d9c-3990-4286-bb18-9ea75d09488c",
+		"name": "https://gitlab.com/leandroluk-12min/api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "add-audiobook",
+			"item": [
+				{
+					"name": "success",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "upload",
+									"type": "file",
+									"src": "/Users/leandro/Dev/12min-challenge/api/misc/sample.mp3"
+								},
+								{
+									"key": "data",
+									"value": "{\"title\":\"file sample\",\"description\":\"loren ipsum dolor amet\",\"tags\":[\"file\",\"sample\",\"loren\",false]}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "upload",
+									"type": "file",
+									"src": "/Users/leandro/Dev/12min-challenge/api/misc/sample.mp3"
+								},
+								{
+									"key": "data",
+									"value": "{\"title\":\"file sample\",\"description\":\"loren ipsum dolor amet\",\"tags\":[\"file\",\"sample\",\"loren\",false]}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing body",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid params",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "_upload",
+									"type": "file",
+									"src": "/Users/leandro/Dev/12min-challenge/api/misc/sample.mp3"
+								},
+								{
+									"key": "_data",
+									"value": "{\"title\":\"file sample\",\"description\":\"loren ipsum dolor amet\",\"tags\":[\"file\",\"sample\",\"loren\",false]}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing params in audiobook",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "upload",
+									"type": "file",
+									"src": "/Users/leandro/Dev/12min-challenge/api/misc/sample.mp3"
+								},
+								{
+									"key": "data",
+									"value": "{\"key\":\"value\"}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid params in audiobook",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "upload",
+									"type": "file",
+									"src": "/Users/leandro/Dev/12min-challenge/api/misc/sample.mp3"
+								},
+								{
+									"key": "data",
+									"value": "{\"title\":1,\"description\":1,\"tags\":1}",
+									"type": "text"
+								}
+							],
+							"options": {
+								"formdata": {}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "add-user",
+			"item": [
+				{
+					"name": "success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "499b6859-2319-4709-94f0-7cc593efbfb1",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example@email.com\",\n    \"password\": \"example_email_com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "no body",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "c4023dc4-4d2e-4a4e-b465-3faf6a964fdf",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing params",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d8aa7ee9-0696-4ec8-ab04-76a943ffb0c4",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"key\": \"value\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid params",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "0d9f5602-629d-4678-bec5-30c5f8619f77",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": 1,\n    \"password\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "email already exists",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "e8dd546a-6643-4981-b02b-d804efe04a4b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example@email.com\",\n    \"password\": \"example_email_com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "authenticate-user",
+			"item": [
+				{
+					"name": "success",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "f06e5504-27c5-4f3b-8f95-5e912e76670b",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"example@email.com\",\n    \"password\": \"example_email_com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid body",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "605e8677-750c-40d9-9e27-17545b6e1e8e",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "missing params",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "820cfd6e-cbeb-4d78-8c1c-23395e8d4dbe",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"key\": \"value\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "invalid params",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "bc6a26b4-c588-401b-bc24-0e4158149efe",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": 1,\n    \"password\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "get-audiobook",
+			"item": [
+				{
+					"name": "success",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/:audiobookId",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								":audiobookId"
+							],
+							"variable": [
+								{
+									"key": "audiobookId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/:audiobookId",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								":audiobookId"
+							],
+							"variable": [
+								{
+									"key": "audiobookId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "not found",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/invalidOrNonExistingAudiobookId",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								"invalidOrNonExistingAudiobookId"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "remove-audiobook",
+			"item": [
+				{
+					"name": "success",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQxOTEyNTgsImV4cCI6MTYwNDIxMjg1OH0.RswAyTQ_XC5ZkB4HnWg3nVbLbwz5Tsb0XR6UnPcwzdE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/:audiobookId",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								":audiobookId"
+							],
+							"variable": [
+								{
+									"key": "audiobookId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/:audiobookId",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								":audiobookId"
+							],
+							"variable": [
+								{
+									"key": "audiobookId",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "not found",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/invalidOrNonExistingAudiobookId",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								"invalidOrNonExistingAudiobookId"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "bfeab653-73d9-47cc-893f-6bcaba4e654d",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6aaf70ce-a996-4b85-b811-fb91553dd5db",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
