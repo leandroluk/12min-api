@@ -3,6 +3,7 @@ import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-val
 import { IGetAudiobook, IGetAudiobookParams } from '../../../domain/use-cases/get-audiobook'
 import { MissingParamError } from '../../../errors/missing-param/missing-param.error'
 import { NoDataFoundError } from '../../../errors/no-data-found/no-data-found.error'
+import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper'
 import { UnauthorizedError } from '../../errors/unauthorized.error'
 import { badRequest, notFound, ok, serverError, unauthorized } from '../../helpers/http.helper'
 import { IController } from '../../protocols/controller'
@@ -33,6 +34,12 @@ export class GetAudiobookController implements IController {
 
     if (await this.emptyValidator.isEmpty(params.audiobookId)) {
       return badRequest(new MissingParamError('audiobookId'))
+    }
+
+    try {
+      MongoHelper.objectId(params.audiobookId)
+    } catch (error) {
+      return notFound(new NoDataFoundError(`could not find any audiobook with id '${params.audiobookId}'`))
     }
 
     try {
