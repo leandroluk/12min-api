@@ -13,7 +13,7 @@ export class FileExtensionValidatorAdapter implements IFileExtensionValidator {
   async isFileExtension(filePath: any): Promise<boolean> {
     return await new Promise(resolve => {
       try {
-        const fileExt = path.extname(filePath).replace('.', '')
+        const fileExt = path.extname(filePath)
         const match = (
           typeof fileExt === 'string' &&
           this.matchers.some(matcher => matcher.test(fileExt))
