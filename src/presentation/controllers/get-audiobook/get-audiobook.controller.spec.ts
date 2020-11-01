@@ -1,4 +1,4 @@
-import { AudiobookStatus, IAddAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
+import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { IGetAudiobook } from '../../../domain/use-cases/get-audiobook'
 import { IEmptyValidator } from '../../protocols/empty-validator'
@@ -25,7 +25,7 @@ const makeAccessTokenValidator = (): IAccessTokenValidate => {
 
 const makeGetAudiobook = (): IGetAudiobook => {
   class GetAudiobookStub implements IGetAudiobook {
-    async getAudiobook(audiobookId: string): Promise<IAddAudiobookWithLastStatusModel> {
+    async getAudiobook(audiobookId: string): Promise<IAudiobookWithLastStatusModel> {
       return await Promise.resolve({
         id: audiobookId,
         createdAt: new Date(),

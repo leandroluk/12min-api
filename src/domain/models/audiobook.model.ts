@@ -12,6 +12,6 @@ export interface IAudiobookModel {
   tags: string[]
 }
 
-export interface IAddAudiobookWithLastStatusModel extends IAudiobookModel {
+export interface IAudiobookWithLastStatusModel extends IAudiobookModel {
   status: AudiobookStatus
 }
