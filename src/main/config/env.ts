@@ -22,10 +22,10 @@ export default {
     secret: process.env.AUTHENTICATION_SECRET || '12min-challenge',
     expiresIn: parseInt(process.env.AUTHENTICATION_EXPIRES_IN || 60 * 60 * 6 + '') // 6 hours
   },
-  route: {
+  routes: {
     base: '/api',
-    addUser: process.env.ROUTE_ADD_USER || '/user',
-    authenticateUser: process.env.ROUTE_AUTHENTICATE_USER || '/auth',
-    addAudiobook: process.env.ROUTE_ADD_AUDIOBOOK || '/audiobook'
+    addUser: process.env.ROUTES_ADD_USER || '/user',
+    authenticateUser: process.env.ROUTES_AUTHENTICATE_USER || '/auth',
+    addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook'
   }
 }

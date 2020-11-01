@@ -6,7 +6,7 @@ import env from '../config/env'
 
 
 describe('add-user', () => {
-  const url = env.route.base + env.route.addUser
+  const url = env.routes.base + env.routes.addUser
 
   beforeAll(async () => await MongoHelper.connect(process.env.MONGO_URL))
   beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.users).deleteMany({}))

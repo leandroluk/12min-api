@@ -4,5 +4,5 @@ import env from '../config/env'
 import { makeAddUserController } from '../factories/add-user.factory'
 
 export default (router: Router): void => {
-  router.post(env.route.addUser, adaptJsonRoute(makeAddUserController()))
+  router.post(env.routes.addUser, adaptJsonRoute(makeAddUserController()))
 }

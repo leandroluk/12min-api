@@ -5,7 +5,7 @@ import app from '../config/app'
 import env from '../config/env'
 
 describe('authenticate-user', () => {
-  const url = env.route.base + env.route.authenticateUser
+  const url = env.routes.base + env.routes.authenticateUser
   const user = {
     email: 'test@email.com',
     password: bcrypt.hashSync('test', env.cryptography.salt),
