@@ -6,7 +6,7 @@ import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.reposi
 import { DbAddUser } from './db-add-user'
 
 const makeAddUserRepository = (): IAddUserRepository => {
-  class AddUserRepository implements IAddUserRepository {
+  class AddUserRepositoryStub implements IAddUserRepository {
     async addUser(user: IAddUserModel): Promise<IUserModel> {
       return await Promise.resolve({
         id: 'sample_id',
@@ -16,7 +16,7 @@ const makeAddUserRepository = (): IAddUserRepository => {
       })
     }
   }
-  return new AddUserRepository()
+  return new AddUserRepositoryStub()
 }
 
 const makeGetUserRepository = (): IGetUserByEmailRepository => {
@@ -96,17 +96,17 @@ describe('DbAddUser', () => {
       expect(getUserSpy).toHaveBeenCalledWith(userModel.email)
     })
 
-    test('should throw if IEncrypter throws', () => {
+    test('should throw if IEncrypter throws', async () => {
       const { sut, encrypter, getUserRepository } = makeSut()
       jest.spyOn(getUserRepository, 'getUserByEmail').mockResolvedValue(null)
       jest.spyOn(encrypter, 'encrypt').mockRejectedValue(new Error())
-      expect(sut.addUser({} as any)).rejects.toThrow()
+      await expect(sut.addUser({} as any)).rejects.toThrow()
     })
 
-    test('should throw if IAddUserRepository throws', () => {
+    test('should throw if IAddUserRepository throws', async () => {
       const { sut, addUserRepository } = makeSut()
       jest.spyOn(addUserRepository, 'addUser').mockRejectedValue(new Error())
-      expect(sut.addUser({} as any)).rejects.toThrow()
+      await expect(sut.addUser({} as any)).rejects.toThrow()
     })
 
     test('should return UserModel if user is created', async () => {

@@ -48,10 +48,10 @@ describe('DbAddAudiobookStatus', () => {
       expect(addAudiobookStatusSpy).toHaveBeenCalled()
     })
 
-    test('should throw if IAddAudiobookStatusRepository throws', () => {
+    test('should throw if IAddAudiobookStatusRepository throws', async () => {
       const { sut, addAudiobookStatusRepository } = makeSut()
       jest.spyOn(addAudiobookStatusRepository, 'addAudiobookStatus').mockRejectedValue(new Error())
-      expect(sut.addAudiobookStatus({} as any)).rejects.toThrow()
+      await expect(sut.addAudiobookStatus({} as any)).rejects.toThrow()
     })
 
     test('should return AudiobookStatusModel if is created', async () => {

@@ -3,7 +3,7 @@ import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.reposi
 import { DbGetUserByEmail } from './db-get-user-by-email'
 
 const makeGetUserByEmailRepository = (): IGetUserByEmailRepository => {
-  class GetUserByEmailRepository implements IGetUserByEmailRepository {
+  class GetUserByEmailRepositoryStub implements IGetUserByEmailRepository {
     async getUserByEmail(email: string): Promise<IUserWithPasswordModel> {
       return await Promise.resolve({
         id: 'id',
@@ -13,7 +13,7 @@ const makeGetUserByEmailRepository = (): IGetUserByEmailRepository => {
       })
     }
   }
-  return new GetUserByEmailRepository()
+  return new GetUserByEmailRepositoryStub()
 }
 
 const makeSut = (): {
@@ -38,10 +38,10 @@ describe('DbGetUserByEmail', () => {
       expect(getUserByEmailSpy).toHaveBeenCalledWith('email')
     })
 
-    test('should throw if IGetUserByEmailRepository throws', () => {
+    test('should throw if IGetUserByEmailRepository throws', async () => {
       const { sut, getUserByEmailRepository } = makeSut()
       jest.spyOn(getUserByEmailRepository, 'getUserByEmail').mockRejectedValue(new Error())
-      expect(sut.getUserByEmail('email')).rejects.toThrow()
+      await expect(sut.getUserByEmail('email')).rejects.toThrow()
     })
 
 
