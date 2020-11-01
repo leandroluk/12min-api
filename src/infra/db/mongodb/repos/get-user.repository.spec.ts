@@ -29,7 +29,7 @@ describe('GetUserRepository', () => {
 
   test('should return null if not found', async () => {
     const sut = new MongoGetUserRepository()
-    const user = await sut.getUser(new MongoHelper.ObjectID().toHexString())
+    const user = await sut.getUser(MongoHelper.objectId().toHexString())
     expect(user).toBeNull()
   })
 })

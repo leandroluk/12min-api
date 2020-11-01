@@ -12,7 +12,7 @@ export class MongoAddAudiobookStatusRepository implements IAddAudiobookStatusRep
     const data = {
       ...addAudiobookStatusModel,
       createdAt: new Date(),
-      audiobookId: new MongoHelper.ObjectID(addAudiobookStatusModel.audiobookId)
+      audiobookId: MongoHelper.objectId(addAudiobookStatusModel.audiobookId)
     }
 
     const inserted = await audiobookStatusCollection.insertOne(data)
