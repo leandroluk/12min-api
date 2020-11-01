@@ -8,9 +8,13 @@ export class DbAddAudiobook implements IAddAudiobook {
   ) { }
 
   async addAudiobook(audiobookData: IAddAudiobookModel): Promise<IAddAudiobookReturn> {
-    const data = { ...audiobookData }
+    const data = {
+      ...audiobookData,
+      tags: [...new Set(audiobookData.tags)]
+    }
 
     const audiobook = await this.addAudiobookRepository.addAudiobook(data)
+
     return {
       ...audiobook,
       status: AudiobookStatus.PENDING
