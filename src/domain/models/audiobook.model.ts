@@ -1,5 +1,7 @@
 export enum AudiobookStatus {
-  PENDING = 'pending'
+  PENDING = 'pending',
+  CONVERTING = 'converting',
+  READY = 'ready'
 }
 
 export interface IAudiobookModel {
