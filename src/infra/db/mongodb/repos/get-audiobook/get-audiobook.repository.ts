@@ -67,9 +67,7 @@ export class MongoGetAudiobookRepository implements IGetAudiobookRepository {
       }
     ]
 
-    const [audiobook] = await audiobookCollection
-      .aggregate(agg)
-      .toArray()
+    const [audiobook] = await audiobookCollection.aggregate(agg).toArray()
 
     if (audiobook) {
       return MongoHelper.map<IAudiobookWithLastStatusModel>(audiobook)
