@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
 import { ObjectID } from 'mongodb'
 import request from 'supertest'
-import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
-import app from '../config/app'
-import env from '../config/env'
+import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper'
+import app from '../../config/app'
+import env from '../../config/env'
 
 describe('authenticate-user', () => {
   const url = env.routes.base + env.routes.authenticateUser

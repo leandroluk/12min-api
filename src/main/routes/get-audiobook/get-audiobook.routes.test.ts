@@ -2,12 +2,13 @@ import faker from 'faker'
 import jwt from 'jsonwebtoken'
 import { ObjectID } from 'mongodb'
 import request from 'supertest'
-import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo.helper'
-import app from '../config/app'
-import env from '../config/env'
+import { AudiobookStatus } from '../../../domain/models/audiobook.model'
+import { MongoHelper } from '../../../infra/db/mongodb/helpers/mongo.helper'
+import app from '../../config/app'
+import env from '../../config/env'
 
-describe('delete-audiobook', () => {
-  const url = env.routes.base + env.routes.removeAudiobook
+describe('get-audiobook', () => {
+  const url = env.routes.base + env.routes.getAudiobook
 
   let accessToken: string
   let audiobookId: string
@@ -16,10 +17,12 @@ describe('delete-audiobook', () => {
     await MongoHelper.connect(process.env.MONGO_URL)
 
     const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
+    const audiobookStatusCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
     const userCollection = MongoHelper.getCollection(env.mongo.collections.users)
 
     await Promise.all([
       audiobookCollection.deleteMany({}),
+      audiobookStatusCollection.deleteMany({}),
       userCollection.deleteMany({})
     ])
 
@@ -32,6 +35,13 @@ describe('delete-audiobook', () => {
         tags: ['tags']
       })
     ).ops[0]._id as ObjectID).toHexString()
+
+    await audiobookStatusCollection.insertOne({
+      createdAt: new Date(),
+      status: AudiobookStatus.PENDING,
+      audiobookId,
+      convertAudioFile: 'path/to/file.mp3'
+    })
 
     const userId = (
       await userCollection.insertOne({
@@ -48,7 +58,7 @@ describe('delete-audiobook', () => {
   describe('unauthorized', () => {
     test('should return 401 if no have bearer token', async () => {
       await request(app)
-        .delete(url.replace(':audiobookId', audiobookId))
+        .get(url.replace(':audiobookId', audiobookId))
         .expect(401)
     })
   })
@@ -56,7 +66,7 @@ describe('delete-audiobook', () => {
   describe('not found', () => {
     test('should return 404 if audiobookId is invalid', async () => {
       const result = await request(app)
-        .delete(url)
+        .get(url)
         .set('Authorization', accessToken)
 
       expect(result.status).toBe(404)
@@ -65,12 +75,17 @@ describe('delete-audiobook', () => {
   })
 
   describe('success', () => {
-    test('should return 200 if audiobook is deleted', async () => {
+    test('should return 200 with audiobook if exists', async () => {
       const result = await request(app)
-        .delete(url.replace(':audiobookId', audiobookId))
+        .get(url.replace(':audiobookId', audiobookId))
         .set('Authorization', accessToken)
 
       expect(result.status).toBe(200)
+      expect(result.body.id).toBeDefined()
+      expect(result.body.createdAt).toBeDefined()
+      expect(result.body.title).toBe('title')
+      expect(result.body.description).toBe('description')
+      expect(result.body.status).toBeDefined()
     })
   })
 })
