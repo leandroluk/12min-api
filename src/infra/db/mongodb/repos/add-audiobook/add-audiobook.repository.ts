@@ -10,6 +10,7 @@ export class MongoAddAudiobookRepository implements IAddAudiobookRepository {
     const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
     const data = {
       ...audiobookData,
+      tags: audiobookData.tags.map(tag => tag.toLocaleLowerCase().trim()),
       createdAt: new Date()
     }
     const result = await audiobookCollection.insertOne(data)

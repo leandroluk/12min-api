@@ -11,7 +11,7 @@ const makeSut = (): {
   const audiobookData = {
     title: 'title',
     description: 'description',
-    tags: ['tags']
+    tags: ['TAGS']
   }
   const sut = new MongoAddAudiobookRepository()
 
@@ -26,7 +26,7 @@ describe('AddAudiobookRepository', () => {
   beforeEach(async () => await MongoHelper.getCollection(env.mongo.collections.audiobooks).deleteMany({}))
   afterAll(async () => await MongoHelper.disconnect())
 
-  test('should return audiobook on success', async () => {
+  test('should return audiobook on success with tags as lowercase', async () => {
     const { sut, audiobookData } = makeSut()
     const audiobook = await sut.addAudiobook(audiobookData)
 
@@ -35,5 +35,6 @@ describe('AddAudiobookRepository', () => {
     expect(audiobook.createdAt.constructor.name).toBe('Date')
     expect(audiobook.title).toBe(audiobookData.title)
     expect(audiobook.description).toBe(audiobookData.description)
+    expect(audiobook.tags[0]).toBe('tags')
   })
 })
