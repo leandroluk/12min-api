@@ -1,7 +1,7 @@
-import { IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
-import { IResultQuery } from '../../../domain/models/result-query.model'
-import { ISearchAudiobooksParsedQuery } from '../../../domain/use-cases/search-audiobooks'
-import { ISearchAudiobooksRepository } from '../../protocols/search-audiobooks.repository'
+import { IAudiobookWithLastStatusModel } from '../../../../domain/models/audiobook.model'
+import { IResultQuery } from '../../../../domain/models/result-query.model'
+import { ISearchAudiobooksParsedQuery } from '../../../../domain/use-cases/search-audiobooks'
+import { ISearchAudiobooksRepository } from '../../../protocols/search-audiobooks.repository'
 import { DbSearchAudiobooks } from './db-search-audiobooks'
 
 const makeSearchAudiobooksRepository = (): ISearchAudiobooksRepository => {

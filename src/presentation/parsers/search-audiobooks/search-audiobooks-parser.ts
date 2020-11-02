@@ -1,5 +1,5 @@
-import { ISearchAudiobooksQuery } from '../../../domain/use-cases/search-audiobooks'
-import { ISearchAudiobooksParse, ISearchAudiobooksParsedQuery } from '../../../domain/use-cases/search-audiobooks-parse'
+import { ISearchAudiobooksParsedQuery, ISearchAudiobooksQuery } from '../../../domain/use-cases/search-audiobooks'
+import { ISearchAudiobooksParse } from '../../../domain/use-cases/search-audiobooks-parse'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 
 export class SearchAudiobooksParser implements ISearchAudiobooksParse {
