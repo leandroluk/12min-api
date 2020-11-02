@@ -2,7 +2,7 @@ import { IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.
 import { IResultQuery } from '../../../domain/models/result-query.model'
 import { ISearchAudiobooksParsedQuery } from '../../../domain/use-cases/search-audiobooks'
 import { ISearchAudiobooksRepository } from '../../protocols/search-audiobooks.repository'
-import { DbSearchAudiobooks } from '../db-get-user-by-email/db-search-audiobooks/db-search-audiobooks'
+import { DbSearchAudiobooks } from './db-search-audiobooks'
 
 const makeSearchAudiobooksRepository = (): ISearchAudiobooksRepository => {
   class SearchAudiobooksRepositoryStub implements ISearchAudiobooksRepository {
@@ -54,7 +54,6 @@ describe('DbSearchAudiobooks', () => {
       jest.spyOn(searchAudiobooksRepository, 'searchAudiobooks').mockRejectedValue(new Error())
       await expect(sut.searchAudiobooks(query)).rejects.toThrow()
     })
-
 
     test('should return ResultQuery with results', async () => {
       const { sut, query } = makeSut()
