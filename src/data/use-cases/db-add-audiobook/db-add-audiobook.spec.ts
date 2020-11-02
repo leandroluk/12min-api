@@ -1,6 +1,6 @@
-import { AudiobookStatus, IAudiobookModel } from '../../domain/models/audiobook.model'
-import { IAddAudiobookModel } from '../../domain/use-cases/add-audiobook'
-import { IAddAudiobookRepository } from '../protocols/add-audiobook.repository'
+import { AudiobookStatus, IAudiobookModel } from '../../../domain/models/audiobook.model'
+import { IAddAudiobookModel } from '../../../domain/use-cases/add-audiobook'
+import { IAddAudiobookRepository } from '../../protocols/add-audiobook.repository'
 import { DbAddAudiobook } from './db-add-audiobook'
 
 const makeAddAudiobookRepository = (): IAddAudiobookRepository => {
