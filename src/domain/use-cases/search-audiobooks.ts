@@ -1,11 +1,11 @@
 import { IAudiobookWithLastStatusModel } from '../models/audiobook.model'
 
 export interface ISearchAudiobooksQuery {
-  offset?: number
-  limit?: number
+  offset?: string
+  limit?: string
   title?: string
   description?: string
-  tags?: string[]
+  tags?: string
 }
 
 export interface ISearchAudiobooks {
