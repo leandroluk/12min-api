@@ -15,8 +15,8 @@ export class AccessTokenValidatorAdapter implements IAccessTokenValidate {
         this.nullValidator.isNull(token),
         this.jwtToken.verify(token)
       ])
-      if (!isNull && verified) {
-        return !!verified?.userId
+      if (!isNull && verified && typeof verified === 'object') {
+        return !!verified.userId
       }
     } catch (error) { }
     return false

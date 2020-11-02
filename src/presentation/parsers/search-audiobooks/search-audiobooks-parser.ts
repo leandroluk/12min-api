@@ -49,9 +49,7 @@ export class SearchAudiobooksParser implements ISearchAudiobooksParse {
 
     if (!emptyTags) {
       const tags = (searchAudiobooks.tags || '').split(',')
-      if (tags.length > 0) {
-        parsed.tags = [...new Set(tags.map(tag => tag.trim()))]
-      }
+      parsed.tags = [...new Set(tags.map(tag => tag.trim()))]
     }
 
     return parsed

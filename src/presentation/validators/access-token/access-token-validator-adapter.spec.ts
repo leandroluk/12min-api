@@ -96,4 +96,12 @@ describe('AccessTokenValidatorAdapter', () => {
     const { sut, accessToken } = makeSut()
     await expect(sut.validateAccessToken(accessToken)).resolves.toBeTruthy()
   })
+
+  test('should return false if IJwtToken.verify no have userId field', async () => {
+    const { sut, jwtToken, accessToken } = makeSut()
+    for (const resolved of ['a', {}, { userId: undefined }]) {
+      jest.spyOn(jwtToken, 'verify').mockResolvedValue(resolved)
+      await expect(sut.validateAccessToken(accessToken)).resolves.toBeFalsy()
+    }
+  })
 })

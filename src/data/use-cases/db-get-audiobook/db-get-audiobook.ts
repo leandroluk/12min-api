@@ -10,8 +10,10 @@ export class DbGetAudiobook implements IGetAudiobook {
   async getAudiobook(audiobookId: string): Promise<IAudiobookWithLastStatusModel> {
     const audiobook = await this.getAudiobookRepository.getAudiobook(audiobookId)
 
-    if (audiobook && !audiobook?.status) {
-      audiobook.status = AudiobookStatus.PENDING
+    if (audiobook) {
+      if (!audiobook.status) {
+        audiobook.status = AudiobookStatus.PENDING
+      }
     }
 
     return audiobook
