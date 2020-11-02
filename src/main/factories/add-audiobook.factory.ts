@@ -1,5 +1,5 @@
 import { DbAddAudiobook } from '../../data/use-cases/db-add-audiobook'
-import { DbAddAudiobookStatus } from '../../data/use-cases/db-add-audiobook-status'
+import { DbAddAudiobookStatus } from '../../data/use-cases/db-add-audiobook-status/db-add-audiobook-status'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
 import { MongoAddAudiobookStatusRepository } from '../../infra/db/mongodb/repos/add-audiobook-status.repository'
 import { MongoAddAudiobookRepository } from '../../infra/db/mongodb/repos/add-audiobook.repository'
