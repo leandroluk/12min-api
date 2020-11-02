@@ -3,6 +3,7 @@ import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-val
 import { ISearchAudiobooks, ISearchAudiobooksQuery } from '../../../domain/use-cases/search-audiobooks'
 import { ISearchAudiobooksParse } from '../../../domain/use-cases/search-audiobooks-parse'
 import { ISearchAudiobooksValidate } from '../../../domain/use-cases/search-audiobooks-validate'
+import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { NoDataFoundError } from '../../../errors/no-data-found/no-data-found.error'
 import { ObjectValidationError } from '../../../errors/object-validation/object-validation.error'
 import { UnauthorizedError } from '../../errors/unauthorized.error'
@@ -10,9 +11,11 @@ import { badRequest, ok, serverError, unauthorized } from '../../helpers/http.he
 import { IController } from '../../protocols/controller'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
+import { INullValidator } from '../../protocols/null-validator'
 
 export class SearchAudiobooksController implements IController {
   constructor(
+    readonly nullValidator: INullValidator,
     readonly emptyValidator: IEmptyValidator,
     readonly accessTokenValidator: IAccessTokenValidate,
     readonly searchAudiobooksValidate: ISearchAudiobooksValidate,
@@ -33,6 +36,10 @@ export class SearchAudiobooksController implements IController {
 
     if (accessTokenEmpty || !accessTokenValid) {
       return unauthorized(new UnauthorizedError('accessToken is invalid or expired.'))
+    }
+
+    if (await this.nullValidator.isNull(query)) {
+      return badRequest(new InvalidParamError('query', 'must be a dict with search fields'))
     }
 
     const queryErrors = await this.searchAudiobooksValidate.validateSearchAudiobooks(query)

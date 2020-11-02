@@ -74,5 +74,13 @@ describe('DbGetAudiobook', () => {
       const result = await sut.getAudiobook('id')
       expect(result.status).toBe(AudiobookStatus.PENDING)
     })
+
+    test('should return status as PENDING if returned audiobook no have the field status', async () => {
+      const { sut, getAudiobookRepository } = makeSut()
+      jest.spyOn(getAudiobookRepository, 'getAudiobook').mockResolvedValue({} as any)
+      const result = await sut.getAudiobook('asd')
+      expect(result).toBeDefined()
+      expect(result.status).toBe(AudiobookStatus.PENDING)
+    })
   })
 })

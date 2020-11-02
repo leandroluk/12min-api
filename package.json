@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "sucrase-node src/main/server.ts",
+    "build": "tsc -p .",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand --detectOpenHandles",
     "test:ci": "npm run test -- --coverage",
     "test:verbose": "jest --passWithNoTests --runInBand --detectOpenHandles",

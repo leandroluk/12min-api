@@ -7,7 +7,18 @@ import { ISearchAudiobooksValidate } from '../../../domain/use-cases/search-audi
 import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 import { IHttpRequest, IHttpResponse } from '../../protocols/http'
+import { INullValidator } from '../../protocols/null-validator'
 import { SearchAudiobooksController } from './search-audiobooks.controller'
+
+
+const makeNullValidator = (): INullValidator => {
+  class NullValidatorStub implements INullValidator {
+    async isNull(_value: any): Promise<boolean> {
+      return await Promise.resolve(false)
+    }
+  }
+  return new NullValidatorStub()
+}
 
 const makeEmptyValidator = (): IEmptyValidator => {
   class EmptyValidatorStub implements IEmptyValidator {
@@ -66,6 +77,7 @@ const makeSearchAudiobooks = (): ISearchAudiobooks => {
 }
 
 const makeSut = (): {
+  nullValidator: INullValidator
   emptyValidator: IEmptyValidator
   accessTokenValidate: IAccessTokenValidate
   searchAudiobooksValidate: ISearchAudiobooksValidate
@@ -74,12 +86,14 @@ const makeSut = (): {
   sut: SearchAudiobooksController
   httpRequest: IHttpRequest
 } => {
+  const nullValidator = makeNullValidator()
   const emptyValidator = makeEmptyValidator()
   const accessTokenValidate = makeAccessTokenValidate()
   const searchAudiobooksValidate = makeSearchAudiobooksValidate()
   const searchAudiobookxParse = makeSearchAudiobooksParse()
   const searchAudiobooks = makeSearchAudiobooks()
   const sut = new SearchAudiobooksController(
+    nullValidator,
     emptyValidator,
     accessTokenValidate,
     searchAudiobooksValidate,
@@ -89,6 +103,7 @@ const makeSut = (): {
   const httpRequest: IHttpRequest = { header: {}, query: {} }
 
   return {
+    nullValidator,
     emptyValidator,
     accessTokenValidate,
     searchAudiobooksValidate,
@@ -127,6 +142,20 @@ describe('SearchAudiobooksController', () => {
     result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(401)
     expect(result.body.message).toMatch(/Unauthorized.*?/)
+  })
+
+  test('should call INullValidator', async () => {
+    const { sut, nullValidator, httpRequest } = makeSut()
+    const isNullSpy = jest.spyOn(nullValidator, 'isNull')
+    await sut.handle(httpRequest)
+    expect(isNullSpy).toHaveBeenCalled()
+  })
+
+  test('should return 400 if query is null', async () => {
+    const { sut, nullValidator, httpRequest } = makeSut()
+    jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(400)
   })
 
   test('should call ISearchAudiobooksValidate', async () => {
@@ -182,7 +211,7 @@ describe('SearchAudiobooksController', () => {
     expect(result.statusCode).toBe(500)
   })
 
-  test('should return 200 if IResultQuery if success', async () => {
+  test('should return 200 with IResultQuery if success', async () => {
     const { sut, httpRequest } = makeSut()
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(200)
@@ -190,5 +219,11 @@ describe('SearchAudiobooksController', () => {
     expect(result.body.offset).toBeDefined()
     expect(result.body.total).toBeDefined()
     expect(result.body.items).toBeDefined()
+  })
+
+  test('should return 200 if query isn\'t defined', async () => {
+    const { sut } = makeSut()
+    const result = await sut.handle({ header: {} })
+    expect(result.statusCode).toBe(200)
   })
 })

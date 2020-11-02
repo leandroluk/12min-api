@@ -1,5 +1,5 @@
-import { ISearchAudiobooksQuery } from '../../../domain/use-cases/search-audiobooks'
-import { ISearchAudiobooksParse, ISearchAudiobooksParsedQuery } from '../../../domain/use-cases/search-audiobooks-parse'
+import { ISearchAudiobooksParsedQuery, ISearchAudiobooksQuery } from '../../../domain/use-cases/search-audiobooks'
+import { ISearchAudiobooksParse } from '../../../domain/use-cases/search-audiobooks-parse'
 import { IEmptyValidator } from '../../protocols/empty-validator'
 
 export class SearchAudiobooksParser implements ISearchAudiobooksParse {
@@ -49,9 +49,7 @@ export class SearchAudiobooksParser implements ISearchAudiobooksParse {
 
     if (!emptyTags) {
       const tags = (searchAudiobooks.tags || '').split(',')
-      if (tags.length > 0) {
-        parsed.tags = [...new Set(tags.map(tag => tag.trim()))]
-      }
+      parsed.tags = [...new Set(tags.map(tag => tag.trim()))]
     }
 
     return parsed
