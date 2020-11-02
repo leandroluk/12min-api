@@ -31,6 +31,6 @@ export default {
     addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook',
     getAudiobook: (process.env.ROUTES_GET_AUDIOBOOK || '/audiobook') + '/:audiobookId',
     removeAudiobook: (process.env.ROUTES_REMOVE_AUDIOBOOK || '/audiobook') + '/:audiobookId',
-    searchAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook'
+    searchAudiobooks: process.env.ROUTES_ADD_AUDIOBOOKS || '/audiobook'
   }
 }
