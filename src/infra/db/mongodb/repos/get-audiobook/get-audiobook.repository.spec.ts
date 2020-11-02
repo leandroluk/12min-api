@@ -1,7 +1,7 @@
 import { ObjectID } from 'mongodb'
-import { AudiobookStatus } from '../../../../domain/models/audiobook.model'
-import env from '../../../../main/config/env'
-import { MongoHelper } from '../helpers/mongo.helper'
+import { AudiobookStatus } from '../../../../../domain/models/audiobook.model'
+import env from '../../../../../main/config/env'
+import { MongoHelper } from '../../helpers/mongo.helper'
 import { MongoGetAudiobookRepository } from './get-audiobook.repository'
 
 describe('GetAudiobookRepository', () => {

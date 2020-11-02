@@ -1,5 +1,5 @@
-import env from '../../../../main/config/env'
-import { MongoHelper } from '../helpers/mongo.helper'
+import env from '../../../../../main/config/env'
+import { MongoHelper } from '../../helpers/mongo.helper'
 import { MongoGetAudiobookStatusRepository } from './get-audiobook-status.repository'
 
 describe('GetAudiobookStatusRepository', () => {

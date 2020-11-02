@@ -1,6 +1,6 @@
 import { DbRemoveAudiobook } from '../../data/use-cases/db-remove-audiobook/db-remove-audiobook'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
-import { MongoRemoveAudiobookRepository } from '../../infra/db/mongodb/repos/remove-audiobook.repository'
+import { MongoRemoveAudiobookRepository } from '../../infra/db/mongodb/repos/remove-audiobook/remove-audiobook.repository'
 import { RemoveAudiobookController } from '../../presentation/controllers/remove-audiobook/remove-audiobook.controller'
 import { AccessTokenValidatorAdapter } from '../../presentation/validators/access-token/access-token-validator-adapter'
 import { EmptyValidatorAdapter } from '../../validators/empty/empty-validator-adapter'

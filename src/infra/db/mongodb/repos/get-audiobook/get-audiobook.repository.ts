@@ -1,9 +1,9 @@
 import { ObjectID } from 'mongodb'
-import { IGetAudiobookRepository } from '../../../../data/protocols/get-audiobook.repository'
-import { IAudiobookWithLastStatusModel } from '../../../../domain/models/audiobook.model'
-import { InvalidParamError } from '../../../../errors/invalid-param/invalid-param.error'
-import env from '../../../../main/config/env'
-import { MongoHelper } from '../helpers/mongo.helper'
+import { IGetAudiobookRepository } from '../../../../../data/protocols/get-audiobook.repository'
+import { IAudiobookWithLastStatusModel } from '../../../../../domain/models/audiobook.model'
+import { InvalidParamError } from '../../../../../errors/invalid-param/invalid-param.error'
+import env from '../../../../../main/config/env'
+import { MongoHelper } from '../../helpers/mongo.helper'
 
 export class MongoGetAudiobookRepository implements IGetAudiobookRepository {
   async getAudiobook(audiobookId: string): Promise<IAudiobookWithLastStatusModel> {

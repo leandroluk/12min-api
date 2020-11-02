@@ -1,8 +1,8 @@
 import { ObjectID } from 'mongodb'
-import { IRemoveAudiobookRepository } from '../../../../data/protocols/remove-audiobook.repository'
-import { InvalidParamError } from '../../../../errors/invalid-param/invalid-param.error'
-import env from '../../../../main/config/env'
-import { MongoHelper } from '../helpers/mongo.helper'
+import { IRemoveAudiobookRepository } from '../../../../../data/protocols/remove-audiobook.repository'
+import { InvalidParamError } from '../../../../../errors/invalid-param/invalid-param.error'
+import env from '../../../../../main/config/env'
+import { MongoHelper } from '../../helpers/mongo.helper'
 
 export class MongoRemoveAudiobookRepository implements IRemoveAudiobookRepository {
   async removeAudiobook(audiobookId: string): Promise<boolean> {

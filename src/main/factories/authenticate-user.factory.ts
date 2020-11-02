@@ -1,7 +1,7 @@
 import { DbGetUserByEmail } from '../../data/use-cases/db-get-user-by-email/db-get-user-by-email'
 import { BcryptAdapter } from '../../infra/cryptography/bcrypt-adapter'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
-import { MongoGetUserByEmailRepository } from '../../infra/db/mongodb/repos/get-user-by-email.repository'
+import { MongoGetUserByEmailRepository } from '../../infra/db/mongodb/repos/get-user-by-email/get-user-by-email.repository'
 import { AuthenticateUserController } from '../../presentation/controllers/authenticate-user/authenticate-user.controller'
 import { AuthenticateUserValidator } from '../../presentation/validators/authenticate-user/authenticate-user.validator'
 import { EmailValidatorAdapter } from '../../validators/email/email-validator-adapter'
