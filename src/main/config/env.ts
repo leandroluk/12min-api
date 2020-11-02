@@ -2,7 +2,9 @@ export default {
   app: {
     basePath: process.env.PWD,
     port: process.env.APP_PORT || 3000,
-    tempDir: process.env.APP_TEMP_DIR || '.tmp'
+    tempDir: process.env.APP_TEMP_DIR || '.tmp',
+    queryLimit: parseInt(process.env.APP_QUERY_LIMIT || '50'),
+    queryListSeparator: process.env.APP_QUERY_LIST_SEPARATOR || ','
   },
   mongo: {
     url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge',
