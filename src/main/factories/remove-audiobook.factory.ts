@@ -1,4 +1,4 @@
-import { DbRemoveAudiobook } from '../../data/use-cases/db-remove-audiobook'
+import { DbRemoveAudiobook } from '../../data/use-cases/db-remove-audiobook/db-remove-audiobook'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
 import { MongoRemoveAudiobookRepository } from '../../infra/db/mongodb/repos/remove-audiobook.repository'
 import { RemoveAudiobookController } from '../../presentation/controllers/remove-audiobook/remove-audiobook.controller'

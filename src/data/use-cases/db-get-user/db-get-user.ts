@@ -1,6 +1,6 @@
-import { IUserModel } from '../../domain/models/user.model'
-import { IGetUser } from '../../domain/use-cases/get-user'
-import { IGetUserRepository } from '../protocols/get-user.repository'
+import { IUserModel } from '../../../domain/models/user.model'
+import { IGetUser } from '../../../domain/use-cases/get-user'
+import { IGetUserRepository } from '../../protocols/get-user.repository'
 
 export class DbGetUser implements IGetUser {
   constructor(

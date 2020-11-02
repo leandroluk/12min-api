@@ -1,5 +1,5 @@
-import { IRemoveAudiobook } from '../../domain/use-cases/remove-audiobook'
-import { IRemoveAudiobookRepository } from '../protocols/remove-audiobook.repository'
+import { IRemoveAudiobook } from '../../../domain/use-cases/remove-audiobook'
+import { IRemoveAudiobookRepository } from '../../protocols/remove-audiobook.repository'
 
 export class DbRemoveAudiobook implements IRemoveAudiobook {
   constructor(

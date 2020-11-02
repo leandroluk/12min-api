@@ -1,6 +1,6 @@
-import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../domain/models/audiobook.model'
-import { IGetAudiobook } from '../../domain/use-cases/get-audiobook'
-import { IGetAudiobookRepository } from '../protocols/get-audiobook.repository'
+import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
+import { IGetAudiobook } from '../../../domain/use-cases/get-audiobook'
+import { IGetAudiobookRepository } from '../../protocols/get-audiobook.repository'
 
 export class DbGetAudiobook implements IGetAudiobook {
   constructor(

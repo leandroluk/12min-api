@@ -1,5 +1,5 @@
-import { IUserWithPasswordModel } from '../../domain/models/user.model'
-import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
+import { IUserWithPasswordModel } from '../../../domain/models/user.model'
+import { IGetUserByEmailRepository } from '../../protocols/get-user-by-email.repository'
 import { DbGetUserByEmail } from './db-get-user-by-email'
 
 const makeGetUserByEmailRepository = (): IGetUserByEmailRepository => {
