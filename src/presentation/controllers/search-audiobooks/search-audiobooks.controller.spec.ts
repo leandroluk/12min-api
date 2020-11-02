@@ -170,7 +170,7 @@ describe('SearchAudiobooksController', () => {
     jest.spyOn(searchAudiobooksValidator, 'validateSearchAudiobooks').mockResolvedValue({
       limit: new Error()
     })
-    const result = await sut.handle({ query: { limit: 'asd' } } as any)
+    const result = await sut.handle({ header: {}, query: { limit: 'asd' } } as any)
     expect(result.statusCode).toBe(400)
     expect(result.body.message).toMatch(/Object validation.*?/)
     expect(result.body.errors.limit).toBeDefined()
@@ -223,7 +223,7 @@ describe('SearchAudiobooksController', () => {
 
   test('should return 200 if query isn\'t defined', async () => {
     const { sut } = makeSut()
-    const result = await sut.handle({ header: {} })
+    const result = await sut.handle({ header: {} as any })
     expect(result.statusCode).toBe(200)
   })
 })
