@@ -16,18 +16,14 @@ export class GetAudiobookController implements IController {
     readonly getAudiobook: IGetAudiobook
   ) { }
 
-  async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
-    const {
-      header = {} as IAuthenticatedHeaderModel,
-      params = {} as IGetAudiobookParams
-    } = httpRequest
+  async handle(httpRequest: IHttpRequest<IAuthenticatedHeaderModel, any, any, IGetAudiobookParams>): Promise<IHttpResponse> {
+    const { header, params } = httpRequest
 
-    const [accessTokenEmpty, accessTokenValid] = await Promise.all([
-      this.emptyValidator.isEmpty(header.authorization),
-      this.accessTokenValidator.validateAccessToken(header.authorization)
-    ])
+    if (await this.emptyValidator.isEmpty(header.authorization)) {
+      return unauthorized(new UnauthorizedError('accessToken is required.'))
+    }
 
-    if (accessTokenEmpty || !accessTokenValid) {
+    if (!await this.accessTokenValidator.validateAccessToken(header.authorization)) {
       return unauthorized(new UnauthorizedError('accessToken is invalid or expired.'))
     }
 
@@ -44,10 +40,9 @@ export class GetAudiobookController implements IController {
 
       return ok(audiobook)
     } catch (error) {
-      if (
-        error.constructor.name === 'InvalidParamError' &&
-        error.message.includes('audiobookId')
-      ) return notFound(new NoDataFoundError(`could not find any audiobook with id '${params.audiobookId}'`))
+      if (error.constructor.name === 'InvalidParamError' && error.message.includes('audiobookId')) {
+        return notFound(new NoDataFoundError(`could not find any audiobook with id '${params.audiobookId}'`))
+      }
       return serverError('cannot get audiobook.')
     }
   }
