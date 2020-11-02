@@ -1,4 +1,4 @@
-import { DbSearchAudiobooks } from '../../data/use-cases/db-get-user-by-email/db-search-audiobooks/db-search-audiobooks'
+import { DbSearchAudiobooks } from '../../data/use-cases/db-search-audiobooks/db-search-audiobooks'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
 import { MongoSearchAudiobooksRepository } from '../../infra/db/mongodb/repos/search-audiobooks/search-audiobooks.repository'
 import { SearchAudiobooksController } from '../../presentation/controllers/search-audiobooks/search-audiobooks.controller'
