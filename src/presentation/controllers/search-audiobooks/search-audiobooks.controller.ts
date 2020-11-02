@@ -1,4 +1,3 @@
-import { IAuthenticatedHeaderModel } from '../../../domain/models/authenticated-header.model'
 import { IAccessTokenValidate } from '../../../domain/use-cases/access-token-validate'
 import { ISearchAudiobooks, ISearchAudiobooksQuery } from '../../../domain/use-cases/search-audiobooks'
 import { ISearchAudiobooksParse } from '../../../domain/use-cases/search-audiobooks-parse'
@@ -23,18 +22,14 @@ export class SearchAudiobooksController implements IController {
     readonly searchAudiobooks: ISearchAudiobooks
   ) { }
 
-  async handle(httpRequest: IHttpRequest): Promise<IHttpResponse> {
-    let {
-      header = {} as IAuthenticatedHeaderModel,
-      query = {} as ISearchAudiobooksQuery
-    } = httpRequest
+  async handle(httpRequest: IHttpRequest<any, any, any, any, ISearchAudiobooksQuery>): Promise<IHttpResponse> {
+    const { header, query } = httpRequest
 
-    const [accessTokenEmpty, accessTokenValid] = await Promise.all([
-      this.emptyValidator.isEmpty(header.authorization),
-      this.accessTokenValidator.validateAccessToken(header.authorization)
-    ])
+    if (await this.emptyValidator.isEmpty(header.authorization)) {
+      return unauthorized(new UnauthorizedError('accessToken is required.'))
+    }
 
-    if (accessTokenEmpty || !accessTokenValid) {
+    if (!await this.accessTokenValidator.validateAccessToken(header.authorization)) {
       return unauthorized(new UnauthorizedError('accessToken is invalid or expired.'))
     }
 
@@ -48,10 +43,10 @@ export class SearchAudiobooksController implements IController {
       return badRequest(new ObjectValidationError(queryErrors))
     }
 
-    query = await this.searchAudiobookxParse.parseSearchAudiobooks(query)
+    const parsedQuery = await this.searchAudiobookxParse.parseSearchAudiobooks(query)
 
     try {
-      const result = await this.searchAudiobooks.searchAudiobooks(query)
+      const result = await this.searchAudiobooks.searchAudiobooks(parsedQuery)
       return ok(result)
     } catch (error) {
       if (error.constructor.name === 'InvalidParamError') {
