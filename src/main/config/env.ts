@@ -30,6 +30,7 @@ export default {
     authenticateUser: process.env.ROUTES_AUTHENTICATE_USER || '/auth',
     addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook',
     getAudiobook: (process.env.ROUTES_GET_AUDIOBOOK || '/audiobook') + '/:audiobookId',
-    removeAudiobook: (process.env.ROUTES_REMOVE_AUDIOBOOK || '/audiobook') + '/:audiobookId'
+    removeAudiobook: (process.env.ROUTES_REMOVE_AUDIOBOOK || '/audiobook') + '/:audiobookId',
+    searchAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook'
   }
 }
