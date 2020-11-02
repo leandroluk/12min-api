@@ -1,9 +1,9 @@
-import { IUserModel } from '../../domain/models/user.model'
-import { IAddUser, IAddUserModel } from '../../domain/use-cases/add-user'
-import { EmailInUseError } from '../../errors/email-in-use/email-in-use.error'
-import { IAddUserRepository } from '../protocols/add-user.repository'
-import { IEncrypter } from '../protocols/encrypter'
-import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
+import { IUserModel } from '../../../domain/models/user.model'
+import { IAddUser, IAddUserModel } from '../../../domain/use-cases/add-user'
+import { EmailInUseError } from '../../../errors/email-in-use/email-in-use.error'
+import { IAddUserRepository } from '../../protocols/add-user.repository'
+import { IEncrypter } from '../../protocols/encrypter'
+import { IGetUserByEmailRepository } from '../../protocols/get-user-by-email.repository'
 
 export class DbAddUser implements IAddUser {
   constructor(
