@@ -1,4 +1,4 @@
-import { DbAddUser } from '../../data/use-cases/db-add-user'
+import { DbAddUser } from '../../data/use-cases/db-add-user/db-add-user'
 import { BcryptAdapter } from '../../infra/cryptography/bcrypt-adapter'
 import { MongoAddUserRepository } from '../../infra/db/mongodb/repos/add-user.repository'
 import { MongoGetUserByEmailRepository } from '../../infra/db/mongodb/repos/get-user-by-email.repository'

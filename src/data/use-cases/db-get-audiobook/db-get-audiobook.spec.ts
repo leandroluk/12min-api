@@ -1,5 +1,5 @@
-import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../domain/models/audiobook.model'
-import { IGetAudiobookRepository } from '../protocols/get-audiobook.repository'
+import { AudiobookStatus, IAudiobookWithLastStatusModel } from '../../../domain/models/audiobook.model'
+import { IGetAudiobookRepository } from '../../protocols/get-audiobook.repository'
 import { DbGetAudiobook } from './db-get-audiobook'
 
 const makeGetAudiobookRepository = (): IGetAudiobookRepository => {

@@ -1,4 +1,5 @@
 import { IAudiobookWithLastStatusModel } from '../models/audiobook.model'
+import { IResultQuery } from '../models/result-query.model'
 
 export interface ISearchAudiobooksQuery {
   offset?: string
@@ -8,6 +9,14 @@ export interface ISearchAudiobooksQuery {
   tags?: string
 }
 
+export interface ISearchAudiobooksParsedQuery {
+  offset: number
+  limit: number
+  title: string
+  description: string
+  tags: string[]
+}
+
 export interface ISearchAudiobooks {
-  searchAudiobooks(query: ISearchAudiobooksQuery): Promise<IAudiobookWithLastStatusModel[]>
+  searchAudiobooks(query: ISearchAudiobooksParsedQuery): Promise<IResultQuery<IAudiobookWithLastStatusModel>>
 }

@@ -1,13 +1,4 @@
-import { ISearchAudiobooksQuery } from './search-audiobooks'
-
-export interface ISearchAudiobooksParsedQuery {
-  offset: number
-  limit: number
-  title: string
-  description: string
-  tags: string[]
-}
-
+import { ISearchAudiobooksParsedQuery, ISearchAudiobooksQuery } from './search-audiobooks'
 
 export interface ISearchAudiobooksParse {
   parseSearchAudiobooks(searchAudiobooks: ISearchAudiobooksQuery): Promise<ISearchAudiobooksParsedQuery>

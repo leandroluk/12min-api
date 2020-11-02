@@ -1,4 +1,4 @@
-import { IRemoveAudiobookRepository } from '../protocols/remove-audiobook.repository'
+import { IRemoveAudiobookRepository } from '../../protocols/remove-audiobook.repository'
 import { DbRemoveAudiobook } from './db-remove-audiobook'
 
 const makeRemoveAudiobookRepository = (): IRemoveAudiobookRepository => {

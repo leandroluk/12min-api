@@ -1,5 +1,5 @@
-import { IUserModel } from '../../domain/models/user.model'
-import { IGetUserRepository } from '../protocols/get-user.repository'
+import { IUserModel } from '../../../domain/models/user.model'
+import { IGetUserRepository } from '../../protocols/get-user.repository'
 import { DbGetUser } from './db-get-user'
 
 const makeGetUserRepository = (): IGetUserRepository => {

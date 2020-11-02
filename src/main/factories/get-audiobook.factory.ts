@@ -1,4 +1,4 @@
-import { DbGetAudiobook } from '../../data/use-cases/db-get-audiobook'
+import { DbGetAudiobook } from '../../data/use-cases/db-get-audiobook/db-get-audiobook'
 import { JwtTokenAdapter } from '../../infra/cryptography/jwt-token-adapter'
 import { MongoGetAudiobookRepository } from '../../infra/db/mongodb/repos/get-audiobook.repository'
 import { GetAudiobookController } from '../../presentation/controllers/get-audiobook/get-audiobook.controller'

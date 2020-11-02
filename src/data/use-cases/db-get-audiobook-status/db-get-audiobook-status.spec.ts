@@ -1,6 +1,6 @@
-import { IAudiobookStatusModel } from '../../domain/models/audiobook-status.model'
-import { AudiobookStatus } from '../../domain/models/audiobook.model'
-import { IGetAudiobookStatusRepository } from '../protocols/get-audiobook-status.repository'
+import { IAudiobookStatusModel } from '../../../domain/models/audiobook-status.model'
+import { AudiobookStatus } from '../../../domain/models/audiobook.model'
+import { IGetAudiobookStatusRepository } from '../../protocols/get-audiobook-status.repository'
 import { DbGetAudiobookStatus } from './db-get-audiobook-status'
 
 const makeGetAudiobookStatusRepository = (): IGetAudiobookStatusRepository => {

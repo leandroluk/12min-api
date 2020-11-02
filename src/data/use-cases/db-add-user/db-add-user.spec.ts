@@ -1,8 +1,8 @@
-import { IUserModel, IUserWithPasswordModel } from '../../domain/models/user.model'
-import { IAddUserModel } from '../../domain/use-cases/add-user'
-import { IAddUserRepository } from '../protocols/add-user.repository'
-import { IEncrypter } from '../protocols/encrypter'
-import { IGetUserByEmailRepository } from '../protocols/get-user-by-email.repository'
+import { IUserModel, IUserWithPasswordModel } from '../../../domain/models/user.model'
+import { IAddUserModel } from '../../../domain/use-cases/add-user'
+import { IAddUserRepository } from '../../protocols/add-user.repository'
+import { IEncrypter } from '../../protocols/encrypter'
+import { IGetUserByEmailRepository } from '../../protocols/get-user-by-email.repository'
 import { DbAddUser } from './db-add-user'
 
 const makeAddUserRepository = (): IAddUserRepository => {
