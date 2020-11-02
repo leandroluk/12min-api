@@ -797,7 +797,8 @@
 							"variable": [
 								{
 									"key": "audiobookId",
-									"value": ""
+									"value": "",
+									"type": "string"
 								}
 							]
 						}
@@ -830,7 +831,8 @@
 							"variable": [
 								{
 									"key": "audiobookId",
-									"value": ""
+									"value": "",
+									"type": "string"
 								}
 							]
 						}
@@ -859,6 +861,127 @@
 								"api",
 								"audiobook",
 								"invalidOrNonExistingAudiobookId"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "search-audiobooks",
+			"item": [
+				{
+					"name": "success without query",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQzNDIzNTIsImV4cCI6MTYwNDM2Mzk1Mn0.4Bf4ZlzhOVxGsnLLlMpsiH2--ZCGSMCRdy_-NA3CPRM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "success with query",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI1ZjllMDNmNmFjMjVmMjM4NDI2NGVkNWEiLCJpYXQiOjE2MDQzNDIzNTIsImV4cCI6MTYwNDM2Mzk1Mn0.4Bf4ZlzhOVxGsnLLlMpsiH2--ZCGSMCRdy_-NA3CPRM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook?offset=0&limit=50&title=&description=&tags=foo,bar,bin",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
+							],
+							"query": [
+								{
+									"key": "offset",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "50"
+								},
+								{
+									"key": "title",
+									"value": ""
+								},
+								{
+									"key": "description",
+									"value": ""
+								},
+								{
+									"key": "tags",
+									"value": "foo,bar,bin"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "unauthorized",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:3000/api/audiobook",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"audiobook"
 							]
 						}
 					},
