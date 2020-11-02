@@ -28,7 +28,7 @@ export class MongoSearchAudiobooksRepository implements ISearchAudiobooksReposit
       // join audiobookStatus collection
       {
         $lookup: {
-          from: 'audiobookStatuses',
+          from: env.mongo.collections.audiobookStatuses,
           localField: '_id',
           foreignField: 'audiobookId',
           as: 'status'
@@ -36,16 +36,11 @@ export class MongoSearchAudiobooksRepository implements ISearchAudiobooksReposit
       },
       // detach virtual audibook's with one audiobookStatus
       {
-        $unwind: {
-          path: '$status',
-          preserveNullAndEmptyArrays: true
-        }
+        $unwind: { path: '$status', preserveNullAndEmptyArrays: true }
       },
       // reorder by audiobookStatus as DESC
       {
-        $sort: {
-          'status.createdAt': -1
-        }
+        $sort: { 'status.createdAt': -1 }
       },
       // group with only first data of each audiobook
       {
