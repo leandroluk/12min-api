@@ -8,7 +8,7 @@ const FsHelper = {
         files.forEach(function (file) {
           const path = `${dir}/${file}`
           fs.statSync(path).isDirectory()
-            ? this.removeDir(path)
+            ? FsHelper.removeDir(path)
             : fs.unlinkSync(path)
         })
       }
