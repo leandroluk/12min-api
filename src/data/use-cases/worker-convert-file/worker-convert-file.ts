@@ -1,4 +1,4 @@
-import { exec } from 'child_process'
+import { execSync } from 'child_process'
 import fs from 'fs'
 import { IAudiobookStatusModel } from '../../../domain/models/audiobook-status.model'
 import { AudiobookStatus } from '../../../domain/models/audiobook.model'
@@ -16,8 +16,19 @@ export class WorkerConvertFile implements IConvertFile, IWorker {
     readonly setAudiobookFilePath: ISetAudiobookFilePath,
     readonly intervalTime: number,
     readonly streamsDir: string,
-    public stop: boolean = false
+    public stop: boolean
   ) { }
+
+  async executeCommand(command: string): Promise<void> {
+    return await new Promise((resolve, reject) => {
+      try {
+        execSync(command)
+        resolve()
+      } catch (error) {
+        reject(error)
+      }
+    })
+  }
 
   async convertFile(): Promise<void> {
     let findAudiobookToConvertRepositoryThrows = 0
@@ -56,9 +67,7 @@ export class WorkerConvertFile implements IConvertFile, IWorker {
             fs.mkdirSync(this.streamsDir)
           }
 
-          if (fs.existsSync(convertAudioFileDir)) {
-            FsHelper.removeDir(convertAudioFileDir)
-          }
+          FsHelper.removeDir(convertAudioFileDir)
 
           fs.mkdirSync(convertAudioFileDir)
 
@@ -68,11 +77,7 @@ export class WorkerConvertFile implements IConvertFile, IWorker {
             `${convertAudioFileDir}/.m3u8`
           ].join(' ')
 
-          await new Promise((resolve, reject) => {
-            exec(cmd, (err: Error) => {
-              err ? reject(err) : resolve()
-            })
-          })
+          await this.executeCommand(cmd)
 
           await this.addAudiobookStatus.addAudiobookStatus({
             audiobookId: audiobookStatus.audiobookId,

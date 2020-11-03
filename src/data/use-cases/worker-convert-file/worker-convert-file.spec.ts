@@ -94,7 +94,22 @@ const sleep = async (cb: () => void, timeout: number = 300): Promise<void> => {
   await new Promise(resolve => setTimeout(() => { cb(); resolve() }, timeout))
 }
 
+jest.mock('child_process', () => ({
+  execSync: (cmd: any) => {
+    if (cmd === 'erro') {
+      throw new Error(cmd)
+    }
+  }
+}))
+
 describe('WorkerConvertFile', () => {
+  describe('executeCommand', () => {
+    test('should throw if child_process throws', async () => {
+      const { sut } = makeSut()
+      await expect(sut.executeCommand('erro')).rejects.toThrow()
+    })
+  })
+
   describe('convertFile', () => {
     test('should IFindAudiobookToConvert to be called', async () => {
       const { sut, findAudiobookToConvert } = makeSut()
@@ -143,14 +158,19 @@ describe('WorkerConvertFile', () => {
 
     test('should rebuild audiobook folder inner streamsDir if exists to cleanup', async () => {
       const { sut, streamsDir } = makeSut()
+      const convertAudioFileDir = streamsDir + '/audiobookId'
+
       if (!fs.existsSync(streamsDir)) {
         fs.mkdirSync(streamsDir)
       }
+
       const removeDirSpy = jest.spyOn(FsHelper, 'removeDir')
       const mkdirSyncSpy = jest.spyOn(fs, 'mkdirSync')
+
       await sut.convertFile()
+
       expect(removeDirSpy).toHaveBeenCalled()
-      expect(mkdirSyncSpy).toHaveBeenCalledWith(streamsDir + '/audiobookId')
+      expect(mkdirSyncSpy).toHaveBeenCalledWith(convertAudioFileDir)
     })
 
     test('should child_process.exec to be called to convert audiobook', async () => {
@@ -163,6 +183,12 @@ describe('WorkerConvertFile', () => {
         convertAudioFile: streamsDir + '/audiobookId/.m3u8'
       })
     }, 30000)
+
+    test('should throw error if convert file throws 3 times', async () => {
+      const { sut } = makeSut()
+      jest.spyOn(sut, 'executeCommand').mockRejectedValue(new Error())
+      await expect(sut.convertFile()).rejects.toThrow()
+    })
   })
 
   describe('run', () => {

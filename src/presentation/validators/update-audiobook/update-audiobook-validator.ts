@@ -11,19 +11,29 @@ export class UpdateAudiobookValidator implements IUpdateAudiobookValidate {
   async validateUpdateAudiobook(updateAudiobook: IUpdateAudiobookModel): Promise<any> {
     const errors = {} as any
 
-    if (!await this.nullValidator.isNull(updateAudiobook.title)) {
+    const [
+      nullTitle,
+      nullDescription,
+      nullTags
+    ] = await Promise.all([
+      this.nullValidator.isNull(updateAudiobook.title),
+      this.nullValidator.isNull(updateAudiobook.description),
+      this.nullValidator.isNull(updateAudiobook.tags)
+    ])
+
+    if (!nullTitle) {
       if (typeof updateAudiobook.title !== 'string') {
         errors.title = new InvalidParamError('title', 'must be a string')
       }
     }
 
-    if (!await this.nullValidator.isNull(updateAudiobook.description)) {
+    if (!nullDescription) {
       if (typeof updateAudiobook.description !== 'string') {
         errors.description = new InvalidParamError('description', 'must be a string')
       }
     }
 
-    if (!await this.nullValidator.isNull(updateAudiobook.tags)) {
+    if (!nullTags) {
       if (
         !(updateAudiobook.tags instanceof Array) ||
         updateAudiobook.tags.some(tag => typeof tag !== 'string')

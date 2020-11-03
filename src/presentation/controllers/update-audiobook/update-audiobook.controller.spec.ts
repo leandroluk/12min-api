@@ -7,8 +7,9 @@ import { IConvertFileValidate } from '../../../domain/use-cases/convert-file-val
 import { IGetAudiobook } from '../../../domain/use-cases/get-audiobook'
 import { IUpdateAudiobook, IUpdateAudiobookModel } from '../../../domain/use-cases/update-audiobook'
 import { IUpdateAudiobookValidate } from '../../../domain/use-cases/update-audiobook-validate'
+import { InvalidParamError } from '../../../errors/invalid-param/invalid-param.error'
 import { IEmptyValidator } from '../../protocols/empty-validator'
-import { IHttpRequest } from '../../protocols/http'
+import { IHttpRequest, IHttpResponse } from '../../protocols/http'
 import { UpdateAudiobookController } from './update-audiobook.controller'
 
 const makeAccessTokenValidator = (): IAccessTokenValidate => {
@@ -86,20 +87,20 @@ const makeUpdateAudiobookValidate = (): IUpdateAudiobookValidate => {
   return new UpdateAudiobookValidateStub()
 }
 
-const makeConvertAudioFileValidate = (): IConvertFileValidate => {
-  class ConvertAudioFileValidateStub implements IConvertFileValidate {
+const makeconvertFileValidate = (): IConvertFileValidate => {
+  class ConvertFileValidateStub implements IConvertFileValidate {
     async validateConvertFile(_convertAudioFile: string): Promise<Error> {
       return await Promise.resolve(null)
     }
   }
-  return new ConvertAudioFileValidateStub()
+  return new ConvertFileValidateStub()
 }
 
 const makeSut = (): {
   emptyValidator: IEmptyValidator
   accessTokenValidator: IAccessTokenValidate
   updateAudiobookValidate: IUpdateAudiobookValidate
-  convertAudioFileValidate: IConvertFileValidate
+  convertFileValidate: IConvertFileValidate
   getAudiobook: IGetAudiobook
   updateAudiobook: IUpdateAudiobook
   addAudiobookStatus: IAddAudiobookStatus
@@ -109,7 +110,7 @@ const makeSut = (): {
   const emptyValidator = makeEmptyValidator()
   const accessTokenValidator = makeAccessTokenValidator()
   const updateAudiobookValidate = makeUpdateAudiobookValidate()
-  const convertAudioFileValidate = makeConvertAudioFileValidate()
+  const convertFileValidate = makeconvertFileValidate()
   const getAudiobook = makeGetAudiobook()
   const updateAudiobook = makeUpdateAudiobook()
   const addAudiobookStatus = makeAddAudiobookStatus()
@@ -117,7 +118,7 @@ const makeSut = (): {
     emptyValidator,
     accessTokenValidator,
     updateAudiobookValidate,
-    convertAudioFileValidate,
+    convertFileValidate,
     getAudiobook,
     updateAudiobook,
     addAudiobookStatus
@@ -141,7 +142,7 @@ const makeSut = (): {
     emptyValidator,
     accessTokenValidator,
     updateAudiobookValidate,
-    convertAudioFileValidate,
+    convertFileValidate,
     getAudiobook,
     updateAudiobook,
     addAudiobookStatus,
@@ -181,24 +182,43 @@ describe('UpdateAudiobookController', () => {
     expect(httpResponse.body.message).toMatch(/Unauthorized.*accessToken.*?/)
   })
 
-  test('should return 400 if body is no provided', async () => {
+  test('should return 400 if body or audiobookId is no provided', async () => {
     const { sut, emptyValidator, httpRequest } = makeSut()
-    jest.spyOn(emptyValidator, 'isEmpty').mockResolvedValueOnce(false).mockResolvedValueOnce(true)
-    const httpResponse = await sut.handle(httpRequest)
-    expect(httpResponse.statusCode).toBe(400)
-    expect(httpResponse.body.message).toMatch(/Missing param.*body.*?/)
-  })
-
-  test('should return 400 if audiobookId is no provided as param', async () => {
-    const { sut, emptyValidator, httpRequest } = makeSut()
+    let httpResponse: IHttpResponse
 
     jest.spyOn(emptyValidator, 'isEmpty')
       .mockResolvedValueOnce(false)
       .mockResolvedValueOnce(true)
+    httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.message).toMatch(/Missing param.*body.*?/)
 
-    const result = await sut.handle({ ...httpRequest, params: {} } as any)
+    jest.spyOn(emptyValidator, 'isEmpty')
+      .mockResolvedValueOnce(false)
+      .mockResolvedValueOnce(false)
+      .mockResolvedValueOnce(true)
+    httpResponse = await sut.handle(httpRequest)
+    expect(httpResponse.statusCode).toBe(400)
+    expect(httpResponse.body.message).toMatch(/Missing param.*audiobookId.*?/)
+  })
+
+  test('should return 400 if have some error on validateUpdateAudiobook', async () => {
+    const { sut, updateAudiobookValidate, httpRequest } = makeSut()
+    jest.spyOn(updateAudiobookValidate, 'validateUpdateAudiobook')
+      .mockResolvedValue({ title: new Error() })
+    const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(400)
-    expect(result.body.message).toMatch(/Missing param.*?/)
+    expect(result.body.message).toMatch(/Object validation.*?/)
+    expect(result.body.errors.title).toBeDefined()
+  })
+
+  test('should return 400 if IValidateConvertFile return error', async () => {
+    const { sut, convertFileValidate, httpRequest } = makeSut()
+    jest.spyOn(convertFileValidate, 'validateConvertFile')
+      .mockResolvedValue(new Error('some error'))
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(400)
+    expect(result.body.message).toBeDefined()
   })
 
   test('should call IGetAudiobook', async () => {
@@ -228,6 +248,34 @@ describe('UpdateAudiobookController', () => {
     const addAudiobookStatusSpy = jest.spyOn(addAudiobookStatus, 'addAudiobookStatus')
     await sut.handle(httpRequest)
     expect(addAudiobookStatusSpy).toBeCalled()
+  })
+
+  test('should return 404 if IGetAudiobook throws invalid param error', async () => {
+    const { sut, getAudiobook, httpRequest } = makeSut()
+    jest.spyOn(getAudiobook, 'getAudiobook')
+      .mockRejectedValue(new InvalidParamError('audiobookId'))
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(404)
+  })
+
+  test('should return 404 if IGetAudiobook throws invalid param error', async () => {
+    const { sut, getAudiobook, httpRequest } = makeSut()
+    jest.spyOn(getAudiobook, 'getAudiobook')
+      .mockRejectedValue(new Error('audiobookId'))
+    const result = await sut.handle(httpRequest)
+    expect(result.statusCode).toBe(500)
+  })
+
+  test('should not call IConvertFileValidate if no file is provided', async () => {
+    const { sut, emptyValidator, convertFileValidate, httpRequest } = makeSut()
+    jest.spyOn(emptyValidator, 'isEmpty')
+      .mockResolvedValueOnce(false)
+      .mockResolvedValueOnce(false)
+      .mockResolvedValueOnce(false)
+      .mockResolvedValueOnce(true)
+    const validateConvertFileSpy = jest.spyOn(convertFileValidate, 'validateConvertFile')
+    await sut.handle(httpRequest)
+    expect(validateConvertFileSpy).not.toHaveBeenCalled()
   })
 
   test('should return 200 with updated audiobook', async () => {

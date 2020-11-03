@@ -26,11 +26,11 @@ const makeSut = (): {
 }
 
 describe('UpdateAudiobookValidator', () => {
-  test('should all validators to be called', async () => {
+  test('should call INullValidator for each field', async () => {
     const { sut, nullValidator } = makeSut()
     const isNullSpy = jest.spyOn(nullValidator, 'isNull')
     await sut.validateUpdateAudiobook({})
-    expect(isNullSpy).toHaveBeenCalled()
+    expect(isNullSpy).toHaveBeenCalledTimes(3)
   })
 
   test('should return a object with invalid param error if some field is invalid', async () => {
@@ -42,8 +42,35 @@ describe('UpdateAudiobookValidator', () => {
   })
 
   test('should return a object with invalid param error if some value inner tags is invalid', async () => {
-    const { sut } = makeSut()
+    const { sut, nullValidator } = makeSut()
+    jest.spyOn(nullValidator, 'isNull')
+      .mockResolvedValueOnce(true)
+      .mockResolvedValueOnce(true)
+      .mockResolvedValueOnce(false)
     const result = await sut.validateUpdateAudiobook({ tags: [1] } as any)
+    expect(result.title).toBeUndefined()
+    expect(result.description).toBeUndefined()
     expect(result.tags.message).toMatch(/Invalid param.*tags.*?/)
+  })
+
+  test('should return a empty object if all fields is empty', async () => {
+    const { sut, nullValidator } = makeSut()
+    jest.spyOn(nullValidator, 'isNull').mockResolvedValue(true)
+    const result = await sut.validateUpdateAudiobook({})
+    expect(result.title).toBeUndefined()
+    expect(result.description).toBeUndefined()
+    expect(result.tags).toBeUndefined()
+  })
+
+  test('should return a empty object if all fields is valid', async () => {
+    const { sut } = makeSut()
+    const result = await sut.validateUpdateAudiobook({
+      title: 'title',
+      description: 'description',
+      tags: ['tags']
+    })
+    expect(result.title).toBeUndefined()
+    expect(result.description).toBeUndefined()
+    expect(result.tags).toBeUndefined()
   })
 })
