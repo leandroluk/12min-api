@@ -1,5 +1,6 @@
 node_modules
 dist
+streams
 coverage
 globalConfig.json
 .tmp
