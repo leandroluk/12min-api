@@ -15,7 +15,12 @@ export class MongoRemoveAudiobookRepository implements IRemoveAudiobookRepositor
     }
 
     const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
-    const { deletedCount } = await audiobookCollection.deleteOne({ _id })
+    const audiobookStatusesCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
+
+    const [{ deletedCount }] = await Promise.all([
+      audiobookCollection.deleteOne({ _id }),
+      audiobookStatusesCollection.deleteMany({ audiobookId: _id })
+    ])
 
     return !!deletedCount
   }
