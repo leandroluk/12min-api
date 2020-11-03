@@ -18,9 +18,9 @@ export class AddAudiobookController implements IController {
     readonly emptyValidator: IEmptyValidator,
     readonly accessTokenValidator: IAccessTokenValidate,
     readonly addAudiobookValidate: IAddAudiobookValidate,
-    readonly convertAudiobookValidate: IConvertFileValidate,
-    readonly addAudiobookRepository: IAddAudiobook,
-    readonly addAudiobookStatusRepository: IAddAudiobookStatus
+    readonly convertFileValidate: IConvertFileValidate,
+    readonly addAudiobook: IAddAudiobook,
+    readonly addAudiobookStatus: IAddAudiobookStatus
   ) { }
 
   async handle(httpRequest: IHttpRequest<IAuthenticatedHeaderModel, IAddAudiobookModel, string>): Promise<IHttpResponse<any, any>> {
@@ -44,7 +44,7 @@ export class AddAudiobookController implements IController {
 
     const [addAudiobookErrors, convertAudiobookErrors] = await Promise.all([
       this.addAudiobookValidate.validateAddAudiobook(body),
-      this.convertAudiobookValidate.validateConvertFile(file)
+      this.convertFileValidate.validateConvertFile(file)
     ])
 
     if (Object.keys(addAudiobookErrors).length) {
@@ -56,8 +56,8 @@ export class AddAudiobookController implements IController {
     }
 
     try {
-      const audiobook = await this.addAudiobookRepository.addAudiobook(body)
-      await this.addAudiobookStatusRepository.addAudiobookStatus({
+      const audiobook = await this.addAudiobook.addAudiobook(body)
+      await this.addAudiobookStatus.addAudiobookStatus({
         audiobookId: audiobook.id,
         status: AudiobookStatus.PENDING,
         convertAudioFile: file

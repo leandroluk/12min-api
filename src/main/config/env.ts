@@ -4,7 +4,8 @@ export default {
     port: process.env.APP_PORT || 3000,
     tempDir: process.env.APP_TEMP_DIR || '.tmp',
     queryLimit: parseInt(process.env.APP_QUERY_LIMIT || '50'),
-    queryListSeparator: process.env.APP_QUERY_LIST_SEPARATOR || ','
+    queryListSeparator: process.env.APP_QUERY_LIST_SEPARATOR || ',',
+    streamsDir: process.env.APP_STREAM_DIR || 'streams'
   },
   mongo: {
     url: process.env.MONGO_URL || 'mongodb://localhost:27017/12min-challenge',
@@ -30,6 +31,10 @@ export default {
     authenticateUser: process.env.ROUTES_AUTHENTICATE_USER || '/auth',
     addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook',
     getAudiobook: (process.env.ROUTES_GET_AUDIOBOOK || '/audiobook') + '/:audiobookId',
-    removeAudiobook: (process.env.ROUTES_REMOVE_AUDIOBOOK || '/audiobook') + '/:audiobookId'
+    removeAudiobook: (process.env.ROUTES_REMOVE_AUDIOBOOK || '/audiobook') + '/:audiobookId',
+    searchAudiobooks: process.env.ROUTES_ADD_AUDIOBOOKS || '/audiobook'
+  },
+  workers: {
+    intervalTime: parseInt(process.env.WORKERS_INTERVAL_TIME || '3')
   }
 }

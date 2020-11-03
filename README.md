@@ -35,6 +35,7 @@ You can see the API documentation at this URL: http://localhost:3000/apidocs
   - `APP_TEMP_DIR`: path to save uploaded audiobook's (default: '.tmp')
   - `APP_QUERY_LIMIT`: max size of results in queries (default: '50')
   - `APP_QUERY_LIST_SEPARATOR`: separator used for list of params in query (default quote ",")
+  - `APP_STREAM_DIR`: directory to persist m3u8 files (default: 'streams')
   - `MONGO_URL`: uri to access mongodb (default: 'mongodb://localhost:27017/12min-challenge')
   - `MONGO_COLLECTIONS_USERS`: name of user's collection (default: 'users')
   - `MONGO_COLLECTIONS_AUDIOBOOKS`: name of audiobook's collection (default: 'audiobooks')
@@ -48,6 +49,8 @@ You can see the API documentation at this URL: http://localhost:3000/apidocs
   - `ROUTES_ADD_AUDIOBOOK`: route to add audiobook (default: '/audiobook') 
   - `ROUTES_GET_AUDIOBOOK`: route to get audiobook (default: '/audiobook')
   - `ROUTES_REMOVE_AUDIOBOOK`: route to remove audiobook (default: '/audiobook')
+  - `ROUTES_SEARCH_AUDIOBOOKS`: route to search audiobooks (default: '/audiobook')
+  - `WORKERS_INTERVAL_TIME`: time in seconds to re-run work (default: '3')
 - Pre defined postman collection with basic structure for test's. You need build automation in postman if need.
 
 ## Testing:

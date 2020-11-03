@@ -83,8 +83,8 @@ const makeSut = (): {
   accessTokenValidator: IAccessTokenValidate
   addAudiobookValidate: IAddAudiobookValidate
   convertAudioFileValidate: IConvertFileValidate
-  addAudiobookRepository: IAddAudiobook
-  addAudiobookStatusRepository: IAddAudiobookStatus
+  addAudiobook: IAddAudiobook
+  addAudiobookStatus: IAddAudiobookStatus
   sut: AddAudiobookController
   httpRequest: IHttpRequest<IAuthenticatedHeaderModel, IAddAudiobookModel, string>
 } => {
@@ -92,15 +92,15 @@ const makeSut = (): {
   const accessTokenValidator = makeAccessTokenValidator()
   const addAudiobookValidate = makeAddAudiobookValidate()
   const convertAudioFileValidate = makeConvertAudioFileValidate()
-  const addAudiobookRepository = makeAddAudiobook()
-  const addAudiobookStatusRepository = makeAddAudiobookStatus()
+  const addAudiobook = makeAddAudiobook()
+  const addAudiobookStatus = makeAddAudiobookStatus()
   const sut = new AddAudiobookController(
     emptyValidator,
     accessTokenValidator,
     addAudiobookValidate,
     convertAudioFileValidate,
-    addAudiobookRepository,
-    addAudiobookStatusRepository
+    addAudiobook,
+    addAudiobookStatus
   )
   const httpRequest: IHttpRequest<IAuthenticatedHeaderModel, IAddAudiobookModel, string> = {
     header: {
@@ -119,8 +119,8 @@ const makeSut = (): {
     accessTokenValidator,
     addAudiobookValidate,
     convertAudioFileValidate,
-    addAudiobookRepository,
-    addAudiobookStatusRepository,
+    addAudiobook,
+    addAudiobookStatus,
     sut,
     httpRequest
   }
@@ -196,30 +196,30 @@ describe('AddAudiobookController', () => {
   })
 
   test('should call IAddAudiobook', async () => {
-    const { sut, addAudiobookRepository, httpRequest } = makeSut()
-    const addAudiobookSpy = jest.spyOn(addAudiobookRepository, 'addAudiobook')
+    const { sut, addAudiobook, httpRequest } = makeSut()
+    const addAudiobookSpy = jest.spyOn(addAudiobook, 'addAudiobook')
     await sut.handle(httpRequest)
     expect(addAudiobookSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 
   test('should return 500 if IAddAudiobook throws', async () => {
-    const { sut, addAudiobookRepository, httpRequest } = makeSut()
-    jest.spyOn(addAudiobookRepository, 'addAudiobook').mockRejectedValue(new Error())
+    const { sut, addAudiobook, httpRequest } = makeSut()
+    jest.spyOn(addAudiobook, 'addAudiobook').mockRejectedValue(new Error())
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(500)
     expect(result.body.message).toMatch(/Server error.*?/)
   })
 
   test('should call IAddAudiobookStatus', async () => {
-    const { sut, addAudiobookStatusRepository, httpRequest } = makeSut()
-    const addAudiobookStatusSpy = jest.spyOn(addAudiobookStatusRepository, 'addAudiobookStatus')
+    const { sut, addAudiobookStatus, httpRequest } = makeSut()
+    const addAudiobookStatusSpy = jest.spyOn(addAudiobookStatus, 'addAudiobookStatus')
     await sut.handle(httpRequest)
     expect(addAudiobookStatusSpy).toHaveBeenCalled()
   })
 
   test('should return 500 if IAddAudiobookStatus throws', async () => {
-    const { sut, addAudiobookStatusRepository, httpRequest } = makeSut()
-    jest.spyOn(addAudiobookStatusRepository, 'addAudiobookStatus').mockRejectedValue(new Error())
+    const { sut, addAudiobookStatus, httpRequest } = makeSut()
+    jest.spyOn(addAudiobookStatus, 'addAudiobookStatus').mockRejectedValue(new Error())
     const result = await sut.handle(httpRequest)
     expect(result.statusCode).toBe(500)
     expect(result.body.message).toMatch(/Server error.*?/)

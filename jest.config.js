@@ -7,7 +7,8 @@ module.exports = {
     '<rootDir>/src/**/*.ts'
   ],
   coveragePathIgnorePatterns: [
-    '<rootDir>/src/main/'
+    '<rootDir>/src/main/',
+    '<rootDir>/src/infra/helpers/'
   ],
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
