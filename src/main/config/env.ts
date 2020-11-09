@@ -32,7 +32,8 @@ export default {
     addAudiobook: process.env.ROUTES_ADD_AUDIOBOOK || '/audiobook',
     getAudiobook: (process.env.ROUTES_GET_AUDIOBOOK || '/audiobook') + '/:audiobookId',
     removeAudiobook: (process.env.ROUTES_REMOVE_AUDIOBOOK || '/audiobook') + '/:audiobookId',
-    searchAudiobooks: process.env.ROUTES_ADD_AUDIOBOOKS || '/audiobook'
+    searchAudiobooks: process.env.ROUTES_ADD_AUDIOBOOKS || '/audiobook',
+    updateAudiobook: (process.env.ROUTES_UPDATE_AUDIOBOOK || '/audiobook') + '/:audiobookId'
   },
   workers: {
     intervalTime: parseInt(process.env.WORKERS_INTERVAL_TIME || '3')
