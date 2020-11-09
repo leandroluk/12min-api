@@ -1,7 +1,7 @@
 import { IFileExistsValidator } from '../../protocols/file-exists-validator'
 import { IFileExtensionValidator } from '../../protocols/file-extension-validator'
 import { INullValidator } from '../../protocols/null-validator'
-import { ConvertAudioFileValidator } from './convert-file.validator'
+import { ConvertFileValidator } from './convert-file.validator'
 
 const makeNullValidator = (): INullValidator => {
   class NullValidatorStub implements INullValidator {
@@ -35,13 +35,13 @@ const makeSut = (): {
   nullValidator: INullValidator
   fileExtensionValidator: IFileExtensionValidator
   fileExistsValidator: IFileExistsValidator
-  sut: ConvertAudioFileValidator
+  sut: ConvertFileValidator
 } => {
   const convertAudioFile = '/path/to/uploaded/file.mp3'
   const nullValidator = makeNullValidator()
   const fileExtensionValidator = makeFileExtensionValidator()
   const fileExistsValidator = makeFileExistsValidator()
-  const sut = new ConvertAudioFileValidator(nullValidator, fileExtensionValidator, fileExistsValidator)
+  const sut = new ConvertFileValidator(nullValidator, fileExtensionValidator, fileExistsValidator)
 
   return {
     convertAudioFile,

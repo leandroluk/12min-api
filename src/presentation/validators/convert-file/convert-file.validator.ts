@@ -6,7 +6,7 @@ import { IFileExistsValidator } from '../../protocols/file-exists-validator'
 import { IFileExtensionValidator } from '../../protocols/file-extension-validator'
 import { INullValidator } from '../../protocols/null-validator'
 
-export class ConvertAudioFileValidator implements IConvertFileValidate {
+export class ConvertFileValidator implements IConvertFileValidate {
   constructor(
     readonly nullValidator: INullValidator,
     readonly fileExtensionValidator: IFileExtensionValidator,
