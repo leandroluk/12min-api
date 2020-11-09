@@ -55,6 +55,14 @@ describe('MongoUpdateAudiobookRepository', () => {
     expect(result.title).toBe('changed')
   })
 
+  test('should no insert repeated tags', async () => {
+    const sut = new MongoUpdateAudiobookRepository()
+    const result = await sut.updateAudiobook(audiobookId.toHexString(), { tags: ['tag', 'tag'] })
+
+    expect(result.updatedAt).toBeDefined()
+    expect(result.tags.length).toBe(1)
+  })
+
   test('should return notthing if no audiobook isn\'t found', async () => {
     const sut = new MongoUpdateAudiobookRepository()
     const invalidAudiobookId = MongoHelper.objectId().toHexString()

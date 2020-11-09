@@ -10,6 +10,10 @@ export class MongoUpdateAudiobookRepository implements IUpdateAudiobookRepositor
       return undefined
     }
 
+    if (audiobookData.tags) {
+      audiobookData.tags = [...new Set(audiobookData.tags)]
+    }
+
     const _id = MongoHelper.objectId(audiobookId)
     const audiobookCollection = MongoHelper.getCollection(env.mongo.collections.audiobooks)
     const audiobookStatusesCollection = MongoHelper.getCollection(env.mongo.collections.audiobookStatuses)
