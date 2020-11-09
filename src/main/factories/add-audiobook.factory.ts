@@ -6,7 +6,7 @@ import { MongoAddAudiobookRepository } from '../../infra/db/mongodb/repos/add-au
 import { AddAudiobookController } from '../../presentation/controllers/add-audiobook/add-audiobook.controller'
 import { AccessTokenValidatorAdapter } from '../../presentation/validators/access-token/access-token-validator-adapter'
 import { AddAudiobookValidator } from '../../presentation/validators/add-audiobook/add-audiobook-validator'
-import { ConvertAudioFileValidator } from '../../presentation/validators/convert-file/convert-file.validator'
+import { ConvertFileValidator } from '../../presentation/validators/convert-file/convert-file.validator'
 import { EmptyValidatorAdapter } from '../../validators/empty/empty-validator-adapter'
 import { FileExistsValidatorAdapter } from '../../validators/file-exists/file-exists-validator-adapter'
 import { FileExtensionValidatorAdapter } from '../../validators/file-extension/file-extension-validator-adapter'
@@ -21,7 +21,7 @@ export const makeAddAudiobookController = (): AddAudiobookController => {
   const jwtToken = new JwtTokenAdapter(env.authentication.secret, env.authentication.expiresIn)
   const accessTokenValidator = new AccessTokenValidatorAdapter(nullValidator, jwtToken)
   const addAudiobookValidate = new AddAudiobookValidator(nullValidator)
-  const convertAudioFileValidate = new ConvertAudioFileValidator(nullValidator, fileExtensionValidator, fileExistsValidator)
+  const convertAudioFileValidate = new ConvertFileValidator(nullValidator, fileExtensionValidator, fileExistsValidator)
   const addAudiobookRepository = new MongoAddAudiobookRepository()
   const addAudiobook = new DbAddAudiobook(addAudiobookRepository)
   const addAudiobookStatusRepository = new MongoAddAudiobookStatusRepository()

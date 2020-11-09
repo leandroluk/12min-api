@@ -50,6 +50,7 @@ You can see the API documentation at this URL: http://localhost:3000/apidocs
   - `ROUTES_GET_AUDIOBOOK`: route to get audiobook (default: '/audiobook')
   - `ROUTES_REMOVE_AUDIOBOOK`: route to remove audiobook (default: '/audiobook')
   - `ROUTES_SEARCH_AUDIOBOOKS`: route to search audiobooks (default: '/audiobook')
+  - `ROUTES_UPDATE_AUDIOBOOK`: route to update an audiobook (default '/audiobook')
   - `WORKERS_INTERVAL_TIME`: time in seconds to re-run work (default: '3')
 - Pre defined postman collection with basic structure for test's. You need build automation in postman if need.
 
